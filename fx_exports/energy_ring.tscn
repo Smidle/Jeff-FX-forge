@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="EnergyRing" type="AnimatedSprite2D" unique_id=2014671644]
+[node name="EnergyRing" type="AnimatedSprite2D" unique_id=233268126]
 texture_filter = 1
 sprite_frames = ExtResource("1_d5fq1")
 autoplay = "default"

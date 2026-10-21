@@ -1,0 +1,295 @@
+{
+	"frames": [
+		{
+			"duration": 83,
+			"filename": "buff_aura default 0.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 1.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 64,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 2.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 128,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 3.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 192,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 4.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 256,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 5.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 320,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 6.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 384,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 7.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 448,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 8.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 512,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 9.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 576,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 10.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 640,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "buff_aura default 11.png",
+			"frame": {
+				"h": 80,
+				"w": 64,
+				"x": 704,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 80,
+				"w": 64
+			},
+			"spriteSourceSize": {
+				"h": 80,
+				"w": 64,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	],
+	"meta": {
+		"app": "FX Forge 像素特效工坊",
+		"format": "RGBA8888",
+		"fps": 12,
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "default",
+				"to": 11
+			}
+		],
+		"image": "buff_aura.png",
+		"layers": [],
+		"loop": true,
+		"pivot": {
+			"x": 32,
+			"y": 68
+		},
+		"scale": "1",
+		"size": {
+			"h": 80,
+			"w": 768
+		},
+		"slices": [],
+		"version": "0.4.0"
+	}
+}

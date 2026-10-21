@@ -1,0 +1,295 @@
+{
+	"frames": [
+		{
+			"duration": 83,
+			"filename": "charge default 0.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 1.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 72,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 2.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 144,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 3.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 216,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 4.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 288,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 5.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 360,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 6.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 432,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 7.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 504,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 8.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 576,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 9.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 648,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 10.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 720,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "charge default 11.png",
+			"frame": {
+				"h": 72,
+				"w": 72,
+				"x": 792,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 72,
+				"w": 72
+			},
+			"spriteSourceSize": {
+				"h": 72,
+				"w": 72,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	],
+	"meta": {
+		"app": "FX Forge 像素特效工坊",
+		"format": "RGBA8888",
+		"fps": 12,
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "default",
+				"to": 11
+			}
+		],
+		"image": "charge.png",
+		"layers": [],
+		"loop": true,
+		"pivot": {
+			"x": 36,
+			"y": 36
+		},
+		"scale": "1",
+		"size": {
+			"h": 72,
+			"w": 864
+		},
+		"slices": [],
+		"version": "0.4.0"
+	}
+}

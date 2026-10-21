@@ -10,8 +10,9 @@ const SHAPE_OPTIONS := [
 	["pixel", "像素点"], ["square", "方块"], ["disc", "圆点"], ["plus", "十字"],
 	["diamond", "菱形"], ["star", "四角星"], ["streak", "拖影线"], ["shard", "碎片"],
 ]
-const EMIT_SHAPE_OPTIONS := [["point", "一个点"], ["circle", "圆形区域"], ["ring", "圆环上"], ["line", "一条横线"]]
+const EMIT_SHAPE_OPTIONS := [["point", "一个点"], ["circle", "圆形区域"], ["ring", "圆环上"], ["line", "一条横线"], ["box", "矩形区域"]]
 const EMIT_MODE_OPTIONS := [["burst", "一次爆发"], ["stream", "持续发射"]]
+const FLOW_OPTIONS := [["out", "向外飞散"], ["gather", "向中心汇聚"]]
 
 enum Shape { PIXEL, SQUARE, DISC, PLUS, DIAMOND, STAR, STREAK, SHARD }
 const _SHAPE_IDS := ["pixel", "square", "disc", "plus", "diamond", "star", "streak", "shard"]
@@ -22,8 +23,8 @@ static func shape_index(id: String) -> int:
 
 
 ## 生成粒子表（主线程调用）。cfg 键：
-##   count, emit_shape, emit_radius, angle（弧度，发射中心方向）, spread（度）, speed, speed_random,
-##   life, life_random, emit_mode, emit_time, size, size_random, spin（圈 / 整段）
+##   count, emit_shape, emit_radius, emit_height（矩形区域的高）, angle（弧度，发射中心方向）, spread（度）,
+##   speed, speed_random, life, life_random, emit_mode, emit_time, size, size_random, spin（圈 / 整段）
 ## 返回字典，每项是 PackedFloat32Array：x y（出生点相对原点）, vx vy（初速度）, t0（出生时间）,
 ##   life, size, bright（0.75~1 的随机亮度）, rot（初始朝向）, spin, phase（闪烁相位）
 static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
@@ -58,10 +59,22 @@ static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 	var rots: PackedFloat32Array = t["rot"]
 	var spins: PackedFloat32Array = t["spin"]
 	var phases: PackedFloat32Array = t["phase"]
+	# 持续发射时出生时间按序号排；发射角度如果也按序号排，粒子会像扫射一样绕圈出现，所以角度用打乱后的序号
+	var order := PackedInt32Array()
+	order.resize(count)
+	for i in count:
+		order[i] = i
+	if stream:
+		for i in range(count - 1, 0, -1):
+			var j := rng.randi_range(0, i)
+			var tmp := order[i]
+			order[i] = order[j]
+			order[j] = tmp
 	for i in count:
 		# 发射方向：扇形内均匀分布 + 抖动
 		var k := (float(i) + rng.randf()) / float(count)
-		var ang := center + (k - 0.5) * spread if not full else center + k * TAU
+		var ka := (float(order[i]) + rng.randf()) / float(count) if stream else k
+		var ang := center + (ka - 0.5) * spread if not full else center + ka * TAU
 		var px := 0.0
 		var py := 0.0
 		match emit_shape:
@@ -77,6 +90,11 @@ static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 				# 横线沿发射中心方向的垂直方向铺开
 				px = -sin(center) * lx
 				py = cos(center) * lx
+				ang = center + (rng.randf() - 0.5) * spread
+			"box":
+				# 矩形区域始终和屏幕对齐：宽 = 2 × 发射范围，高 = emit_height
+				px = (rng.randf() * 2.0 - 1.0) * radius
+				py = (rng.randf() - 0.5) * float(cfg.get("emit_height", radius * 2.0))
 				ang = center + (rng.randf() - 0.5) * spread
 		var sp := speed * (1.0 - speed_rnd * rng.randf())
 		xs[i] = px
@@ -94,7 +112,8 @@ static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 
 
 ## 把 u 时刻的粒子画进画布。cfg 键：
-##   shape（Shape 枚举值）, size_end, gravity, drag, cool, bright, flicker, streak_len, loop, ox, oy
+##   shape（Shape 枚举值）, size_end, gravity, drag, cool, bright, flicker, streak_len, loop, ox, oy,
+##   gather（true = 向中心汇聚：从「向外飞散时会到达的位置」出发，越来越快地被吸到原点）
 ## 返回这一帧画了多少个粒子
 static func draw(buf: FxBuffer, t: Dictionary, cfg: Dictionary, u: float) -> int:
 	var xs: PackedFloat32Array = t["x"]
@@ -119,6 +138,7 @@ static func draw(buf: FxBuffer, t: Dictionary, cfg: Dictionary, u: float) -> int
 	var loop: bool = cfg["loop"]
 	var ox: float = cfg["ox"]
 	var oy: float = cfg["oy"]
+	var gather: bool = cfg.get("gather", false)
 	var drawn := 0
 	for i in xs.size():
 		var ta := u - t0s[i]
@@ -131,22 +151,38 @@ static func draw(buf: FxBuffer, t: Dictionary, cfg: Dictionary, u: float) -> int
 		# 闪烁：按相位随机熄灭一部分时间
 		if flicker > 0.0 and fposmod(phases[i] + tau * 3.7, 1.0) < flicker * 0.45:
 			continue
-		# 带线性阻力和重力的闭式运动
-		var e := exp(-k * ta) if k > 0.0001 else 1.0
-		var f := (1.0 - e) / k if k > 0.0001 else ta
-		var x := ox + xs[i] + vxs[i] * f
-		var y := oy + ys[i] + vys[i] * f
-		var vy_now := vys[i] * e
-		if k > 0.0001:
-			y += g / k * (ta - f)
-			vy_now += g / k * (1.0 - e)
+		var x := 0.0
+		var y := 0.0
+		var vx_now := 0.0
+		var vy_now := 0.0
+		var alpha := 1.0 - smoothstep(0.6, 1.0, tau)
+		if gather:
+			# 汇聚：起点 = 出生点 + 0.35 × 初速度，越来越快地被吸到原点；开头淡入、到中心前淡出
+			var sx := xs[i] + vxs[i] * 0.35
+			var sy := ys[i] + vys[i] * 0.35
+			var e2 := tau * tau
+			x = ox + sx * (1.0 - e2)
+			y = oy + sy * (1.0 - e2)
+			# 真实速度（位置对时间求导），越靠近中心越快，拖影也越长
+			vx_now = -sx * 2.0 * tau / life
+			vy_now = -sy * 2.0 * tau / life
+			alpha = smoothstep(0.0, 0.25, tau) * (1.0 - smoothstep(0.85, 1.0, tau))
 		else:
-			y += 0.5 * g * ta * ta
-			vy_now += g * ta
-		var vx_now := vxs[i] * e
+			# 带线性阻力和重力的闭式运动
+			var e := exp(-k * ta) if k > 0.0001 else 1.0
+			var f := (1.0 - e) / k if k > 0.0001 else ta
+			x = ox + xs[i] + vxs[i] * f
+			y = oy + ys[i] + vys[i] * f
+			vy_now = vys[i] * e
+			if k > 0.0001:
+				y += g / k * (ta - f)
+				vy_now += g / k * (1.0 - e)
+			else:
+				y += 0.5 * g * ta * ta
+				vy_now += g * ta
+			vx_now = vxs[i] * e
 		var sz := maxf(sizes[i] * lerpf(1.0, size_end, tau), 0.5)
 		var val := clampf(bright * brights[i] * (1.0 - cool * tau), 0.0, 1.0)
-		var alpha := 1.0 - smoothstep(0.6, 1.0, tau)
 		if alpha <= 0.0:
 			continue
 		_draw_one(buf, shape, x, y, sz, val, alpha, rots[i] + spins[i] * ta, vx_now, vy_now, streak_len)
@@ -171,9 +207,11 @@ static func _draw_one(buf: FxBuffer, shape: int, x: float, y: float, sz: float, 
 			var arm := maxi(1, roundi(sz * 0.5))
 			var cx := floori(x)
 			var cy := floori(y)
-			buf.rect(cx - arm, cy, arm * 2 + 1, 1, val * 0.85, alpha)
-			buf.rect(cx, cy - arm, 1, arm * 2 + 1, val * 0.85, alpha)
-			buf.plot(cx, cy, val, alpha)
+			# 大十字（7 像素以上）用 3 像素粗的臂，像医疗十字
+			var ht := 1 if sz >= 6.5 else 0
+			buf.rect(cx - arm, cy - ht, arm * 2 + 1, ht * 2 + 1, val * 0.85, alpha)
+			buf.rect(cx - ht, cy - arm, ht * 2 + 1, arm * 2 + 1, val * 0.85, alpha)
+			buf.rect(cx - ht, cy - ht, ht * 2 + 1, ht * 2 + 1, val, alpha)
 		Shape.DIAMOND:
 			buf.diamond(x, y, maxf(sz * 0.6, 0.7), val, val * 0.8, alpha)
 		Shape.STAR:

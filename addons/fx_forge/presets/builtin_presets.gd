@@ -327,4 +327,144 @@ static func _defs() -> Array:
 					"gravity": 50.0, "drag": 1.8, "life": 0.9, "cool": 0.25, "spin": 1.5}},
 			],
 		},
+		# ---------------------------------------------------------------- 魔法与状态
+		{
+			"id": "fireball_shot", "name": "火球弹", "category": "magic",
+			"description": "循环飞行的火球：翻滚的火团 + 波动的尾焰 + 往后掉的余烬。原点在弹体中心，方向 = 飞行方向。",
+			"globals": {"canvas_w": 56, "canvas_h": 32, "frames": 8, "fps": 12, "loop": true, "origin_x": 0.7, "origin_y": 0.5,
+				"theme": "fire", "palette_main": "fire", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "orb", "name": "火球", "params": {
+					"shape": "flame", "core": 3.0, "halo": 7.0, "trail": 20.0, "trail_width": 0.8, "wobble": 0.35,
+					"noise": 0.7, "pulse": 0.25, "pulse_speed": 2, "flow": 2}},
+				{"module": "particles", "name": "余烬", "palette_slot": "accent", "angle_offset": 180.0, "offset_x": -9.0, "params": {
+					"count": 12, "shape": "square", "size": 2.0, "size_end": 0.5, "spread": 70.0, "speed": 60.0,
+					"speed_random": 0.5, "gravity": -25.0, "drag": 1.0, "emit_mode": "stream", "emit_time": 1.0,
+					"life": 0.5, "cool": 0.5, "flicker": 0.25}},
+			],
+		},
+		{
+			"id": "magic_missile", "name": "魔法飞弹", "category": "magic",
+			"description": "循环飞行的奥术飞弹：细长的波动尾迹 + 环绕的三个光点，带柔光。",
+			"globals": {"canvas_w": 56, "canvas_h": 32, "frames": 8, "fps": 12, "loop": true, "origin_x": 0.7, "origin_y": 0.5,
+				"theme": "arcane", "palette_main": "arcane", "palette_accent": "rose", "palette_smoke": "smoke",
+				"soft": 0.5, "outline": "none"},
+			"layers": [{"module": "orb", "name": "飞弹", "params": {
+				"shape": "round", "core": 2.5, "halo": 5.5, "trail": 22.0, "trail_width": 0.55, "wobble": 0.5,
+				"pulse": 0.35, "pulse_speed": 2, "flow": 3, "orbiters": 3, "orbit_radius": 8.0, "orbit_turns": 1}}],
+		},
+		{
+			"id": "heal", "name": "治疗", "category": "magic",
+			"description": "回血、治疗术：脚下扩散的光环 + 往上飘的绿色十字 + 闪烁的光点。原点在角色脚下。",
+			"globals": {"canvas_w": 64, "canvas_h": 80, "frames": 14, "fps": 14, "origin_x": 0.5, "origin_y": 0.85,
+				"theme": "heal", "palette_main": "heal", "palette_accent": "holy", "palette_smoke": "dust"},
+			"layers": [
+				{"module": "ring", "name": "治疗光环", "follow_dir": false, "t_end": 0.75, "outline": false, "params": {
+					"radius": 22.0, "width": 3.0, "thin": 0.4, "start": 0.2, "squash": 0.35, "easing": "out_cubic"}},
+				{"module": "particles", "name": "上升光丝", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0, "params": {
+					"count": 10, "shape": "streak", "size": 1.5, "size_end": 1.0, "emit_shape": "line", "emit_radius": 16.0,
+					"spread": 4.0, "speed": 110.0, "speed_random": 0.4, "drag": 0.6, "emit_mode": "stream", "emit_time": 0.55,
+					"life": 0.45, "cool": 0.3, "streak_len": 0.6}},
+				{"module": "particles", "name": "治疗十字", "palette_slot": "main", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "params": {
+					"count": 7, "shape": "plus", "size": 7.0, "size_end": 3.0, "size_random": 0.4, "emit_shape": "line",
+					"emit_radius": 15.0, "spread": 20.0, "speed": 75.0, "speed_random": 0.4, "drag": 1.2,
+					"emit_mode": "stream", "emit_time": 0.55, "life": 0.5, "cool": 0.25}},
+				{"module": "particles", "name": "光点", "palette_slot": "accent", "follow_dir": false, "offset_y": -18.0, "outline": false, "params": {
+					"count": 8, "shape": "star", "size": 2.5, "size_end": 0.5, "emit_shape": "circle", "emit_radius": 16.0,
+					"speed": 15.0, "gravity": -30.0, "drag": 1.0, "emit_mode": "stream", "emit_time": 0.7,
+					"life": 0.35, "cool": 0.1, "flicker": 0.3}},
+			],
+		},
+		{
+			"id": "buff_aura", "name": "增益光环", "category": "magic",
+			"description": "循环的增益状态：脚下呼吸的金色光环 + 往上飘的光丝和星光。原点在角色脚下。",
+			"globals": {"canvas_w": 64, "canvas_h": 80, "frames": 12, "fps": 12, "loop": true, "origin_x": 0.5, "origin_y": 0.85,
+				"theme": "holy", "palette_main": "holy", "palette_accent": "spark", "palette_smoke": "dust",
+				"soft": 0.2, "outline": "none"},
+			"layers": [
+				{"module": "ring", "name": "脚下光环", "follow_dir": false, "params": {
+					"radius": 22.0, "width": 3.0, "thin": 0.5, "start": 0.85, "squash": 0.35, "mode": "pulse"}},
+				{"module": "particles", "name": "上升光丝", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0, "params": {
+					"count": 16, "shape": "streak", "size": 2.0, "size_end": 1.0, "emit_shape": "line", "emit_radius": 19.0,
+					"spread": 4.0, "speed": 100.0, "speed_random": 0.4, "drag": 0.5, "emit_mode": "stream", "emit_time": 1.0,
+					"life": 0.55, "cool": 0.25, "flicker": 0.15, "streak_len": 0.8}},
+				{"module": "particles", "name": "星光", "palette_slot": "main", "follow_dir": false, "offset_y": -24.0, "params": {
+					"count": 8, "shape": "star", "size": 3.0, "size_end": 0.5, "emit_shape": "circle", "emit_radius": 18.0,
+					"speed": 10.0, "gravity": -20.0, "drag": 1.0, "emit_mode": "stream", "emit_time": 1.0,
+					"life": 0.35, "cool": 0.0, "flicker": 0.3}},
+			],
+		},
+		{
+			"id": "shield", "name": "护盾", "category": "magic",
+			"description": "循环的护盾泡：发光的球形外壳 + 旋转的六边形纹 + 绕行的流光。",
+			"globals": {"canvas_w": 72, "canvas_h": 72, "frames": 12, "fps": 12, "loop": true,
+				"theme": "energy", "palette_main": "energy", "palette_accent": "thunder", "palette_smoke": "smoke",
+				"soft": 0.5, "outline": "none", "dissolve": "fade"},
+			"layers": [
+				{"module": "ring", "name": "护盾泡", "params": {
+					"radius": 28.0, "width": 3.0, "mode": "static", "rim": 0.9}},
+				{"module": "glyph", "name": "六边形纹", "palette_slot": "accent", "params": {
+					"radius": 25.0, "rings": 0, "star_points": 6, "star_step": 1, "star_scale": 0.9, "ticks": 0,
+					"line": 1.0, "spin": 1.0, "counter": false, "pulse": 0.4, "runes": 0.3}},
+				{"module": "ring", "name": "流光", "params": {
+					"radius": 24.0, "width": 2.0, "mode": "static", "segments": 3, "gap": 0.75, "spin": 1.0}},
+			],
+		},
+		{
+			"id": "charge", "name": "蓄力", "category": "magic",
+			"description": "循环的蓄力：四周的光点被吸向中心，能量核一下下脉动，外圈的环不断收拢。",
+			"globals": {"canvas_w": 72, "canvas_h": 72, "frames": 12, "fps": 12, "loop": true,
+				"theme": "energy", "palette_main": "energy", "palette_accent": "thunder", "palette_smoke": "smoke",
+				"soft": 0.35, "outline": "none"},
+			"layers": [
+				{"module": "ring", "name": "收拢环", "palette_slot": "accent", "params": {
+					"radius": 30.0, "width": 2.0, "thin": 0.0, "start": 0.15, "mode": "contract", "easing": "in_quad"}},
+				{"module": "particles", "name": "汇聚光点", "palette_slot": "accent", "params": {
+					"count": 24, "shape": "streak", "size": 2.0, "size_end": 1.2, "emit_shape": "ring", "emit_radius": 8.0,
+					"flow": "gather", "speed": 70.0, "speed_random": 0.3, "emit_mode": "stream", "emit_time": 1.0,
+					"life": 0.45, "cool": 0.0, "streak_len": 1.0}},
+				{"module": "orb", "name": "能量核", "params": {
+					"shape": "round", "core": 3.0, "halo": 6.0, "trail": 0.0, "pulse": 0.6, "pulse_speed": 3}},
+			],
+		},
+		{
+			"id": "magic_circle", "name": "魔法阵", "category": "magic",
+			"description": "循环旋转的地面魔法阵：双环 + 六芒星 + 刻度，内外圈反向转动，周围升起光点。",
+			"globals": {"canvas_w": 96, "canvas_h": 56, "frames": 24, "fps": 12, "loop": true, "origin_x": 0.5, "origin_y": 0.55,
+				"theme": "arcane", "palette_main": "arcane", "palette_accent": "rose", "palette_smoke": "smoke",
+				"soft": 0.15, "outline": "none"},
+			"layers": [
+				{"module": "glyph", "name": "法阵", "follow_dir": false, "params": {
+					"radius": 42.0, "rings": 2, "ring_gap": 6.0, "star_points": 6, "star_step": 2, "star_scale": 0.92,
+					"ticks": 24, "tick_len": 3.0, "line": 1.0, "squash": 0.45, "spin": 1.0, "counter": true,
+					"pulse": 0.3, "runes": 0.5}},
+				{"module": "particles", "name": "符文光点", "follow_dir": false, "angle_offset": 270.0, "params": {
+					"count": 10, "shape": "star", "size": 2.0, "size_end": 0.5, "emit_shape": "line", "emit_radius": 34.0,
+					"spread": 20.0, "speed": 25.0, "gravity": -20.0, "drag": 1.0, "emit_mode": "stream", "emit_time": 1.0,
+					"life": 0.5, "cool": 0.1, "flicker": 0.3}},
+			],
+		},
+		{
+			"id": "summon_circle", "name": "召唤阵展开", "category": "magic",
+			"description": "一次性的召唤：五芒星法阵一笔笔画出来，随后升起光柱和光丝，最后一起消散。原点在地面中心。",
+			"globals": {"canvas_w": 96, "canvas_h": 120, "frames": 18, "fps": 15, "origin_x": 0.5, "origin_y": 0.82,
+				"theme": "arcane", "palette_main": "arcane", "palette_accent": "holy", "palette_smoke": "smoke",
+				"soft": 0.2, "outline": "none"},
+			"layers": [
+				{"module": "glyph", "name": "召唤阵", "follow_dir": false, "params": {
+					"radius": 42.0, "rings": 2, "ring_gap": 6.0, "star_points": 5, "star_step": 2, "star_scale": 0.95,
+					"ticks": 20, "tick_len": 3.0, "line": 1.0, "squash": 0.4, "spin": 0.25, "counter": true,
+					"draw_time": 0.45, "fade_out": 0.2, "pulse": 0.3, "runes": 0.5}},
+				{"module": "beam", "name": "召唤光柱", "palette_slot": "accent", "follow_dir": false, "angle_offset": 270.0,
+						"t_start": 0.4, "params": {
+					"length": 92.0, "width": 20.0, "core": 0.3, "taper": 0.15, "ripple": 0.3, "base_glow": 0.5,
+					"open_time": 0.25, "close_time": 0.35, "flow": 3, "streaks": 0.6}},
+				{"module": "particles", "name": "上升光丝", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0,
+						"t_start": 0.45, "params": {
+					"count": 18, "shape": "streak", "size": 2.0, "emit_shape": "line", "emit_radius": 30.0, "spread": 10.0,
+					"speed": 130.0, "speed_random": 0.4, "drag": 0.8, "emit_mode": "stream", "emit_time": 0.6,
+					"life": 0.5, "cool": 0.2, "streak_len": 0.8}},
+			],
+		},
 	]

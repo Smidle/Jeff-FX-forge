@@ -1,0 +1,207 @@
+{
+	"frames": [
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 0.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 1.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 56,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 2.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 112,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 3.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 168,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 4.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 224,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 5.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 280,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 6.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 336,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "fireball_shot default 7.png",
+			"frame": {
+				"h": 32,
+				"w": 56,
+				"x": 392,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 32,
+				"w": 56
+			},
+			"spriteSourceSize": {
+				"h": 32,
+				"w": 56,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	],
+	"meta": {
+		"app": "FX Forge 像素特效工坊",
+		"format": "RGBA8888",
+		"fps": 12,
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "default",
+				"to": 7
+			}
+		],
+		"image": "fireball_shot.png",
+		"layers": [],
+		"loop": true,
+		"pivot": {
+			"x": 39,
+			"y": 16
+		},
+		"scale": "1",
+		"size": {
+			"h": 32,
+			"w": 448
+		},
+		"slices": [],
+		"version": "0.4.0"
+	}
+}

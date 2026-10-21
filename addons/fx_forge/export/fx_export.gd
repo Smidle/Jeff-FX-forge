@@ -6,7 +6,7 @@ extends RefCounted
 const FxRenderer := preload("../core/fx_renderer.gd")
 const FxPreset := preload("../core/fx_preset.gd")
 
-const VERSION := "0.3.0"
+const VERSION := "0.4.0"
 const APP_NAME := "FX Forge 像素特效工坊"
 
 ## 方向角 → 动画名

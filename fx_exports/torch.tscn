@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="Torch" type="AnimatedSprite2D" unique_id=328258628]
+[node name="Torch" type="AnimatedSprite2D" unique_id=505815635]
 texture_filter = 1
 sprite_frames = ExtResource("1_j2aqc")
 autoplay = "default"

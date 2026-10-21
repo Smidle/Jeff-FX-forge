@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="BlockSparks" type="AnimatedSprite2D" unique_id=16107816]
+[node name="BlockSparks" type="AnimatedSprite2D" unique_id=1635768295]
 texture_filter = 1
 sprite_frames = ExtResource("1_exy75")
 autoplay = "default"

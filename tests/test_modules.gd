@@ -223,3 +223,86 @@ func test_buffer_primitives() -> bool:
 	var n := _count(p)
 	check(n > 110 and n < 150, "直角三角形面积约 128（实际 %d）" % n)
 	return true
+
+
+func test_orb_trail_and_loop() -> bool:
+	var right := _render("orb", {"trail": 30.0}, 0.3, 0.0)
+	var left := _render("orb", {"trail": 30.0}, 0.3, 180.0)
+	check(_centroid(right).x < -3.0, "飞向右边时拖尾在左边（%s）" % _centroid(right))
+	check(_centroid(left).x > 3.0, "飞向左边时拖尾在右边（%s）" % _centroid(left))
+	var params := {"shape": "flame", "orbiters": 3, "pulse": 0.5}
+	var a := _render("orb", params, 0.0, 0.0, 96, true)
+	var b := _render("orb", params, 1.0, 0.0, 96, true)
+	var c := _render("orb", params, 0.4, 0.0, 96, true)
+	check(a.v == b.v and a.a == b.a, "能量弹在 u = 0 和 u = 1 完全相同")
+	check(a.v != c.v, "能量弹在动")
+	return true
+
+
+func test_glyph_draw_on_and_squash() -> bool:
+	var early := _count(_render("glyph", {"draw_time": 0.6}, 0.1))
+	var late := _count(_render("glyph", {"draw_time": 0.6}, 0.7))
+	check(early > 0 and early < late * 0.5, "逐笔画出：开头只画了一部分（%d → %d）" % [early, late])
+	var flat := _extent(_render("glyph", {"squash": 0.4, "radius": 40.0}))
+	check(flat.y < flat.x * 0.6, "地面透视把法阵压扁（%s）" % flat)
+	var a := _render("glyph", {"spin": 1.0}, 0.0, 0.0, 128, true)
+	var b := _render("glyph", {"spin": 1.0}, 1.0, 0.0, 128, true)
+	var c := _render("glyph", {"spin": 1.0}, 0.3, 0.0, 128, true)
+	check(a.v == b.v, "整数圈旋转：首尾相同")
+	check(a.v != c.v, "法阵在转")
+	var faded := _count(_render("glyph", {"fade_out": 0.3}, 0.3))
+	check(faded > 0, "结尾淡出不影响前段")
+	return true
+
+
+func test_beam_opens_and_points() -> bool:
+	var up := _render("beam", {"length": 50.0}, 0.5, 270.0)
+	check(_centroid(up).y < -10.0, "方向 270° 时光柱朝上（%s）" % _centroid(up))
+	var opening := _count(_render("beam", {"open_time": 0.3}, 0.03))
+	var open := _count(_render("beam", {"open_time": 0.3}, 0.5))
+	check(opening < open * 0.5, "光柱从细线展开（%d → %d）" % [opening, open])
+	var params := {"open_time": 0.0, "close_time": 0.0}
+	var a := _render("beam", params, 0.0, 0.0, 96, true)
+	var b := _render("beam", params, 1.0, 0.0, 96, true)
+	check(a.v == b.v, "不展开收起时光柱首尾相同（可循环）")
+	return true
+
+
+func test_particles_gather_to_center() -> bool:
+	var params := {"flow": "gather", "emit_mode": "burst", "emit_time": 0.0, "life": 1.0, "life_random": 0.0,
+		"count": 30, "spread": 360.0, "shape": "square"}
+	var early := _render("particles", params, 0.2)
+	var late := _render("particles", params, 0.8)
+	check(_extent(late).x < _extent(early).x * 0.7, "汇聚：越往后越靠近中心（%s → %s）" % [_extent(early), _extent(late)])
+	return true
+
+
+func test_stream_angles_not_sweeping() -> bool:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 11
+	var cfg := {"count": 32, "emit_shape": "ring", "emit_radius": 10.0, "angle": 0.0, "spread": 360.0, "speed": 50.0,
+		"speed_random": 0.0, "life": 0.5, "life_random": 0.0, "emit_mode": "stream", "emit_time": 1.0, "size": 2.0,
+		"size_random": 0.0, "spin": 0.0}
+	var t := FxParticles.spawn(cfg, rng)
+	# 最早出生的 8 个粒子应该分散在不同方向，而不是挤在同一个象限里（扫射）
+	var quads := {}
+	var x: PackedFloat32Array = t["x"]
+	var y: PackedFloat32Array = t["y"]
+	for i in 8:
+		quads[int(floor(fposmod(atan2(y[i], x[i]), TAU) / (PI * 0.5)))] = true
+	check(quads.size() >= 3, "持续发射的前 8 个粒子分布在 %d 个象限" % quads.size())
+	return true
+
+
+func test_buffer_polyline_and_ellipse() -> bool:
+	var pl := FxBuffer.new(32, 32)
+	# 坐标落在像素中心（.5）时，半径 0.5 的线正好 1 像素宽
+	pl.polyline(PackedVector2Array([Vector2(4.5, 4.5), Vector2(24.5, 4.5), Vector2(24.5, 24.5), Vector2(4.5, 24.5)]), 0.5, 1.0, 1.0, true)
+	var n := _count(pl)
+	check(n >= 76 and n <= 90, "闭合折线画出正方形边框（%d 像素）" % n)
+	var el := FxBuffer.new(64, 64)
+	el.ellipse(32.0, 32.0, 20.0, 8.0, 1.0, 0.5, 1.0)
+	var m := _count(el)
+	check(absf(m - PI * 20.0 * 8.0) < 40.0, "椭圆面积约 πab（%d）" % m)
+	check(el.v[32 * 64 + 32] > el.v[32 * 64 + 50], "椭圆中心比边缘亮")
+	return true

@@ -39,12 +39,14 @@ func get_param_defs() -> Array:
 		P.num("size_end", "结束时大小", "End Size", 0.0, 3.0, 0.5, {group = "shape", unit = "×", tip = "粒子快消失时的大小是开始的几倍（尘土可以大于 1，越飘越大）"}),
 		P.num("size_random", "大小随机", "Size Random", 0.0, 1.0, 0.4, {group = "shape"}),
 		P.choice("emit_shape", "发射区域", "Emit Area", FxParticles.EMIT_SHAPE_OPTIONS, "point", {group = "shape", tip = "粒子从哪里冒出来：圆环上的粒子会沿径向飞出"}),
-		P.num("emit_radius", "发射范围", "Emit Radius", 0.0, 240.0, 4.0, {group = "shape", unit = "px", scale = true, step = 0.5, hide_if = ["emit_shape", "point"]}),
+		P.num("emit_radius", "发射范围", "Emit Radius", 0.0, 240.0, 4.0, {group = "shape", unit = "px", scale = true, step = 0.5, hide_if = ["emit_shape", "point"], tip = "圆的半径；横线、矩形的半宽"}),
+		P.num("emit_height", "矩形高度", "Box Height", 1.0, 400.0, 24.0, {group = "shape", unit = "px", scale = true, step = 0.5, show_if = ["emit_shape", "box"]}),
+		P.choice("flow", "运动方式", "Flow", FxParticles.FLOW_OPTIONS, "out", {group = "motion", tip = "向中心汇聚：粒子从外面被吸进原点（蓄力、吸收）"}),
 		P.num("spread", "扩散角", "Spread", 0.0, 360.0, 360.0, {group = "motion", unit = "°", step = 1.0, tip = "360 = 四面八方；越小越集中朝「方向」喷出"}),
-		P.num("speed", "速度", "Speed", 0.0, 800.0, 70.0, {group = "motion", unit = "px", scale = true, step = 1.0, tip = "数值越大飞得越远"}),
+		P.num("speed", "速度", "Speed", 0.0, 800.0, 70.0, {group = "motion", unit = "px", scale = true, step = 1.0, tip = "数值越大飞得越远（汇聚时决定从多远的地方吸进来）"}),
 		P.num("speed_random", "速度随机", "Speed Random", 0.0, 1.0, 0.5, {group = "motion"}),
-		P.num("gravity", "重力", "Gravity", -800.0, 800.0, 0.0, {group = "motion", unit = "px", scale = true, step = 5.0, tip = "正数往下掉，负数往上飘"}),
-		P.num("drag", "阻力", "Drag", 0.0, 10.0, 2.5, {group = "motion", step = 0.1, tip = "越大减速越快"}),
+		P.num("gravity", "重力", "Gravity", -800.0, 800.0, 0.0, {group = "motion", unit = "px", scale = true, step = 5.0, hide_if = ["flow", "gather"], tip = "正数往下掉，负数往上飘"}),
+		P.num("drag", "阻力", "Drag", 0.0, 10.0, 2.5, {group = "motion", step = 0.1, hide_if = ["flow", "gather"], tip = "越大减速越快"}),
 		P.choice("emit_mode", "发射方式", "Emit Mode", FxParticles.EMIT_MODE_OPTIONS, "burst", {group = "motion"}),
 		P.num("emit_time", "发射时长", "Emit Time", 0.0, 1.0, 0.05, {group = "motion", tip = "粒子在多长时间内陆续冒出来（占图层时长的比例）"}),
 		P.num("life", "寿命", "Lifetime", 0.05, 1.0, 0.75, {group = "motion", tip = "每个粒子存在多久（占图层时长的比例）"}),
@@ -59,7 +61,7 @@ func get_param_defs() -> Array:
 
 func prepare(p: Dictionary, ctx: FxContext, rng: RandomNumberGenerator) -> Dictionary:
 	var cfg := {
-		"count": p["count"], "emit_shape": p["emit_shape"], "emit_radius": p["emit_radius"],
+		"count": p["count"], "emit_shape": p["emit_shape"], "emit_radius": p["emit_radius"], "emit_height": p["emit_height"],
 		"angle": ctx.angle, "spread": p["spread"], "speed": p["speed"], "speed_random": p["speed_random"],
 		"life": p["life"], "life_random": p["life_random"], "emit_mode": p["emit_mode"], "emit_time": p["emit_time"],
 		"size": p["size"], "size_random": p["size_random"], "spin": p["spin"],
@@ -72,6 +74,7 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 		"shape": FxParticles.shape_index(p["shape"]), "size_end": p["size_end"], "gravity": p["gravity"],
 		"drag": p["drag"], "cool": p["cool"], "bright": p["bright"], "flicker": p["flicker"],
 		"streak_len": p["streak_len"], "loop": ctx.loop, "ox": ctx.ox, "oy": ctx.oy,
+		"gather": p["flow"] == "gather",
 	}
 	FxParticles.draw(buf, st["table"], cfg, u)
 	return 1.0

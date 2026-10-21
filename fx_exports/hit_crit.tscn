@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="HitCrit" type="AnimatedSprite2D" unique_id=129982937]
+[node name="HitCrit" type="AnimatedSprite2D" unique_id=1560137320]
 texture_filter = 1
 sprite_frames = ExtResource("1_324m8")
 autoplay = "default"

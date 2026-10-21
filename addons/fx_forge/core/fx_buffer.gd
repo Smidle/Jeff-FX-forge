@@ -227,6 +227,54 @@ func diamond(cx: float, cy: float, r: float, v_center: float, v_edge: float, alp
 		touch(xa, ya, xb, yb)
 
 
+## 折线（每段一根等粗的胶囊线）；closed = true 时首尾相连
+func polyline(points: PackedVector2Array, radius: float, val: float, alpha: float, closed: bool = false) -> void:
+	var n := points.size()
+	if n < 2:
+		if n == 1:
+			disc(points[0].x, points[0].y, maxf(radius, 0.5), val, val, alpha)
+		return
+	var last := n if closed else n - 1
+	for i in last:
+		var p0 := points[i]
+		var p1 := points[(i + 1) % n]
+		capsule(p0.x, p0.y, p1.x, p1.y, radius, radius, val, val, alpha)
+
+
+## 实心椭圆（亮度从中心过渡到边缘）
+func ellipse(cx: float, cy: float, rx: float, ry: float, v_center: float, v_edge: float, alpha: float) -> void:
+	if rx <= 0.0 or ry <= 0.0:
+		return
+	var xa := maxi(floori(cx - rx), 0)
+	var xb := mini(ceili(cx + rx), w - 1)
+	var ya := maxi(floori(cy - ry), 0)
+	var yb := mini(ceili(cy + ry), h - 1)
+	if xa > xb or ya > yb:
+		return
+	var irx := 1.0 / rx
+	var iry := 1.0 / ry
+	var dv := v_edge - v_center
+	var drew := false
+	for y in range(ya, yb + 1):
+		var dy := (float(y) + 0.5 - cy) * iry
+		var dy2 := dy * dy
+		var row := y * w
+		for x in range(xa, xb + 1):
+			var dx := (float(x) + 0.5 - cx) * irx
+			var d2 := dx * dx + dy2
+			if d2 > 1.0:
+				continue
+			var val := v_center + dv * sqrt(d2)
+			var i := row + x
+			if val > v[i]:
+				v[i] = val
+			if alpha > a[i]:
+				a[i] = alpha
+			drew = true
+	if drew:
+		touch(xa, ya, xb, yb)
+
+
 ## 多边形填充（扫描线，奇偶规则），在像素中心采样
 func polygon(points: PackedVector2Array, val: float, alpha: float) -> void:
 	var n := points.size()

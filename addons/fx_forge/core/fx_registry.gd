@@ -13,6 +13,9 @@ const _SCRIPTS := {
 	"blob": preload("../modules/blob.gd"),
 	"flame": preload("../modules/flame.gd"),
 	"bolt": preload("../modules/bolt.gd"),
+	"orb": preload("../modules/orb.gd"),
+	"glyph": preload("../modules/glyph.gd"),
+	"beam": preload("../modules/beam.gd"),
 }
 
 ## 模块实例无状态，全局共用一份（在主线程加载脚本时创建）

@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://xktmnh1ul3k3"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_m2wmo"]
+
+[resource]
+script = ExtResource("1_m2wmo")
+preset_id = "charge"
+display_name = "蓄力"
+category = "magic"
+description = "循环的蓄力：四周的光点被吸向中心，能量核一下下脉动，外圈的环不断收拢。"
+globals = {
+"canvas_h": 72,
+"canvas_w": 72,
+"fps": 12,
+"frames": 12,
+"loop": true,
+"outline": "none",
+"palette_accent": "thunder",
+"palette_main": "energy",
+"palette_smoke": "smoke",
+"soft": 0.35,
+"theme": "energy"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "ring",
+"name": "收拢环",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "accent",
+"params": {
+"easing": "in_quad",
+"mode": "contract",
+"radius": 30.0,
+"start": 0.15,
+"thin": 0.0,
+"width": 2.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "particles",
+"name": "汇聚光点",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "accent",
+"params": {
+"cool": 0.0,
+"count": 24,
+"emit_mode": "stream",
+"emit_radius": 8.0,
+"emit_shape": "ring",
+"emit_time": 1.0,
+"flow": "gather",
+"life": 0.45,
+"shape": "streak",
+"size": 2.0,
+"size_end": 1.2,
+"speed": 70.0,
+"speed_random": 0.3,
+"streak_len": 1.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "orb",
+"name": "能量核",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"core": 3.0,
+"halo": 6.0,
+"pulse": 0.6,
+"pulse_speed": 3,
+"shape": "round",
+"trail": 0.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "charge",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

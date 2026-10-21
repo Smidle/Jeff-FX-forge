@@ -1,0 +1,125 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://b2miu2unm76a2"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_tgp10"]
+
+[resource]
+script = ExtResource("1_tgp10")
+preset_id = "buff_aura"
+display_name = "增益光环"
+category = "magic"
+description = "循环的增益状态：脚下呼吸的金色光环 + 往上飘的光丝和星光。原点在角色脚下。"
+globals = {
+"canvas_h": 80,
+"canvas_w": 64,
+"fps": 12,
+"frames": 12,
+"loop": true,
+"origin_x": 0.5,
+"origin_y": 0.85,
+"outline": "none",
+"palette_accent": "spark",
+"palette_main": "holy",
+"palette_smoke": "dust",
+"soft": 0.2,
+"theme": "holy"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "ring",
+"name": "脚下光环",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"mode": "pulse",
+"radius": 22.0,
+"squash": 0.35,
+"start": 0.85,
+"thin": 0.5,
+"width": 3.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 270.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "上升光丝",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "main",
+"params": {
+"cool": 0.25,
+"count": 16,
+"drag": 0.5,
+"emit_mode": "stream",
+"emit_radius": 19.0,
+"emit_shape": "line",
+"emit_time": 1.0,
+"flicker": 0.15,
+"life": 0.55,
+"shape": "streak",
+"size": 2.0,
+"size_end": 1.0,
+"speed": 100.0,
+"speed_random": 0.4,
+"spread": 4.0,
+"streak_len": 0.8
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "星光",
+"offset_x": 0.0,
+"offset_y": -24.0,
+"outline": false,
+"palette_slot": "main",
+"params": {
+"cool": 0.0,
+"count": 8,
+"drag": 1.0,
+"emit_mode": "stream",
+"emit_radius": 18.0,
+"emit_shape": "circle",
+"emit_time": 1.0,
+"flicker": 0.3,
+"gravity": -20.0,
+"life": 0.35,
+"shape": "star",
+"size": 3.0,
+"size_end": 0.5,
+"speed": 10.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "buff_aura",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

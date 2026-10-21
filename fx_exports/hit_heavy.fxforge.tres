@@ -7,12 +7,14 @@ script = ExtResource("1_brdo2")
 preset_id = "hit_heavy"
 display_name = "重击"
 category = "combat"
-description = "势大力沉的重击：冲击环 + 大火花 + 往下掉的碎屑。"
+description = "势大力沉的重击：冲击环 + 大火花 + 往下掉的碎屑。第 1 帧（命中闪光）打击停顿 3 倍时长。"
 globals = {
 "canvas_h": 104,
 "canvas_w": 88,
 "fps": 20,
 "frames": 9,
+"hold_frame": 1,
+"hold_mult": 3.0,
 "origin_x": 0.5,
 "origin_y": 0.42,
 "palette_accent": "steel",
@@ -99,6 +101,9 @@ export_settings = {
 "blend": "normal",
 "columns": 8,
 "directions": "none",
+"gif": false,
+"gif_bg": "transparent",
+"gif_scale": 3,
 "json": true,
 "layout": "auto",
 "margin": 0,

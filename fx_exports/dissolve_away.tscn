@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="DissolveAway" type="AnimatedSprite2D" unique_id=1542551565]
+[node name="DissolveAway" type="AnimatedSprite2D" unique_id=2024325199]
 texture_filter = 1
 sprite_frames = ExtResource("1_2u1uf")
 autoplay = "default"

@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="Shield" type="AnimatedSprite2D" unique_id=1125851674]
+[node name="Shield" type="AnimatedSprite2D" unique_id=429854221]
 texture_filter = 1
 sprite_frames = ExtResource("1_535qt")
 autoplay = "default"

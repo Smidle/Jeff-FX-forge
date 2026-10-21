@@ -34,6 +34,7 @@ static func make_job(preset: FxPreset, opts: Dictionary = {}) -> FxJob:
 	job.frame_count = g["frames"]
 	job.fps = g["fps"]
 	job.loop = g["loop"]
+	job.durations = FxJob.durations_for(job.frame_count, g["hold_frame"], g["hold_mult"])
 	var ids: PackedInt32Array = opts.get("frames", PackedInt32Array())
 	if opts.has("frame_ratio"):
 		ids = PackedInt32Array([clampi(int(float(opts["frame_ratio"]) * job.frame_count), 0, job.frame_count - 1)])

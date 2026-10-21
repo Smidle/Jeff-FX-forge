@@ -10,7 +10,10 @@ signal layer_selected(index: int)
 signal action_requested(action: String)
 ## 图层结构操作：add（arg = 模块 id）/ up / down / dup / del
 signal layer_action(action: String, index: int, arg: String)
+## 请求打开色板编辑器（id = palette_main / palette_accent / palette_smoke）
+signal palette_edit_requested(id: String)
 
+const I18n := preload("i18n.gd")
 const FxParams := preload("../core/fx_params.gd")
 const FxGlobals := preload("../core/fx_globals.gd")
 const FxPalette := preload("../core/fx_palette.gd")
@@ -54,7 +57,7 @@ func build() -> void:
 	_add_header()
 	var gdefs := FxGlobals.global_defs()
 	for group: String in GLOBAL_GROUPS:
-		var box := _section(group, FxGlobals.GROUP_NAMES[group])
+		var box := _section(group, I18n.T(FxGlobals.GROUP_NAMES[group]))
 		if group == "canvas":
 			_add_size_tiers(box)
 		elif group == "direction":
@@ -63,11 +66,11 @@ func build() -> void:
 			if d["group"] == group and _is_shown(d, "global", -1):
 				_add_row(box, "global", -1, d)
 		if group == "canvas":
-			_add_action_button(box, "自动适配画布", "按整段动画的实际范围重新设置画布大小和原点", "fit_canvas")
+			_add_action_button(box, I18n.T("自动适配画布"), I18n.T("按整段动画的实际范围重新设置画布大小和原点"), "fit_canvas")
 	if session.layer_count() > 0:
 		_add_layers()
 	var adv := CheckBox.new()
-	adv.text = "显示高级参数"
+	adv.text = I18n.T("显示高级参数")
 	adv.button_pressed = show_advanced
 	adv.toggled.connect(func(on: bool) -> void:
 		show_advanced = on
@@ -81,7 +84,8 @@ func sync_values() -> void:
 		return
 	for key: String in _deps:
 		var parts := key.split("|")
-		if session.get_value(parts[0], int(parts[1]), parts[2]) != _deps[key]:
+		var now: Variant = session.get_value(parts[0], int(parts[1]), parts[2])
+		if typeof(now) != typeof(_deps[key]) or now != _deps[key]:
 			build.call_deferred()
 			return
 	for key: String in _controls:
@@ -96,6 +100,11 @@ func sync_values() -> void:
 			Kind.BOOL:
 				(c as CheckBox).set_pressed_no_signal(bool(v))
 			Kind.ENUM, Kind.SLOT, Kind.PALETTE:
+				# 自定义色板的颜色变了（编辑、撤销）：下拉框里的色块图标要重画，直接重建面板
+				var was: Variant = e.get("shown")
+				if int(e["kind"]) == Kind.PALETTE and (v is PackedColorArray or was is PackedColorArray) and str(v) != str(was):
+					build.call_deferred()
+					return
 				var ob := c as OptionButton
 				var target: Variant = CUSTOM_PALETTE if v is PackedColorArray else v
 				for i in ob.item_count:
@@ -130,26 +139,26 @@ func _add_header() -> void:
 	var p := session.preset
 	var name_edit := LineEdit.new()
 	name_edit.text = p.display_name
-	name_edit.placeholder_text = "特效名称"
-	name_edit.tooltip_text = "特效名称（显示在预设库里）"
+	name_edit.placeholder_text = I18n.T("特效名称")
+	name_edit.tooltip_text = I18n.T("特效名称（显示在预设库里）")
 	if _bold != null:
 		name_edit.add_theme_font_override("font", _bold)
 	name_edit.text_submitted.connect(func(t: String) -> void: value_edited.emit("meta", -1, "display_name", t, 0))
 	name_edit.focus_exited.connect(func() -> void: value_edited.emit("meta", -1, "display_name", name_edit.text, 0))
 	add_child(name_edit)
 	var info := Label.new()
-	var source := "未保存的新特效"
+	var source := I18n.T("未保存的新特效")
 	if session.is_user_preset():
-		source = "我的预设 · " + session.source_path.get_file()
+		source = I18n.T("我的预设 · ") + session.source_path.get_file()
 	elif not session.builtin_id.is_empty():
-		source = "内置预设（修改后请「另存为」）"
-	info.text = p.get_category_name() + " · " + source
+		source = I18n.T("内置预设（修改后请「另存为」）")
+	info.text = I18n.T(p.get_category_name()) + " · " + source
 	info.modulate = Color(1, 1, 1, 0.6)
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(info)
 	if not p.description.is_empty():
 		var desc := Label.new()
-		desc.text = p.description
+		desc.text = I18n.T(p.description)
 		desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		desc.modulate = Color(1, 1, 1, 0.78)
 		add_child(desc)
@@ -195,18 +204,18 @@ func _tip(d: Dictionary) -> String:
 	var dv: Variant = d["default"]
 	var shown := str(dv)
 	if int(d["kind"]) == Kind.BOOL:
-		shown = "开" if dv else "关"
+		shown = I18n.T("开") if dv else I18n.T("关")
 	elif int(d["kind"]) == Kind.ENUM or int(d["kind"]) == Kind.SLOT:
 		for o: Array in d["options"]:
 			if o[0] == dv:
-				shown = o[1]
+				shown = I18n.T(o[1])
 	elif int(d["kind"]) == Kind.PALETTE:
-		shown = FxPalette.palette_name(dv)
+		shown = I18n.T(FxPalette.palette_name(dv))
 	var unit: String = d.get("unit", "")
 	var parts := PackedStringArray()
 	if not tip.is_empty():
 		parts.append(tip)
-	parts.append("默认：%s%s" % [shown, unit])
+	parts.append(I18n.T("默认：%s%s") % [shown, unit])
 	return "\n".join(parts)
 
 
@@ -216,22 +225,24 @@ func _add_row(box: VBoxContainer, scope: String, layer: int, d: Dictionary) -> v
 	var kind := int(d["kind"])
 	var value: Variant = session.get_value(scope, layer, id)
 	var row := HBoxContainer.new()
-	row.add_child(_label(d["label"], _tip(d)))
+	row.add_child(_label(I18n.label(d), _tip(d)))
 	var ctrl: Control = null
+	# 同步数值时要更新的控件（色板一行里除了下拉框还有「编辑」按钮）
+	var sync_ctrl: Control = null
 	match kind:
 		Kind.NUM, Kind.INT, Kind.ANGLE:
 			ctrl = _make_slider(scope, layer, d, value)
 		Kind.BOOL:
 			var cb := CheckBox.new()
 			cb.button_pressed = bool(value)
-			cb.text = "开"
+			cb.text = I18n.T("开")
 			cb.toggled.connect(func(on: bool) -> void: value_edited.emit(scope, layer, id, on, 0))
 			ctrl = cb
 		Kind.ENUM, Kind.SLOT:
 			var ob := OptionButton.new()
 			var options: Array = d["options"]
 			for i in options.size():
-				ob.add_item(options[i][1])
+				ob.add_item(I18n.T(options[i][1]))
 				ob.set_item_metadata(i, options[i][0])
 				if options[i][0] == value:
 					ob.select(i)
@@ -254,7 +265,19 @@ func _add_row(box: VBoxContainer, scope: String, layer: int, d: Dictionary) -> v
 			cp.popup_closed.connect(func() -> void: _end_drag(key, scope, layer, id, cp.color))
 			ctrl = cp
 		Kind.PALETTE:
-			ctrl = _make_palette_picker(scope, layer, id, value)
+			var ob := _make_palette_picker(scope, layer, id, value)
+			ob.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			sync_ctrl = ob
+			var wrap := HBoxContainer.new()
+			wrap.add_child(ob)
+			var edit := Button.new()
+			edit.flat = true
+			edit.focus_mode = Control.FOCUS_NONE
+			edit.icon = EditorInterface.get_editor_theme().get_icon(&"Edit", &"EditorIcons")
+			edit.tooltip_text = I18n.T("编辑色板：改颜色、用一个颜色生成色阶、导入 Lospec / GIMP 色板文件")
+			edit.pressed.connect(func() -> void: palette_edit_requested.emit(id))
+			wrap.add_child(edit)
+			ctrl = wrap
 	if ctrl == null:
 		return
 	ctrl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -264,7 +287,7 @@ func _add_row(box: VBoxContainer, scope: String, layer: int, d: Dictionary) -> v
 	reset.flat = true
 	reset.focus_mode = Control.FOCUS_NONE
 	reset.icon = EditorInterface.get_editor_theme().get_icon(&"Reload", &"EditorIcons")
-	reset.tooltip_text = "恢复默认值"
+	reset.tooltip_text = I18n.T("恢复默认值")
 	reset.pressed.connect(func() -> void:
 		if scope == "global" and id == "theme":
 			theme_chosen.emit(d["default"])
@@ -272,7 +295,7 @@ func _add_row(box: VBoxContainer, scope: String, layer: int, d: Dictionary) -> v
 			value_edited.emit(scope, layer, id, FxParams._copy(d["default"]), 0))
 	row.add_child(reset)
 	box.add_child(row)
-	_controls[key] = {"kind": kind, "control": ctrl, "scope": scope, "layer": layer, "id": id}
+	_controls[key] = {"kind": kind, "control": sync_ctrl if sync_ctrl != null else ctrl, "scope": scope, "layer": layer, "id": id, "shown": value}
 
 
 func _make_slider(scope: String, layer: int, d: Dictionary, value: Variant) -> EditorSpinSlider:
@@ -314,12 +337,12 @@ func _make_palette_picker(scope: String, layer: int, id: String, value: Variant)
 	var ob := OptionButton.new()
 	var opts := FxPalette.palette_options()
 	for i in opts.size():
-		ob.add_icon_item(_swatch(opts[i][0]), opts[i][1])
+		ob.add_icon_item(_swatch(opts[i][0]), I18n.T(opts[i][1]))
 		ob.set_item_metadata(i, opts[i][0])
 		if value is String and value == opts[i][0]:
 			ob.select(i)
 	if value is PackedColorArray:
-		ob.add_icon_item(_swatch(value), "自定义")
+		ob.add_icon_item(_swatch(value), I18n.T("自定义"))
 		ob.set_item_metadata(opts.size(), CUSTOM_PALETTE)
 		ob.select(opts.size())
 	ob.item_selected.connect(func(i: int) -> void:
@@ -347,11 +370,11 @@ func _swatch(palette: Variant) -> Texture2D:
 
 func _add_size_tiers(box: VBoxContainer) -> void:
 	var row := HBoxContainer.new()
-	row.add_child(_label("尺寸档", "一键整体缩放：小 = 0.5 倍，中 = 1 倍，大 = 2 倍"))
-	for t: Array in [[0.5, "小"], [1.0, "中"], [2.0, "大"]]:
+	row.add_child(_label(I18n.T("尺寸档"), I18n.T("一键整体缩放：小 = 0.5 倍，中 = 1 倍，大 = 2 倍")))
+	for t: Array in [[0.5, I18n.T("小")], [1.0, I18n.T("中")], [2.0, I18n.T("大")]]:
 		var b := Button.new()
 		b.text = t[1]
-		b.tooltip_text = "整体缩放 ×%s" % str(t[0])
+		b.tooltip_text = I18n.T("整体缩放 ×%s") % str(t[0])
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.focus_mode = Control.FOCUS_NONE
 		var factor: float = t[0]
@@ -362,7 +385,7 @@ func _add_size_tiers(box: VBoxContainer) -> void:
 
 func _add_direction_pad(box: VBoxContainer) -> void:
 	var row := HBoxContainer.new()
-	row.add_child(_label("快捷方向", "点箭头直接设置方向"))
+	row.add_child(_label(I18n.T("快捷方向"), I18n.T("点箭头直接设置方向")))
 	var grid := GridContainer.new()
 	grid.columns = 3
 	for e: Array in DIR_PAD:
@@ -388,23 +411,23 @@ func _add_layer_list(layers: Array, selected: int) -> void:
 	add_child(HSeparator.new())
 	var head := HBoxContainer.new()
 	var title := Label.new()
-	title.text = "图层"
-	title.tooltip_text = "一个特效由若干图层叠成，列表上面的图层盖住下面的"
+	title.text = I18n.T("图层")
+	title.tooltip_text = I18n.T("一个特效由若干图层叠成，列表上面的图层盖住下面的")
 	title.mouse_filter = Control.MOUSE_FILTER_STOP
 	if _bold != null:
 		title.add_theme_font_override("font", _bold)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(title)
 	var add := MenuButton.new()
-	add.text = "添加图层"
+	add.text = I18n.T("添加图层")
 	add.icon = _theme_icon(theme, &"Add")
 	add.flat = false
-	add.tooltip_text = "添加一个新图层（加在最上面）"
+	add.tooltip_text = I18n.T("添加一个新图层（加在最上面）")
 	var ids := FxRegistry.module_ids()
 	var popup := add.get_popup()
 	for k in ids.size():
 		var mod: FxModule = FxRegistry.get_module(ids[k])
-		popup.add_item("%s —— %s" % [mod.get_display_name(), mod.get_description()], k)
+		popup.add_item("%s —— %s" % [I18n.module_name(mod), I18n.T(mod.get_description())], k)
 	popup.id_pressed.connect(func(k: int) -> void: layer_action.emit("add", -1, ids[k]))
 	head.add_child(add)
 	add_child(head)
@@ -415,34 +438,34 @@ func _add_layer_list(layers: Array, selected: int) -> void:
 		var lm: FxModule = FxRegistry.get_module(l["module"])
 		var visible_now: bool = l.get("enabled", true)
 		var row := HBoxContainer.new()
-		var eye := _mini_button(theme, &"GuiVisibilityVisible" if visible_now else &"GuiVisibilityHidden", "显" if visible_now else "隐", "显示 / 隐藏这个图层")
+		var eye := _mini_button(theme, &"GuiVisibilityVisible" if visible_now else &"GuiVisibilityHidden", I18n.T("显") if visible_now else I18n.T("隐"), I18n.T("显示 / 隐藏这个图层"))
 		eye.pressed.connect(func() -> void: value_edited.emit("layer", i, "enabled", not visible_now, 0))
 		row.add_child(eye)
 		var pick := Button.new()
-		pick.text = "%s（%s）" % [l["name"], lm.get_display_name() if lm != null else l["module"]]
+		pick.text = "%s（%s）" % [l["name"], I18n.module_name(lm) if lm != null else l["module"]]
 		pick.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		pick.toggle_mode = true
 		pick.button_pressed = i == selected
 		pick.clip_text = true
 		pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		pick.focus_mode = Control.FOCUS_NONE
-		pick.tooltip_text = "点击编辑这个图层的参数"
+		pick.tooltip_text = I18n.T("点击编辑这个图层的参数")
 		if not visible_now:
 			pick.modulate = Color(1, 1, 1, 0.5)
 		pick.pressed.connect(func() -> void: layer_selected.emit(i))
 		row.add_child(pick)
-		var up := _mini_button(theme, &"MoveUp", "↑", "往上移（盖在更上面）")
+		var up := _mini_button(theme, &"MoveUp", "↑", I18n.T("往上移（盖在更上面）"))
 		up.disabled = i == n - 1
 		up.pressed.connect(func() -> void: layer_action.emit("up", i, ""))
 		row.add_child(up)
-		var down := _mini_button(theme, &"MoveDown", "↓", "往下移")
+		var down := _mini_button(theme, &"MoveDown", "↓", I18n.T("往下移"))
 		down.disabled = i == 0
 		down.pressed.connect(func() -> void: layer_action.emit("down", i, ""))
 		row.add_child(down)
-		var dup := _mini_button(theme, &"Duplicate", "复", "复制这个图层")
+		var dup := _mini_button(theme, &"Duplicate", I18n.T("复"), I18n.T("复制这个图层"))
 		dup.pressed.connect(func() -> void: layer_action.emit("dup", i, ""))
 		row.add_child(dup)
-		var del := _mini_button(theme, &"Remove", "删", "删除这个图层")
+		var del := _mini_button(theme, &"Remove", I18n.T("删"), I18n.T("删除这个图层"))
 		del.disabled = n <= 1
 		del.pressed.connect(func() -> void: layer_action.emit("del", i, ""))
 		row.add_child(del)
@@ -479,12 +502,12 @@ func _add_layers() -> void:
 	var li := clampi(session.layer_index, 0, layers.size() - 1)
 	var layer: Dictionary = layers[li]
 	var m: FxModule = FxRegistry.get_module(layer["module"])
-	var module_name: String = m.get_display_name() if m != null else str(layer["module"])
+	var module_name: String = I18n.module_name(m) if m != null else str(layer["module"])
 	_add_layer_list(layers, li)
 
-	var lbox := _section("layer", "图层设置 · " + str(layer["name"]))
+	var lbox := _section("layer", I18n.T("图层设置 · ") + str(layer["name"]))
 	var name_row := HBoxContainer.new()
-	name_row.add_child(_label("名称", "图层的名字，只用来区分图层"))
+	name_row.add_child(_label(I18n.T("名称"), I18n.T("图层的名字，只用来区分图层")))
 	var name_edit := LineEdit.new()
 	name_edit.text = str(layer["name"])
 	name_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -507,6 +530,6 @@ func _add_layers() -> void:
 				defs.append(d)
 		if defs.is_empty():
 			continue
-		var box := _section(group, "%s · %s" % [FxGlobals.GROUP_NAMES[group], module_name])
+		var box := _section(group, "%s · %s" % [I18n.T(FxGlobals.GROUP_NAMES[group]), module_name])
 		for d: Dictionary in defs:
 			_add_row(box, "param", li, d)

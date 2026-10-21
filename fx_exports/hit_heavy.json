@@ -1,7 +1,7 @@
 {
 	"frames": [
 		{
-			"duration": 50,
+			"duration": 150,
 			"filename": "hit_heavy default 0.png",
 			"frame": {
 				"h": 104,
@@ -224,6 +224,6 @@
 			"w": 792
 		},
 		"slices": [],
-		"version": "0.5.0"
+		"version": "1.0.0"
 	}
 }

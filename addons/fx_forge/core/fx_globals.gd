@@ -30,6 +30,8 @@ static func global_defs() -> Array:
 		P.integer("frames", "帧数", "Frames", 2, 64, 12, {group = "canvas", tip = "动画一共多少帧"}),
 		P.integer("fps", "帧率", "FPS", 1, 60, 15, {group = "canvas", unit = "帧/秒", tip = "每秒播放多少帧；帧数 ÷ 帧率 = 动画时长"}),
 		P.boolean("loop", "循环", "Loop", false, {group = "canvas", tip = "循环特效（火焰、光环）最后一帧无缝接回第一帧；一次性特效（斩击、爆炸）播完消失"}),
+		P.integer("hold_frame", "打击停顿帧", "Hit-Stop Frame", 0, 64, 0, {group = "canvas", tip = "让第几帧多停一会儿（从 1 数起；0 = 不停顿）。命中的瞬间停一下，打击感更强"}),
+		P.num("hold_mult", "停顿倍数", "Hit-Stop Length", 1.5, 10.0, 3.0, {group = "canvas", step = 0.5, unit = "×", hide_if = ["hold_frame", 0], tip = "停顿的那一帧停留普通帧的几倍时间"}),
 		P.integer("seed", "随机种子", "Seed", 0, 99999, 1, {group = "canvas", tip = "换一个数字，就得到同一特效的另一种随机变化"}),
 		P.num("origin_x", "原点 X", "Origin X", 0.0, 1.0, 0.5, {group = "canvas", advanced = true, tip = "特效中心在画布中的水平位置（0 左 · 1 右），导出后就是场景的定位点"}),
 		P.num("origin_y", "原点 Y", "Origin Y", 0.0, 1.0, 0.5, {group = "canvas", advanced = true, tip = "特效中心在画布中的垂直位置（0 上 · 1 下）"}),

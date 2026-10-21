@@ -2,6 +2,8 @@
 extends VBoxContainer
 ## 时间轴：播放控制、逐帧、进度条、帧缩略条。只负责显示和发信号，播放状态由主界面管理。
 
+const I18n := preload("i18n.gd")
+
 signal play_toggled
 signal step(delta: int)
 signal jump(to_end: bool)
@@ -31,13 +33,13 @@ func _ready() -> void:
 
 	var bar := HBoxContainer.new()
 	add_child(bar)
-	bar.add_child(_button("|<", "首帧", func() -> void: jump.emit(false)))
-	bar.add_child(_button("<", "上一帧（←）", func() -> void: step.emit(-1)))
-	_play = _button("", "播放 / 暂停（空格）", func() -> void: play_toggled.emit())
+	bar.add_child(_button("|<", I18n.T("首帧"), func() -> void: jump.emit(false)))
+	bar.add_child(_button("<", I18n.T("上一帧（←）"), func() -> void: step.emit(-1)))
+	_play = _button("", I18n.T("播放 / 暂停（空格）"), func() -> void: play_toggled.emit())
 	_play.icon = _icon_pause
 	bar.add_child(_play)
-	bar.add_child(_button(">", "下一帧（→）", func() -> void: step.emit(1)))
-	bar.add_child(_button(">|", "末帧", func() -> void: jump.emit(true)))
+	bar.add_child(_button(">", I18n.T("下一帧（→）"), func() -> void: step.emit(1)))
+	bar.add_child(_button(">|", I18n.T("末帧"), func() -> void: jump.emit(true)))
 
 	_slider = HSlider.new()
 	_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -55,9 +57,9 @@ func _ready() -> void:
 	bar.add_child(_label)
 
 	var loop := CheckBox.new()
-	loop.text = "循环预览"
+	loop.text = I18n.T("循环预览")
 	loop.button_pressed = true
-	loop.tooltip_text = "一次性特效播完后停顿一下再重播"
+	loop.tooltip_text = I18n.T("一次性特效播完后停顿一下再重播")
 	loop.toggled.connect(func(on: bool) -> void: loop_toggled.emit(on))
 	bar.add_child(loop)
 
@@ -65,7 +67,7 @@ func _ready() -> void:
 	for s: float in SPEEDS:
 		speed.add_item("%s×" % str(s))
 	speed.select(2)
-	speed.tooltip_text = "预览播放速度（不影响导出）"
+	speed.tooltip_text = I18n.T("预览播放速度（不影响导出）")
 	speed.item_selected.connect(func(i: int) -> void: speed_changed.emit(SPEEDS[i]))
 	bar.add_child(speed)
 
@@ -104,7 +106,7 @@ func set_frames(textures: Array) -> void:
 			b.focus_mode = Control.FOCUS_NONE
 			b.expand_icon = true
 			b.custom_minimum_size = Vector2(38, 38) * scale
-			b.tooltip_text = "第 %d 帧" % (i + 1)
+			b.tooltip_text = I18n.T("第 %d 帧") % (i + 1)
 			b.pressed.connect(func() -> void: seek.emit(i))
 			_strip.add_child(b)
 	for i in n:

@@ -1,6 +1,7 @@
 # FX Forge 像素特效工坊 — 开发说明
 
 给 Claude（以及任何接手的开发者）看的项目说明。换电脑后先读这里，再读 `docs/design.md`（获批的完整设计方案）。
+给用户看的中文使用手册在 `docs/manual.md`（功能有变化时同步更新）。
 
 ## 项目是什么
 
@@ -32,6 +33,8 @@ Godot 路径用环境变量 `GODOT` 指定（**console 版**可执行文件）�
 其他：
 - 重新生成示例导出（写进本工程 `fx_exports/`）：`godot --headless --editor --path . -- --fxforge-export-samples`
 - 截图检查界面：`godot --path . --editor -- --fxforge-show`（3 秒后自动切到特效工坊标签）
+- 性能报告：`godot --headless --path . --script res://tests/perf_report.gd`（每个预设原尺寸 / 2 倍的渲染耗时、GIF 编码耗时）
+- 导出待翻译的界面文字：`godot --headless --path . --script res://tests/extract_ui_text.gd` → `tests/output/ui_text.tsv`
 - 新机器第一次运行测试脚本会自动 `--import`。不要给 Godot 加 `-d`。
 - Godot 运行时脚本错误不改变退出码：测试脚本会同时检索日志里的 `SCRIPT ERROR` / `Parse Error` 等。
 
@@ -55,16 +58,18 @@ addons/fx_forge/
   modules/                  特效模块：fx_module.gd 基类；arc 弧光、burst 射线爆发、ring 环、particles 粒子、streak 冲刺线、
                             blob 能量团、flame 火焰、bolt 闪电、orb 能量弹、glyph 法阵、beam 光柱
   presets/builtin_presets.gd  内置预设（代码定义）
-  export/fx_export.gd       导出纯计算：动画规划、拼图、JSON、SpriteFrames、即用场景
+  export/fx_export.gd       导出纯计算：动画规划、拼图、JSON、SpriteFrames（每帧时长）、即用场景、GIF 输入
+  export/fx_gif.gd          GIF 编码器（全局色板 + LZW + 循环，纯计算，导出时在工作线程里跑）
   export/fx_exporter.gd     编辑器内落盘与导入（协程，调用方要 await）
-  editor/                   main_panel / preset_browser / preview_stage / timeline / param_panel /
-                            export_dialog / fx_session（编辑会话 + 撤销）/ render_scheduler / selftest
+  editor/                   main_panel / preset_browser（右键菜单、代表帧缩略图）/ preview_stage / timeline / param_panel /
+                            export_dialog / palette_editor（色板编辑与导入）/ fx_session（编辑会话 + 撤销）/
+                            render_scheduler / selftest / i18n + lang_en（界面多语言）
 demo/                       演示场景（F5）
 fx_exports/                 示例导出（演示场景和 runtime 测试会用到）
 fx_forge_presets/           用户保存的预设（第一次保存时创建）
 tests/                      测试与画廊脚本（tests/output 不入库）
 tools/                      test.ps1 / test.sh
-docs/                       design.md（设计方案）、images/
+docs/                       design.md（设计方案）、manual.md（中文使用手册）、images/
 ```
 
 ## 开发硬规则（Godot 4.7 源码核查 + 踩坑总结）
@@ -99,6 +104,14 @@ docs/                       design.md（设计方案）、images/
 27. **Windows PowerShell 5.1 的 `Get-Content` / `Set-Content` 默认按 GBK 读写**，会把 UTF-8 中文文件（plugin.cfg、.gd）改成乱码，
     插件加载失败、编辑器无头命令卡住不退出。改文件一律用 Edit 工具、sed 或 Python（`encoding='utf-8', newline=''`）。
     长时间的无头命令外面套 `timeout`。
+28. **界面文字一律写成 `I18n.T("中文原文")`**（中文原文就是翻译键，和 Godot 的 tr() 一样）；`const` 里的中文选项在显示的地方再包
+    `I18n.T()`；参数名用 `I18n.label(d)`、模块名用 `I18n.module_name(m)`。单元测试 `test_i18n.gd` 会找出漏包的中文文字。
+    加英文：跑 `extract_ui_text.gd` 拿清单，把译文填进 `editor/lang_en.gd`，再把 `I18n.language` 改成 "en"。
+29. GIF 编码放在工作线程：先在主线程把 Image 转成字节（`get_data()`），工作线程只处理字节数组。
+30. GDScript 4.7 里不同类型直接比较（例如 String 和 PackedColorArray 用 `!=`）会报错：色板值可能是 id 也可能是自定义颜色数组，
+    先比 `typeof` 再比值。`Dictionary.merged()` 默认不覆盖已有的键（要覆盖传第二个参数 true）。
+31. 每帧时长倍数（打击停顿）由 `FxJob.durations_for()` 统一计算：SpriteFrames 的帧时长、JSON 的 duration、GIF 的停留时间、
+    编辑器预览播放都用它。
 
 ## 新增特效模块
 
@@ -126,12 +139,14 @@ docs/                       design.md（设计方案）、images/
 - [x] M7 环境与通用（0.5）：粒子加烟团形状、左右对称、左右摆动、落地消失；粒子像素不被孤立像素清理；
       压扁的环不再断线；新增沙尘色板、尘土 / 烟雾主题；新增落地尘土、跑步扬尘、烟雾弹、落水水花、拾取闪光、
       传送光柱、消散、冲刺残影——内置预设共 38 个（四个类别全部完成）
-- [ ] M8 打磨：GIF 导出、色板编辑与导入、帧停留（打击停顿）、多语言、性能优化
+- [x] M8 打磨（1.0）：GIF 导出（自带 LZW 编码器，测试里自带解码器做往返校验）；打击停顿（每帧时长，重击 / 暴击默认开启）；
+      色板编辑器（改色、单色生成色阶、导入 Lospec .hex / GIMP .gpl / 调色板图片）；预设库右键菜单（重命名、复制、
+      删除进回收站、在文件系统中显示、内置预设复制为我的预设）；缩略图挑最饱满的一帧；界面文字集中到 I18n.T()；
+      性能报告（38 个预设原尺寸整段渲染全部 ≤ 100 ms）；中文使用手册 docs/manual.md
 
 ## 已知小问题 / 待办
 
-- 预设库没有右键菜单（删除 / 重命名「我的预设」）。
-- 预设库缩略图固定取时间轴 40% 处的一帧，打击类特效不一定是最好看的那帧。
 - README 里的界面截图还是 0.1 版的（图层区是下拉框）；用户不在用电脑时可以用 `-- --fxforge-show` 重拍。
+- 英文界面对照表 `editor/lang_en.gd` 只有几条示例；参数名、模块名、色板名已经自带英文。
 - 「左右镜像」批量导出时，如果原点 X 不在 0.5，left 动画的锚点会偏（保持原点水平居中即可）。
 - 撤销 / 重做按钮直接操作编辑器全局历史，会连带撤销其他全局操作（和 Ctrl+Z 行为一致）。

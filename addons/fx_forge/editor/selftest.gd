@@ -9,6 +9,7 @@ const FxExporter := preload("../export/fx_exporter.gd")
 const FxExport := preload("../export/fx_export.gd")
 const FxPreset := preload("../core/fx_preset.gd")
 const Builtin := preload("../presets/builtin_presets.gd")
+const FxPalette := preload("../core/fx_palette.gd")
 
 const OUT := "res://fx_exports/_selftest/"
 const BASE := "selftest_slash"
@@ -56,7 +57,7 @@ func _run() -> void:
 	print("FXFORGE_SELFTEST: 开始（等待扫描 %d 帧）" % frames)
 	var preset: FxPreset = Builtin.find("slash_basic")
 	var s := FxExport.default_settings(preset)
-	s.merge({"out_dir": OUT, "base_name": BASE, "directions": "4", "sequence": true, "padding": 1}, true)
+	s.merge({"out_dir": OUT, "base_name": BASE, "directions": "4", "sequence": true, "padding": 1, "gif": true, "gif_scale": 2}, true)
 	var res: Dictionary = await FxExporter.run(preset, s)
 	_check(res["ok"], "首次导出到新目录：" + str(res["message"]))
 	if res["ok"]:
@@ -97,6 +98,33 @@ func _ui_smoke() -> void:
 	var job: RefCounted = panel._last_job
 	_check(job != null and job.results.size() == 9, "修改后完整渲染了 9 帧")
 	_check(panel.session.get_value("global", -1, "palette_main") == "ice", "换配色主题生效")
+	# 色板编辑器：生成色阶、导入 .gpl、确认后成为自定义色板
+	panel._open_palette_editor("palette_main")
+	var pe: Node = panel._palette_editor
+	pe._set_colors(FxPalette.ramp_from_color(Color("cc3366"), 5))
+	var gpl_path := OS.get_user_data_dir().path_join("fxforge_selftest.gpl")
+	var gf := FileAccess.open(gpl_path, FileAccess.WRITE)
+	gf.store_string("GIMP Palette\nName: t\n#\n 10  20  30 a\n200 100  50 b\n250 240 230 c\n")
+	gf.close()
+	pe._import_file(gpl_path)
+	_check(pe._imported.size() == 3, "色板编辑器：导入 .gpl 读到 3 个颜色（实际 %d）" % pe._imported.size())
+	pe.palette_confirmed.emit(pe._colors)
+	pe.hide()
+	await _wait_render(panel)
+	_check(panel.session.get_value("global", -1, "palette_main") is PackedColorArray, "色板编辑器：主色板变成自定义色阶")
+	_check(panel.session.get_value("global", -1, "theme") == "custom", "改了色板后主题显示为「自定义」")
+	job = panel._last_job
+	_check(job != null and job.results.size() == 9, "自定义色板下完整渲染了 9 帧")
+	# 预设库右键菜单：复制内置预设为我的预设、重命名、删除（自检在临时工程里，直接删除不进回收站）
+	var copy_path: String = panel.duplicate_preset(Builtin.find("slash_ice"))
+	_check(not copy_path.is_empty() and FileAccess.file_exists(copy_path), "右键菜单：复制内置预设为我的预设")
+	if not copy_path.is_empty():
+		_check(panel.rename_user_preset(copy_path, "自检改名"), "右键菜单：重命名")
+		var renamed := ResourceLoader.load(copy_path, "", ResourceLoader.CACHE_MODE_REPLACE) as FxPreset
+		_check(renamed != null and renamed.display_name == "自检改名", "重命名写进了文件")
+		_check(panel.delete_user_preset(copy_path, false) and not FileAccess.file_exists(copy_path), "右键菜单：删除")
+	var thumb: Image = panel._browser.representative_frame(Builtin.find("hit_heavy"))
+	_check(thumb != null and thumb.get_used_rect().size.x > 20, "缩略图挑到了有内容的代表帧")
 	# 循环预设：直接载入（当前有未保存修改，走 open_preset 会弹出确认框）
 	panel.session.load_preset(Builtin.find("campfire"), "", "campfire")
 	await _wait_render(panel)
@@ -160,3 +188,6 @@ func _verify() -> void:
 	_check(pngs.size() == 36, "单帧序列 36 张（实际 %d）" % pngs.size())
 	var copy := ResourceLoader.load(OUT + BASE + ".fxforge.tres")
 	_check(copy is FxPreset, "预设副本能加载")
+	var gif := FileAccess.get_file_as_bytes(OUT + BASE + ".gif")
+	_check(gif.size() > 100 and gif.slice(0, 6).get_string_from_ascii() == "GIF89a", "GIF 动图已写出（%d 字节）" % gif.size())
+	_check(gif.size() > 10 and (gif[6] | (gif[7] << 8)) == 128, "GIF 宽度 = 64 × 2")

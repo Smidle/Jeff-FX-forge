@@ -5,8 +5,9 @@ extends RefCounted
 
 const FxRenderer := preload("../core/fx_renderer.gd")
 const FxPreset := preload("../core/fx_preset.gd")
+const FxGif := preload("fx_gif.gd")
 
-const VERSION := "0.5.0"
+const VERSION := "1.0.0"
 const APP_NAME := "FX Forge 像素特效工坊"
 
 ## 方向角 → 动画名
@@ -17,6 +18,10 @@ const DIRECTION_NAMES := {
 const LAYOUT_OPTIONS := [["auto", "自动"], ["row", "每个动画一行"], ["grid", "固定列数"]]
 const DIRECTION_OPTIONS := [["none", "不批量"], ["mirror", "左右（原样 + 水平镜像）"], ["4", "4 方向"], ["8", "8 方向"]]
 const BLEND_OPTIONS := [["normal", "正常"], ["add", "发光叠加"]]
+const GIF_BG_OPTIONS := [["transparent", "透明"], ["dark", "深色底"], ["light", "浅色底"]]
+const GIF_BG_COLORS := {"dark": Color("1d1d27"), "light": Color("e8e2d0")}
+## 一次性特效的 GIF 播完后停多久再重播（1/100 秒）
+const GIF_END_PAUSE := 40
 
 ## 即用场景内嵌的运行时脚本：不是 @tool，所以在编辑器里预览动画不会删掉节点
 const ONE_SHOT_SOURCE := """extends AnimatedSprite2D
@@ -55,6 +60,9 @@ static func default_settings(preset: FxPreset) -> Dictionary:
 		"sequence": false,
 		"preset_copy": true,
 		"blend": "normal",
+		"gif": false,
+		"gif_scale": 3,
+		"gif_bg": "transparent",
 	}
 
 
@@ -80,6 +88,9 @@ static func normalize_settings(s: Dictionary, preset: FxPreset) -> Dictionary:
 	d["margin"] = clampi(d["margin"], 0, 16)
 	d["scale"] = clampi(d["scale"], 1, 4)
 	d["variants"] = clampi(d["variants"], 1, 8)
+	d["gif_scale"] = clampi(d["gif_scale"], 1, 8)
+	if not ["transparent", "dark", "light"].has(d["gif_bg"]):
+		d["gif_bg"] = "transparent"
 	d["base_name"] = ascii_name(d["base_name"], "effect")
 	var dir: String = str(d["out_dir"]).strip_edges()
 	if not dir.begins_with("res://"):
@@ -118,10 +129,11 @@ static func plan_animations(s: Dictionary) -> Array:
 	return out
 
 
-## 渲染所有动画：{anims: [{name, frames: Array[Image]}], fps, loop, origin: Vector2, canvas: Vector2i}
+## 渲染所有动画：{anims: [{name, frames: Array[Image]}], fps, loop, origin: Vector2, canvas: Vector2i,
+##   durations: PackedFloat32Array（每帧时长倍数，打击停顿）}
 static func render_animations(preset: FxPreset, s: Dictionary) -> Dictionary:
 	var anims: Array = []
-	var info := {"fps": 12, "loop": false, "origin": Vector2.ZERO, "canvas": Vector2i.ONE}
+	var info := {"fps": 12, "loop": false, "origin": Vector2.ZERO, "canvas": Vector2i.ONE, "durations": PackedFloat32Array()}
 	for a: Dictionary in plan_animations(s):
 		var opts := {"seed_offset": a["seed_offset"]}
 		if a["direction"] != null:
@@ -137,7 +149,7 @@ static func render_animations(preset: FxPreset, s: Dictionary) -> Dictionary:
 				mirrored.append(c)
 			frames = mirrored
 		anims.append({"name": a["name"], "frames": frames})
-		info = {"fps": job.fps, "loop": job.loop, "origin": job.origin, "canvas": Vector2i(job.w, job.h)}
+		info = {"fps": job.fps, "loop": job.loop, "origin": job.origin, "canvas": Vector2i(job.w, job.h), "durations": job.durations}
 	info["anims"] = anims
 	return info
 
@@ -221,11 +233,13 @@ static func build_json(sheet: Dictionary, rendered: Dictionary, s: Dictionary, i
 	var sc: int = s["scale"]
 	var fs: Vector2i = sheet["frame_size"]
 	var src: Vector2i = sheet["source_size"]
-	var duration := roundi(1000.0 / float(rendered["fps"]))
+	var frame_ms := 1000.0 / float(rendered["fps"])
+	var mults: PackedFloat32Array = rendered.get("durations", PackedFloat32Array())
 	var frames: Array = []
 	var idx := 0
 	for a: Dictionary in rendered["anims"]:
 		for i in (a["frames"] as Array).size():
+			var duration := roundi(frame_ms * (mults[i] if i < mults.size() else 1.0))
 			var r: Rect2i = rects[idx]
 			frames.append({
 				"filename": "%s %s %d.png" % [s["base_name"], a["name"], i],
@@ -256,6 +270,7 @@ static func build_sprite_frames(tex: Texture2D, sheet: Dictionary, rendered: Dic
 		sf.clear_all()
 	var rects: Array = sheet["rects"]
 	var loop: bool = rendered["loop"]
+	var mults: PackedFloat32Array = rendered.get("durations", PackedFloat32Array())
 	var idx := 0
 	var first := ""
 	for a: Dictionary in rendered["anims"]:
@@ -273,7 +288,8 @@ static func build_sprite_frames(tex: Texture2D, sheet: Dictionary, rendered: Dic
 			at.atlas = tex
 			at.region = Rect2(rects[idx])
 			at.filter_clip = true
-			sf.add_frame(name, at)
+			# 帧时长倍数（打击停顿的那一帧更长）
+			sf.add_frame(name, at, mults[i] if i < mults.size() else 1.0)
 			idx += 1
 		if first.is_empty():
 			first = a["name"]
@@ -305,6 +321,33 @@ static func build_scene(sf: SpriteFrames, sheet: Dictionary, rendered: Dictionar
 	ps.pack(root)
 	root.free()
 	return ps
+
+
+## GIF 的输入（只取第一个动画，预览分享用）：{frames: Array[PackedByteArray], w, h, delays, background, scale}
+## 和精灵图一样裁边；按 gif_scale 放大；一次性特效末尾加一帧空白停顿，循环播放时能看清开头。
+## Image 的读取都在这里（主线程）完成，编码可以交给工作线程。
+static func gif_input(rendered: Dictionary, sheet: Dictionary, s: Dictionary) -> Dictionary:
+	var crop: Rect2i = sheet["crop"]
+	var canvas: Vector2i = rendered["canvas"]
+	var sc: int = s["gif_scale"]
+	var w := crop.size.x * sc
+	var h := crop.size.y * sc
+	var list: Array = (rendered["anims"][0] as Dictionary)["frames"]
+	var datas: Array = []
+	for img: Image in list:
+		var f: Image = img.get_region(crop) if crop.size != canvas else img.duplicate()
+		if sc > 1:
+			f.resize(w, h, Image.INTERPOLATE_NEAREST)
+		datas.append(f.get_data())
+	var delays := FxGif.delays_for(list.size(), float(rendered["fps"]), rendered.get("durations", PackedFloat32Array()))
+	var bg: Variant = GIF_BG_COLORS.get(s["gif_bg"], null)
+	if not rendered["loop"]:
+		var blank := PackedByteArray()
+		blank.resize(w * h * 4)
+		blank.fill(0)
+		datas.append(blank)
+		delays.append(GIF_END_PAUSE)
+	return {"frames": datas, "w": w, "h": h, "delays": delays, "background": bg, "scale": sc}
 
 
 ## 只保留英文字母、数字、下划线和连字符（文件名用）

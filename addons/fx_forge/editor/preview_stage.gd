@@ -3,6 +3,8 @@ extends Control
 ## 预览舞台：画布区域铺棋盘格（或纯色），放大绘制当前帧；可显示像素网格、锚点、参考图。
 ## 滚轮缩放、中键拖动平移、右键拖动参考图、双击左键恢复自适应视图。
 
+const I18n := preload("i18n.gd")
+
 signal zoom_changed(zoom: int)
 
 enum Bg { CHECKER, DARK, LIGHT, CUSTOM }
@@ -38,7 +40,7 @@ func _init() -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	custom_minimum_size = Vector2(240, 200)
-	tooltip_text = "滚轮缩放 · 中键拖动平移 · 右键拖动参考图 · 双击恢复视图"
+	tooltip_text = I18n.T("滚轮缩放 · 中键拖动平移 · 右键拖动参考图 · 双击恢复视图")
 
 
 func set_canvas(sz: Vector2i, org: Vector2) -> void:

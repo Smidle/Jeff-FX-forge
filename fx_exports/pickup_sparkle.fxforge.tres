@@ -7,7 +7,7 @@ script = ExtResource("1_w7ihd")
 preset_id = "pickup_sparkle"
 display_name = "拾取闪光"
 category = "env"
-description = "捡到金币、道具、升级时的一闪：十字星芒 + 扩散的光圈 + 往上飘的闪粉。"
+description = "捡到金币、道具、升级时的一闪：八角星芒 + 旁边跟着再闪一下的小星 + 往上飘的闪粉。"
 globals = {
 "canvas_h": 48,
 "canvas_w": 48,
@@ -106,6 +106,9 @@ export_settings = {
 "blend": "normal",
 "columns": 8,
 "directions": "none",
+"gif": false,
+"gif_bg": "transparent",
+"gif_scale": 3,
 "json": true,
 "layout": "auto",
 "margin": 0,

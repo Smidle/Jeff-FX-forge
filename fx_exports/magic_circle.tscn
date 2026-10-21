@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="MagicCircle" type="AnimatedSprite2D" unique_id=565331249]
+[node name="MagicCircle" type="AnimatedSprite2D" unique_id=1090630564]
 texture_filter = 1
 sprite_frames = ExtResource("1_5fdsp")
 autoplay = "default"

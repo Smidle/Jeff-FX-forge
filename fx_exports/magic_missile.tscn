@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="MagicMissile" type="AnimatedSprite2D" unique_id=610160621]
+[node name="MagicMissile" type="AnimatedSprite2D" unique_id=1306801924]
 texture_filter = 1
 sprite_frames = ExtResource("1_3kul2")
 autoplay = "default"

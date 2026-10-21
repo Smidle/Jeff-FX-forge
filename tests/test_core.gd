@@ -5,6 +5,8 @@ const FxParams := preload("res://addons/fx_forge/core/fx_params.gd")
 const FxPalette := preload("res://addons/fx_forge/core/fx_palette.gd")
 const FxBuffer := preload("res://addons/fx_forge/core/fx_buffer.gd")
 const FxPost := preload("res://addons/fx_forge/core/fx_post.gd")
+const FxRenderer := preload("res://addons/fx_forge/core/fx_renderer.gd")
+const Builtin := preload("res://addons/fx_forge/presets/builtin_presets.gd")
 
 
 func _settings(overrides: Dictionary = {}) -> Dictionary:
@@ -178,4 +180,56 @@ func test_glow_adds_soft_pixels() -> bool:
 		if a > 0 and a < 255:
 			soft_px += 1
 	check(soft_px > 8, "柔光在外圈产生半透明像素（%d 个）" % soft_px)
+	return true
+
+
+func test_palette_import_and_custom() -> bool:
+	var hex := FxPalette.parse_hex("ff0000\n00ff00\r\n#0000ff\n\nzzzzzz\nff0000\nFF112233")
+	check_eq(hex.size(), 4, "Lospec .hex：4 个有效且不重复的颜色")
+	check_eq(hex[0], Color("ff0000"), "第一个颜色")
+	check_eq(hex[3], Color("112233"), "8 位十六进制取后 6 位")
+	var gpl := FxPalette.parse_gpl("GIMP Palette\nName: test\nColumns: 4\n# 注释\n255   0   0\tRed\n  0 255   0 Green\n0 0 255\n")
+	check_eq(gpl.size(), 3, "GIMP .gpl：3 个颜色")
+	check_eq(gpl[1], Color8(0, 255, 0), "第二个颜色是绿色")
+	var img := Image.create_empty(4, 2, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	img.set_pixel(0, 0, Color.RED)
+	img.set_pixel(1, 0, Color.RED)
+	img.set_pixel(2, 0, Color.WHITE)
+	img.set_pixel(3, 1, Color.BLUE)
+	check_eq(FxPalette.from_image(img).size(), 3, "调色板图片：3 种不透明颜色")
+	var path := OUTPUT_DIR + "palette_test.hex"
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	f.store_string("000000\n808080\nffffff\n")
+	f.close()
+	check_eq(FxPalette.load_file(ProjectSettings.globalize_path(path)).size(), 3, "按扩展名读取 .hex 文件")
+	var many := PackedColorArray()
+	for i in 10:
+		many.append(Color(1.0 - i * 0.1, 0.5, 0.2))
+	var ramp := FxPalette.pick_ramp(many, 4)
+	check_eq(ramp.size(), 4, "从 10 色里挑 4 个")
+	check(FxPalette.luminance(ramp[0]) < FxPalette.luminance(ramp[3]), "挑出的色阶从暗到亮")
+	# 自定义色板直接参与渲染
+	var p: Resource = Builtin.find("hit_basic").clone()
+	var custom := PackedColorArray([Color("102030"), Color("406080"), Color("80c0ff")])
+	p.globals["palette_main"] = custom
+	p.globals["palette_accent"] = custom
+	p.globals["outline"] = "none"
+	var imgs := FxRenderer.render_images(p, {"frames": PackedInt32Array([1])})
+	var bad := 0
+	var used := 0
+	var frame: Image = imgs[0]
+	for y in frame.get_height():
+		for x in frame.get_width():
+			var c := frame.get_pixel(x, y)
+			if c.a < 1.0:
+				continue
+			used += 1
+			var ok := false
+			for k in custom:
+				if c.is_equal_approx(k):
+					ok = true
+			if not ok:
+				bad += 1
+	check(used > 0 and bad == 0, "自定义色板：画面只用色板里的颜色（%d 个像素里 %d 个不在色板中）" % [used, bad])
 	return true

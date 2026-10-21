@@ -117,8 +117,9 @@ static func _defs() -> Array:
 		},
 		{
 			"id": "hit_heavy", "name": "重击", "category": "combat",
-			"description": "势大力沉的重击：冲击环 + 大火花 + 往下掉的碎屑。",
+			"description": "势大力沉的重击：冲击环 + 大火花 + 往下掉的碎屑。第 1 帧（命中闪光）打击停顿 3 倍时长。",
 			"globals": {"canvas_w": 88, "canvas_h": 104, "frames": 9, "fps": 20, "origin_x": 0.5, "origin_y": 0.42,
+				"hold_frame": 1, "hold_mult": 3.0,
 				"theme": "custom", "palette_main": "spark", "palette_accent": "steel", "palette_smoke": "dust"},
 			"layers": [
 				{"module": "ring", "name": "冲击环", "palette_slot": "accent", "t_end": 0.95, "params": {
@@ -134,8 +135,8 @@ static func _defs() -> Array:
 		},
 		{
 			"id": "hit_crit", "name": "暴击", "category": "combat",
-			"description": "红白配色的暴击：白色星芒 + 长短交替的红色射线 + 旋转的分段环。",
-			"globals": {"canvas_w": 88, "canvas_h": 88, "frames": 9, "fps": 20, "theme": "blood",
+			"description": "红白配色的暴击：白色星芒 + 长短交替的红色射线 + 旋转的分段环。第 1 帧打击停顿 3 倍时长。",
+			"globals": {"canvas_w": 88, "canvas_h": 88, "frames": 9, "fps": 20, "theme": "blood", "hold_frame": 1, "hold_mult": 3.0,
 				"palette_main": "blood", "palette_accent": "spark", "palette_smoke": "smoke"},
 			"layers": [
 				{"module": "ring", "name": "暴击环", "params": {
@@ -547,7 +548,7 @@ static func _defs() -> Array:
 		},
 		{
 			"id": "pickup_sparkle", "name": "拾取闪光", "category": "env",
-			"description": "捡到金币、道具、升级时的一闪：十字星芒 + 扩散的光圈 + 往上飘的闪粉。",
+			"description": "捡到金币、道具、升级时的一闪：八角星芒 + 旁边跟着再闪一下的小星 + 往上飘的闪粉。",
 			"globals": {"canvas_w": 48, "canvas_h": 48, "frames": 8, "fps": 15,
 				"theme": "holy", "palette_main": "holy", "palette_accent": "spark", "palette_smoke": "dust",
 				"outline": "none"},

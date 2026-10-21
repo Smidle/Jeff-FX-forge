@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="IceBurst" type="AnimatedSprite2D" unique_id=1006130380]
+[node name="IceBurst" type="AnimatedSprite2D" unique_id=843705654]
 texture_filter = 1
 sprite_frames = ExtResource("1_uopd6")
 autoplay = "default"

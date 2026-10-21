@@ -145,6 +145,102 @@ static func ramp_from_color(base: Color, steps: int = 6) -> PackedColorArray:
 	return out
 
 
+## ---------------------------------------------------------------- 导入外部色板
+## 支持 Lospec 的 .hex（每行一个 RRGGBB）、GIMP / Aseprite 的 .gpl（每行「R G B 名字」）、调色板图片（取所有不透明颜色）。
+## 返回颜色按文件里出现的顺序，去重，最多 256 个；读不出颜色时返回空数组。
+static func load_file(path: String) -> PackedColorArray:
+	var ext := path.get_extension().to_lower()
+	if ext == "png" or ext == "jpg" or ext == "jpeg" or ext == "webp" or ext == "bmp":
+		var img := Image.load_from_file(path)
+		return from_image(img) if img != null else PackedColorArray()
+	var text := FileAccess.get_file_as_string(path)
+	if ext == "gpl":
+		return parse_gpl(text)
+	return parse_hex(text)
+
+
+static func parse_hex(text: String) -> PackedColorArray:
+	var out := PackedColorArray()
+	var seen := {}
+	for raw in text.split("\n"):
+		var line := raw.strip_edges().trim_prefix("#")
+		if line.length() == 8 and line.is_valid_hex_number():
+			line = line.substr(2)
+		if line.length() != 6 or not line.is_valid_hex_number():
+			continue
+		_add_unique(out, seen, Color.html(line))
+	return out
+
+
+static func parse_gpl(text: String) -> PackedColorArray:
+	var out := PackedColorArray()
+	var seen := {}
+	for raw in text.split("\n"):
+		var line := raw.strip_edges()
+		if line.is_empty() or line.begins_with("#") or line.begins_with("GIMP") or line.contains(":"):
+			continue
+		var parts := line.split_floats(" ", false)
+		if parts.size() < 3:
+			# 有的文件用制表符分隔
+			parts = line.replace("\t", " ").split_floats(" ", false)
+		if parts.size() < 3:
+			continue
+		_add_unique(out, seen, Color8(clampi(int(parts[0]), 0, 255), clampi(int(parts[1]), 0, 255), clampi(int(parts[2]), 0, 255)))
+	return out
+
+
+static func from_image(img: Image, max_colors: int = 256) -> PackedColorArray:
+	var out := PackedColorArray()
+	if img == null or img.is_empty():
+		return out
+	var im := img.duplicate() as Image
+	if im.is_compressed():
+		im.decompress()
+	im.convert(Image.FORMAT_RGBA8)
+	var seen := {}
+	for y in im.get_height():
+		for x in im.get_width():
+			var c := im.get_pixel(x, y)
+			if c.a < 0.5:
+				continue
+			c.a = 1.0
+			_add_unique(out, seen, c)
+			if out.size() >= max_colors:
+				return out
+	return out
+
+
+static func _add_unique(out: PackedColorArray, seen: Dictionary, c: Color) -> void:
+	var key := c.to_rgba32()
+	if seen.has(key) or out.size() >= 256:
+		return
+	seen[key] = true
+	out.append(c)
+
+
+## 感知亮度（0~1）
+static func luminance(c: Color) -> float:
+	return c.r * 0.299 + c.g * 0.587 + c.b * 0.114
+
+
+## 从暗到亮排序（色板要求暗 → 亮）
+static func sort_by_luminance(colors: PackedColorArray) -> PackedColorArray:
+	var arr: Array = Array(colors)
+	arr.sort_custom(func(a: Color, b: Color) -> bool: return luminance(a) < luminance(b))
+	return PackedColorArray(arr)
+
+
+## 颜色太多时按亮度均匀挑出 n 个（先排序），用来把整套色板变成一条色阶
+static func pick_ramp(colors: PackedColorArray, n: int) -> PackedColorArray:
+	var sorted := sort_by_luminance(colors)
+	if sorted.size() <= n:
+		return sorted
+	var out := PackedColorArray()
+	for i in n:
+		out.append(sorted[roundi(float(i) * float(sorted.size() - 1) / float(n - 1))])
+	return out
+
+
 static func _lerp_hue(a: float, b: float, t: float) -> float:
 	var d := fposmod(b - a + 0.5, 1.0) - 0.5
 	return fposmod(a + d * t, 1.0)

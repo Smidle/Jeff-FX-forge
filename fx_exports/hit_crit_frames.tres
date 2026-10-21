@@ -50,7 +50,7 @@ filter_clip = true
 [resource]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 3.0,
 "texture": SubResource("AtlasTexture_00rds")
 }, {
 "duration": 1.0,

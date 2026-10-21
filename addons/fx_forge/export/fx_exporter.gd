@@ -5,6 +5,7 @@ extends RefCounted
 ## 任何一步失败都保留已写出的文件，并返回中文说明。
 
 const FxExport := preload("fx_export.gd")
+const FxGif := preload("fx_gif.gd")
 const FxPreset := preload("../core/fx_preset.gd")
 
 
@@ -23,6 +24,8 @@ static func target_files(s: Dictionary) -> PackedStringArray:
 		files.append(dir + base + ".fxforge.tres")
 	if s["sequence"]:
 		files.append(dir + base + "_seq/")
+	if s["gif"]:
+		files.append(dir + base + ".gif")
 	return files
 
 
@@ -122,7 +125,26 @@ static func run(preset: FxPreset, settings: Dictionary) -> Dictionary:
 				idx += 1
 		files.append(seq_dir)
 
-	# 5. 预设副本（以后双击它就能回到特效工坊继续改）
+	# 5. GIF 动图（编码放在工作线程里，大图也不卡编辑器）
+	if s["gif"]:
+		var gi := FxExport.gif_input(rendered, sheet, s)
+		var box := {}
+		var encode_gif := func() -> void:
+			box["bytes"] = FxGif.encode(gi["frames"], gi["w"], gi["h"], gi["delays"], gi["background"], gi["scale"])
+		var task := WorkerThreadPool.add_task(encode_gif, true, "FX Forge GIF")
+		var tree := Engine.get_main_loop() as SceneTree
+		while not WorkerThreadPool.is_task_completed(task):
+			await tree.process_frame
+		WorkerThreadPool.wait_for_task_completion(task)
+		var gif_path := dir + base + ".gif"
+		var gf := FileAccess.open(gif_path, FileAccess.WRITE)
+		if gf == null:
+			return _fail("写入 GIF 失败：" + gif_path, files)
+		gf.store_buffer(box.get("bytes", PackedByteArray()))
+		gf.close()
+		files.append(gif_path)
+
+	# 6. 预设副本（以后双击它就能回到特效工坊继续改）
 	if s["preset_copy"]:
 		var copy: FxPreset = preset.clone()
 		copy.export_settings = s.duplicate()

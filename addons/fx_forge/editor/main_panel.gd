@@ -3,6 +3,7 @@ extends VBoxContainer
 ## 「特效工坊」主界面：预设库 | 预览舞台 + 时间轴 | 参数面板。
 ## 插件卸载前会调用 shutdown()，等后台渲染任务结束。
 
+const I18n := preload("i18n.gd")
 const FxSession := preload("fx_session.gd")
 const RenderScheduler := preload("render_scheduler.gd")
 const PresetBrowser := preload("preset_browser.gd")
@@ -18,6 +19,7 @@ const FxRegistry := preload("../core/fx_registry.gd")
 const FxModule := preload("../modules/fx_module.gd")
 const Builtin := preload("../presets/builtin_presets.gd")
 const ExportDialog := preload("export_dialog.gd")
+const PaletteEditor := preload("palette_editor.gd")
 const FxExport := preload("../export/fx_export.gd")
 const FxExporter := preload("../export/fx_exporter.gd")
 
@@ -46,8 +48,16 @@ var _discard_dialog: ConfirmationDialog
 var _save_dialog: ConfirmationDialog
 var _save_name: LineEdit
 var _save_file: LineEdit
+var _rename_dialog: ConfirmationDialog
+var _rename_edit: LineEdit
+var _delete_dialog: ConfirmationDialog
+## 右键菜单正在操作的预设文件
+var _action_path := ""
 var _ref_dialog: FileDialog
 var _export_dialog: ExportDialog
+var _palette_editor: PaletteEditor
+## 色板编辑器正在编辑的全局色板 id（palette_main 等）
+var _palette_target := ""
 var _overwrite_dialog: ConfirmationDialog
 var _result_dialog: AcceptDialog
 var _pending: Array = []
@@ -116,12 +126,14 @@ func _ready() -> void:
 	session.changed.connect(_on_changed)
 	_scheduler.finished.connect(_on_rendered)
 	_browser.preset_chosen.connect(_on_preset_chosen)
+	_browser.preset_action.connect(_on_preset_action)
 	_params.value_edited.connect(_on_value_edited)
 	_params.theme_chosen.connect(_on_theme_chosen)
 	_params.layer_selected.connect(func(i: int) -> void:
 		session.layer_index = i
 		_params.build.call_deferred())
 	_params.action_requested.connect(_on_action)
+	_params.palette_edit_requested.connect(_open_palette_editor)
 	_params.layer_action.connect(_on_layer_action)
 	_timeline.play_toggled.connect(_toggle_play)
 	_timeline.step.connect(_step)
@@ -149,8 +161,8 @@ func has_unsaved_changes() -> bool:
 
 func unsaved_message() -> String:
 	if session.is_user_preset():
-		return "特效工坊里的「%s」有未保存的修改。" % session.preset.display_name
-	return "特效工坊里的「%s」有未保存的修改（选择保存会另存到「我的预设」）。" % session.preset.display_name
+		return I18n.T("特效工坊里的「%s」有未保存的修改。") % session.preset.display_name
+	return I18n.T("特效工坊里的「%s」有未保存的修改（选择保存会另存到「我的预设」）。") % session.preset.display_name
 
 
 ## 编辑器保存 / 退出时调用：用户预设直接保存；内置预设和新特效自动另存一份，避免修改丢失
@@ -161,7 +173,7 @@ func save_if_possible() -> void:
 		_save_to(session.source_path)
 		return
 	var file := _suggest_file_name(session.preset.preset_id)
-	session.set_values("meta", -1, {"display_name": session.preset.display_name + "（自动保存）", "preset_id": file, "category": "custom"})
+	session.set_values("meta", -1, {"display_name": session.preset.display_name + I18n.T("（自动保存）"), "preset_id": file, "category": "custom"})
 	_save_to(FxSession.USER_DIR + file + ".tres")
 
 
@@ -190,21 +202,21 @@ func _make_toolbar() -> Control:
 	_title.custom_minimum_size.x = 160 * EditorInterface.get_editor_scale()
 	bar.add_child(_title)
 	bar.add_child(VSeparator.new())
-	bar.add_child(_tool_button(&"New", "新建", "新建一个空白特效", _on_new))
-	bar.add_child(_tool_button(&"Save", "保存", "保存到「我的预设」；内置预设会改为另存为", _on_save))
-	bar.add_child(_tool_button(&"Duplicate", "另存为…", "另存为一个新的「我的预设」", _on_save_as))
+	bar.add_child(_tool_button(&"New", I18n.T("新建"), I18n.T("新建一个空白特效"), _on_new))
+	bar.add_child(_tool_button(&"Save", I18n.T("保存"), I18n.T("保存到「我的预设」；内置预设会改为另存为"), _on_save))
+	bar.add_child(_tool_button(&"Duplicate", I18n.T("另存为…"), I18n.T("另存为一个新的「我的预设」"), _on_save_as))
 	bar.add_child(VSeparator.new())
-	bar.add_child(_tool_button(&"UndoRedo", "撤销", "撤销上一步修改（Ctrl+Z）", _on_undo))
-	bar.add_child(_tool_button(&"Reload", "重做", "重做（Ctrl+Shift+Z）", _on_redo))
+	bar.add_child(_tool_button(&"UndoRedo", I18n.T("撤销"), I18n.T("撤销上一步修改（Ctrl+Z）"), _on_undo))
+	bar.add_child(_tool_button(&"Reload", I18n.T("重做"), I18n.T("重做（Ctrl+Shift+Z）"), _on_redo))
 	bar.add_child(VSeparator.new())
-	bar.add_child(_tool_button(&"RandomNumberGenerator", "换种子", "随机换一个种子，看看同一特效的其他随机变化", _on_reseed))
+	bar.add_child(_tool_button(&"RandomNumberGenerator", I18n.T("换种子"), I18n.T("随机换一个种子，看看同一特效的其他随机变化"), _on_reseed))
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bar.add_child(spacer)
 	_export_button = Button.new()
-	_export_button.text = "导出精灵图…"
+	_export_button.text = I18n.T("导出精灵图…")
 	_export_button.icon = _icon(&"Save")
-	_export_button.tooltip_text = "导出精灵图、SpriteFrames 和即用场景"
+	_export_button.tooltip_text = I18n.T("导出精灵图、SpriteFrames 和即用场景")
 	_export_button.pressed.connect(_on_export)
 	bar.add_child(_export_button)
 	return bar
@@ -213,13 +225,13 @@ func _make_toolbar() -> Control:
 func _make_preview_bar() -> Control:
 	var bar := HBoxContainer.new()
 	var zl := Label.new()
-	zl.text = "缩放"
+	zl.text = I18n.T("缩放")
 	bar.add_child(zl)
 	_zoom_option = OptionButton.new()
 	for z: int in ZOOMS:
-		_zoom_option.add_item("自适应" if z == 0 else "%d×" % z)
+		_zoom_option.add_item(I18n.T("自适应") if z == 0 else "%d×" % z)
 	_zoom_option.select(0)
-	_zoom_option.tooltip_text = "预览放大倍数（只影响预览，不影响导出）"
+	_zoom_option.tooltip_text = I18n.T("预览放大倍数（只影响预览，不影响导出）")
 	_zoom_option.item_selected.connect(func(i: int) -> void:
 		if ZOOMS[i] == 0:
 			_stage.reset_view()
@@ -228,10 +240,10 @@ func _make_preview_bar() -> Control:
 	bar.add_child(_zoom_option)
 
 	var bl := Label.new()
-	bl.text = "背景"
+	bl.text = I18n.T("背景")
 	bar.add_child(bl)
 	var bg := OptionButton.new()
-	for t: String in ["棋盘格", "深色", "浅色", "自定义"]:
+	for t: String in [I18n.T("棋盘格"), I18n.T("深色"), I18n.T("浅色"), I18n.T("自定义")]:
 		bg.add_item(t)
 	bar.add_child(bg)
 	_bg_color = ColorPickerButton.new()
@@ -253,8 +265,8 @@ func _make_preview_bar() -> Control:
 		_stage.queue_redraw())
 
 	var grid := CheckBox.new()
-	grid.text = "网格"
-	grid.tooltip_text = "放大到 6 倍以上时显示像素网格"
+	grid.text = I18n.T("网格")
+	grid.tooltip_text = I18n.T("放大到 6 倍以上时显示像素网格")
 	grid.button_pressed = _meta_get("show_grid", false)
 	grid.toggled.connect(func(on: bool) -> void:
 		_stage.show_grid = on
@@ -262,8 +274,8 @@ func _make_preview_bar() -> Control:
 		_stage.queue_redraw())
 	bar.add_child(grid)
 	var pivot := CheckBox.new()
-	pivot.text = "锚点"
-	pivot.tooltip_text = "红色十字 = 特效原点（导出后就是场景的定位点）"
+	pivot.text = I18n.T("锚点")
+	pivot.tooltip_text = I18n.T("红色十字 = 特效原点（导出后就是场景的定位点）")
 	pivot.button_pressed = _meta_get("show_pivot", true)
 	pivot.toggled.connect(func(on: bool) -> void:
 		_stage.show_pivot = on
@@ -272,13 +284,13 @@ func _make_preview_bar() -> Control:
 	bar.add_child(pivot)
 
 	var ref := Button.new()
-	ref.text = "参考图…"
+	ref.text = I18n.T("参考图…")
 	ref.icon = _icon(&"Image")
-	ref.tooltip_text = "放一张角色图片在特效后面对比大小（右键拖动可以移动）"
+	ref.tooltip_text = I18n.T("放一张角色图片在特效后面对比大小（右键拖动可以移动）")
 	ref.pressed.connect(func() -> void: _ref_dialog.popup_centered_ratio(0.6))
 	bar.add_child(ref)
 	_ref_clear = Button.new()
-	_ref_clear.text = "移除参考图"
+	_ref_clear.text = I18n.T("移除参考图")
 	_ref_clear.visible = false
 	_ref_clear.pressed.connect(func() -> void:
 		_stage.reference = null
@@ -307,13 +319,13 @@ func _make_status_bar() -> Control:
 	_status.modulate = Color(1, 1, 1, 0.75)
 	bar.add_child(_status)
 	_warning = Label.new()
-	_warning.text = "⚠ 特效超出画布"
-	_warning.tooltip_text = "有像素碰到了画布边缘，导出后会被裁掉"
+	_warning.text = I18n.T("⚠ 特效超出画布")
+	_warning.tooltip_text = I18n.T("有像素碰到了画布边缘，导出后会被裁掉")
 	_warning.add_theme_color_override("font_color", Color(1.0, 0.7, 0.3))
 	_warning.visible = false
 	bar.add_child(_warning)
 	_fit_button = Button.new()
-	_fit_button.text = "自动适配画布"
+	_fit_button.text = I18n.T("自动适配画布")
 	_fit_button.visible = false
 	_fit_button.pressed.connect(_fit_canvas)
 	bar.add_child(_fit_button)
@@ -323,31 +335,31 @@ func _make_status_bar() -> Control:
 func _make_dialogs() -> void:
 	var s := EditorInterface.get_editor_scale()
 	_discard_dialog = ConfirmationDialog.new()
-	_discard_dialog.title = "放弃未保存的修改？"
-	_discard_dialog.ok_button_text = "放弃修改"
-	_discard_dialog.cancel_button_text = "取消"
+	_discard_dialog.title = I18n.T("放弃未保存的修改？")
+	_discard_dialog.ok_button_text = I18n.T("放弃修改")
+	_discard_dialog.cancel_button_text = I18n.T("取消")
 	_discard_dialog.confirmed.connect(_on_discard_confirmed)
 	_discard_dialog.canceled.connect(_on_discard_canceled)
 	add_child(_discard_dialog)
 
 	_save_dialog = ConfirmationDialog.new()
-	_save_dialog.title = "另存为我的预设"
-	_save_dialog.ok_button_text = "保存"
-	_save_dialog.cancel_button_text = "取消"
+	_save_dialog.title = I18n.T("另存为我的预设")
+	_save_dialog.ok_button_text = I18n.T("保存")
+	_save_dialog.cancel_button_text = I18n.T("取消")
 	var vb := VBoxContainer.new()
 	vb.custom_minimum_size.x = 420 * s
 	var l1 := Label.new()
-	l1.text = "名称（可以用中文）"
+	l1.text = I18n.T("名称（可以用中文）")
 	vb.add_child(l1)
 	_save_name = LineEdit.new()
 	vb.add_child(_save_name)
 	var l2 := Label.new()
-	l2.text = "文件名（英文字母、数字、下划线）"
+	l2.text = I18n.T("文件名（英文字母、数字、下划线）")
 	vb.add_child(l2)
 	_save_file = LineEdit.new()
 	vb.add_child(_save_file)
 	var l3 := Label.new()
-	l3.text = "保存到 " + FxSession.USER_DIR
+	l3.text = I18n.T("保存到 ") + FxSession.USER_DIR
 	l3.modulate = Color(1, 1, 1, 0.6)
 	vb.add_child(l3)
 	_save_dialog.add_child(vb)
@@ -355,22 +367,51 @@ func _make_dialogs() -> void:
 	_save_dialog.confirmed.connect(_on_save_as_confirmed)
 	add_child(_save_dialog)
 
+	_rename_dialog = ConfirmationDialog.new()
+	_rename_dialog.title = I18n.T("重命名预设")
+	_rename_dialog.ok_button_text = I18n.T("重命名")
+	_rename_dialog.cancel_button_text = I18n.T("取消")
+	var rb := VBoxContainer.new()
+	rb.custom_minimum_size.x = 360 * s
+	var rl := Label.new()
+	rl.text = I18n.T("新名称（可以用中文；文件名不变）")
+	rb.add_child(rl)
+	_rename_edit = LineEdit.new()
+	rb.add_child(_rename_edit)
+	_rename_dialog.add_child(rb)
+	_rename_dialog.register_text_enter(_rename_edit)
+	_rename_dialog.confirmed.connect(func() -> void: rename_user_preset(_action_path, _rename_edit.text))
+	add_child(_rename_dialog)
+
+	_delete_dialog = ConfirmationDialog.new()
+	_delete_dialog.title = I18n.T("删除预设")
+	_delete_dialog.ok_button_text = I18n.T("删除")
+	_delete_dialog.cancel_button_text = I18n.T("取消")
+	_delete_dialog.confirmed.connect(func() -> void: delete_user_preset(_action_path))
+	add_child(_delete_dialog)
+
 	_ref_dialog = FileDialog.new()
-	_ref_dialog.title = "选择参考图（例如你的角色图片）"
+	_ref_dialog.title = I18n.T("选择参考图（例如你的角色图片）")
 	_ref_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_ref_dialog.access = FileDialog.ACCESS_FILESYSTEM
-	_ref_dialog.add_filter("*.png, *.jpg, *.jpeg, *.webp", "图片")
+	_ref_dialog.add_filter("*.png, *.jpg, *.jpeg, *.webp", I18n.T("图片"))
 	_ref_dialog.file_selected.connect(_on_reference_selected)
 	add_child(_ref_dialog)
 
 	_export_dialog = ExportDialog.new()
 	_export_dialog.export_requested.connect(_on_export_requested)
 	add_child(_export_dialog)
+	_palette_editor = PaletteEditor.new()
+	_palette_editor.palette_confirmed.connect(func(colors: PackedColorArray) -> void:
+		if not _palette_target.is_empty() and colors.size() >= 2:
+			_on_value_edited("global", -1, _palette_target, colors, 0)
+			_params.build.call_deferred())
+	add_child(_palette_editor)
 
 	_overwrite_dialog = ConfirmationDialog.new()
-	_overwrite_dialog.title = "覆盖已有文件？"
-	_overwrite_dialog.ok_button_text = "覆盖并导出"
-	_overwrite_dialog.cancel_button_text = "取消"
+	_overwrite_dialog.title = I18n.T("覆盖已有文件？")
+	_overwrite_dialog.ok_button_text = I18n.T("覆盖并导出")
+	_overwrite_dialog.cancel_button_text = I18n.T("取消")
 	_overwrite_dialog.confirmed.connect(func() -> void:
 		if not _pending_export.is_empty():
 			_run_export(_pending_export)
@@ -378,9 +419,9 @@ func _make_dialogs() -> void:
 	add_child(_overwrite_dialog)
 
 	_result_dialog = AcceptDialog.new()
-	_result_dialog.title = "导出结果"
-	_result_dialog.ok_button_text = "好的"
-	_result_dialog.add_button("在文件系统中显示", true, "show")
+	_result_dialog.title = I18n.T("导出结果")
+	_result_dialog.ok_button_text = I18n.T("好的")
+	_result_dialog.add_button(I18n.T("在文件系统中显示"), true, "show")
 	_result_dialog.custom_action.connect(func(action: StringName) -> void:
 		if action == &"show" and not _result_files.is_empty():
 			var target := _result_files[0]
@@ -420,10 +461,99 @@ func _current_key() -> String:
 func _on_preset_chosen(p: Resource, path: String, builtin: String) -> void:
 	if session.dirty:
 		_pending = [p, path, builtin]
-		_discard_dialog.dialog_text = "「%s」有未保存的修改，切换后这些修改会丢失。\n要放弃修改吗？" % session.preset.display_name
+		_discard_dialog.dialog_text = I18n.T("「%s」有未保存的修改，切换后这些修改会丢失。\n要放弃修改吗？") % session.preset.display_name
 		_discard_dialog.popup_centered()
 		return
 	session.load_preset(p, path, builtin)
+
+
+## 预设库右键菜单
+func _on_preset_action(action: String, p: Resource, path: String, builtin: String) -> void:
+	match action:
+		"open":
+			_on_preset_chosen(p, path, builtin)
+		"rename":
+			_action_path = path
+			_rename_edit.text = (p as FxPreset).display_name
+			_rename_dialog.popup_centered()
+			_rename_edit.grab_focus()
+			_rename_edit.select_all()
+		"duplicate":
+			duplicate_preset(p as FxPreset)
+		"show":
+			EditorInterface.get_file_system_dock().navigate_to_path(path)
+		"delete":
+			_action_path = path
+			_delete_dialog.dialog_text = I18n.T("确定要删除「%s」吗？\n文件 %s 会移到系统回收站，需要时可以从回收站找回。") % [(p as FxPreset).display_name, path.get_file()]
+			_delete_dialog.popup_centered()
+
+
+## 复制一个预设到「我的预设」（内置预设也可以），返回新文件路径（失败返回空）
+func duplicate_preset(p: FxPreset) -> String:
+	var copy: FxPreset = p.clone()
+	var file := _suggest_file_name(p.preset_id)
+	copy.preset_id = file
+	copy.display_name = p.display_name + (I18n.T("（副本）") if p.category == "custom" else I18n.T("（我的）"))
+	copy.category = "custom"
+	var path := FxSession.USER_DIR + file + ".tres"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(FxSession.USER_DIR))
+	copy.take_over_path(path)
+	var err := ResourceSaver.save(copy, path)
+	if err != OK:
+		_status.text = I18n.T("复制失败（%s）：%s") % [error_string(err), path]
+		return ""
+	EditorInterface.get_resource_filesystem().update_file(path)
+	_browser.refresh()
+	_browser.select_key(_current_key())
+	_status.text = I18n.T("已复制为「%s」（%s）") % [copy.display_name, path]
+	return path
+
+
+## 改「我的预设」的显示名称（文件名不变）
+func rename_user_preset(path: String, new_name: String) -> bool:
+	var display := new_name.strip_edges()
+	if display.is_empty() or not FileAccess.file_exists(path):
+		return false
+	var res := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE) as FxPreset
+	if res == null:
+		_status.text = I18n.T("读取预设失败：") + path
+		return false
+	var p: FxPreset = res.clone()
+	p.display_name = display
+	p.take_over_path(path)
+	var err := ResourceSaver.save(p, path)
+	if err != OK:
+		_status.text = I18n.T("重命名失败（%s）") % error_string(err)
+		return false
+	if session.source_path == path:
+		# 正在编辑这个预设：只同步名称，不影响未保存的修改
+		session.preset.display_name = display
+		session.changed.emit("meta")
+	_browser.refresh()
+	_browser.select_key(_current_key())
+	_status.text = I18n.T("已重命名为「%s」") % display
+	return true
+
+
+## 删除「我的预设」：移到系统回收站（use_trash = false 只给自检在临时工程里用）
+func delete_user_preset(path: String, use_trash: bool = true) -> bool:
+	if path.is_empty() or not path.begins_with(FxSession.USER_DIR) or not FileAccess.file_exists(path):
+		return false
+	var abs_path := ProjectSettings.globalize_path(path)
+	var err := OS.move_to_trash(abs_path) if use_trash else DirAccess.remove_absolute(abs_path)
+	if err != OK:
+		_status.text = I18n.T("删除失败（%s）：%s") % [error_string(err), path]
+		return false
+	EditorInterface.get_resource_filesystem().update_file(path)
+	if session.source_path == path:
+		# 正在编辑的预设被删了：内容还在，变成未保存的新特效，可以再保存
+		session.source_path = ""
+		session.dirty = true
+		session.changed.emit("meta")
+	_browser.refresh()
+	_browser.select_key(_current_key())
+	_status.text = I18n.T("已删除「%s」（在系统回收站里）") % path.get_file() if use_trash else I18n.T("已删除「%s」") % path.get_file()
+	return true
 
 
 func _on_discard_confirmed() -> void:
@@ -480,7 +610,9 @@ func _on_value_edited(scope: String, layer: int, id: String, value: Variant, pha
 		# 手动换色板：如果和当前主题对不上，主题显示为「自定义」
 		var vals := {id: value}
 		var slots := FxPalette.theme_slots(str(session.get_value("global", -1, "theme")))
-		if slots.get(id.trim_prefix("palette_"), null) != value:
+		# 自定义色板是颜色数组，和主题里的色板 id（字符串）类型不同，不能直接用 != 比较（4.7 会报错）
+		var slot_id: Variant = slots.get(id.trim_prefix("palette_"), null)
+		if typeof(slot_id) != typeof(value) or slot_id != value:
 			vals["theme"] = "custom"
 		session.set_values(scope, layer, vals, merge)
 	else:
@@ -493,6 +625,12 @@ func _on_value_edited(scope: String, layer: int, id: String, value: Variant, pha
 			_scheduler.request_full()
 		else:
 			_scheduler.request_frame(_frame)
+
+
+func _open_palette_editor(id: String) -> void:
+	_palette_target = id
+	var names := {"palette_main": I18n.T("主色板"), "palette_accent": I18n.T("辅色板"), "palette_smoke": I18n.T("烟尘色板")}
+	_palette_editor.open(FxPalette.colors_of(session.get_value("global", -1, id)), names.get(id, id))
 
 
 func _on_theme_chosen(theme_id: String) -> void:
@@ -526,7 +664,7 @@ func _update_title() -> void:
 	if session.preset == null:
 		return
 	_title.text = ("● " if session.dirty else "") + session.preset.display_name
-	_title.tooltip_text = "有未保存的修改" if session.dirty else ""
+	_title.tooltip_text = I18n.T("有未保存的修改") if session.dirty else ""
 
 
 # ---------------------------------------------------------------- 渲染结果与播放
@@ -571,8 +709,8 @@ func _update_status() -> void:
 		colors.merge(r.get("colors", {}))
 		edge = edge or bool(r["edge"])
 	var ncol := str(colors.size()) if colors.size() < 256 else "256+"
-	_status.text = "%d×%d 像素 · %d 帧 · %d 帧/秒（%.2f 秒）· %s 种颜色 · 渲染 %.0f 毫秒" % [
-		j.w, j.h, j.frame_count, j.fps, float(j.frame_count) / float(j.fps), ncol, _last_full_ms]
+	_status.text = I18n.T("%d×%d 像素 · %d 帧 · %d 帧/秒（%.2f 秒）· %s 种颜色 · 渲染 %.0f 毫秒") % [
+		j.w, j.h, j.frame_count, j.fps, j.total_seconds(), ncol, _last_full_ms]
 	_warning.visible = edge
 	_fit_button.visible = edge
 
@@ -594,10 +732,15 @@ func _process(delta: float) -> void:
 			_show_frame()
 		return
 	var fps := maxf(float(session.get_value("global", -1, "fps")), 1.0)
-	var dur := 1.0 / fps
+	var hold := int(session.get_value("global", -1, "hold_frame"))
+	var hold_mult := float(session.get_value("global", -1, "hold_mult"))
 	_acc += delta * _speed
 	var advanced := false
-	while _acc >= dur:
+	while true:
+		# 打击停顿：那一帧停留更久
+		var dur := (hold_mult if _frame + 1 == hold else 1.0) / fps
+		if _acc < dur:
+			break
 		_acc -= dur
 		_frame += 1
 		advanced = true
@@ -704,7 +847,7 @@ func _on_save() -> void:
 
 func _on_save_as() -> void:
 	var p := session.preset
-	_save_name.text = p.display_name if session.is_user_preset() else p.display_name + "（我的）"
+	_save_name.text = p.display_name if session.is_user_preset() else p.display_name + I18n.T("（我的）")
 	_save_file.text = _suggest_file_name(p.preset_id)
 	_save_dialog.popup_centered()
 	_save_name.grab_focus()
@@ -713,7 +856,7 @@ func _on_save_as() -> void:
 func _on_save_as_confirmed() -> void:
 	var file := _sanitize(_save_file.text)
 	if file.is_empty():
-		_status.text = "文件名不能为空，只能用英文字母、数字和下划线。"
+		_status.text = I18n.T("文件名不能为空，只能用英文字母、数字和下划线。")
 		return
 	var display := _save_name.text.strip_edges()
 	if display.is_empty():
@@ -725,12 +868,12 @@ func _on_save_as_confirmed() -> void:
 func _save_to(path: String) -> void:
 	var err := session.save_to(path)
 	if err != OK:
-		_status.text = "保存失败（%s）：%s" % [error_string(err), path]
+		_status.text = I18n.T("保存失败（%s）：%s") % [error_string(err), path]
 		return
 	_browser.refresh()
 	_browser.select_key(_current_key())
 	_meta_set("last_preset", _current_key())
-	_status.text = "已保存到 " + path
+	_status.text = I18n.T("已保存到 ") + path
 	_params.build()
 
 
@@ -796,8 +939,8 @@ func _on_export_requested(settings: Dictionary) -> void:
 	var existing := FxExporter.existing_files(s)
 	if not existing.is_empty():
 		_pending_export = s
-		_overwrite_dialog.dialog_text = "下面这些文件已经存在，导出会覆盖它们：\n\n" + "\n".join(existing) \
-				+ "\n\n游戏里引用它们的场景会自动用上新效果。"
+		_overwrite_dialog.dialog_text = I18n.T("下面这些文件已经存在，导出会覆盖它们：\n\n") + "\n".join(existing) \
+				+ I18n.T("\n\n游戏里引用它们的场景会自动用上新效果。")
 		_overwrite_dialog.popup_centered()
 		return
 	_run_export(s)
@@ -808,7 +951,7 @@ func _run_export(s: Dictionary) -> void:
 		return
 	_exporting = true
 	_export_button.disabled = true
-	_status.text = "正在导出……"
+	_status.text = I18n.T("正在导出……")
 	var res: Dictionary = await FxExporter.run(session.preset, s)
 	_exporting = false
 	_export_button.disabled = false
@@ -816,12 +959,12 @@ func _run_export(s: Dictionary) -> void:
 	var lines := PackedStringArray([str(res["message"])])
 	if not _result_files.is_empty():
 		lines.append("")
-		lines.append("生成的文件：")
+		lines.append(I18n.T("生成的文件："))
 		for f: String in _result_files:
 			lines.append("  " + f)
 	if res["ok"] and s["scene"]:
 		lines.append("")
-		lines.append("用法：把 %s%s.tscn 拖进游戏场景，或在代码里 instantiate() 后 add_child()，播完会自动消失。" % [s["out_dir"], s["base_name"]])
+		lines.append(I18n.T("用法：把 %s%s.tscn 拖进游戏场景，或在代码里 instantiate() 后 add_child()，播完会自动消失。") % [s["out_dir"], s["base_name"]])
 	_result_dialog.dialog_text = "\n".join(lines)
 	_result_dialog.popup_centered()
 	_status.text = str(res["message"])
@@ -830,7 +973,7 @@ func _run_export(s: Dictionary) -> void:
 func _on_reference_selected(path: String) -> void:
 	var img := Image.load_from_file(path)
 	if img == null or img.is_empty():
-		_status.text = "无法读取图片：" + path
+		_status.text = I18n.T("无法读取图片：") + path
 		return
 	_stage.reference = ImageTexture.create_from_image(img)
 	_stage.reference_offset = Vector2.ZERO
@@ -854,7 +997,7 @@ func _fit_canvas() -> void:
 		if b.size.x > 0:
 			u = b if u.size.x == 0 else u.merge(b)
 	if u.size.x == 0:
-		_status.text = "画面里没有可见像素，无法适配画布。"
+		_status.text = I18n.T("画面里没有可见像素，无法适配画布。")
 		return
 	var sc: float = float(session.get_value("global", -1, "size_scale"))
 	var margin := 2.0 * sc
@@ -870,7 +1013,7 @@ func _fit_canvas() -> void:
 		"canvas_w": nw, "canvas_h": nh,
 		"origin_x": clampf(left / sc / nw, 0.0, 1.0), "origin_y": clampf(top / sc / nh, 0.0, 1.0),
 	})
-	_status.text = "画布已调整为 %d×%d" % [nw, nh]
+	_status.text = I18n.T("画布已调整为 %d×%d") % [nw, nh]
 
 
 func _meta_get(key: String, default: Variant) -> Variant:

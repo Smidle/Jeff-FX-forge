@@ -2,42 +2,42 @@
 
 [ext_resource type="Texture2D" uid="uid://tyvvphats0m8" path="res://fx_exports/dash_trail.png" id="1_6law2"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fla2v"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_6law2"]
 atlas = ExtResource("1_6law2")
 region = Rect2(0, 0, 96, 40)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_cu6x4"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fla2v"]
 atlas = ExtResource("1_6law2")
 region = Rect2(96, 0, 96, 40)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qgkgi"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_cu6x4"]
 atlas = ExtResource("1_6law2")
 region = Rect2(192, 0, 96, 40)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8y6qi"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgkgi"]
 atlas = ExtResource("1_6law2")
 region = Rect2(288, 0, 96, 40)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jc87u"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_8y6qi"]
 atlas = ExtResource("1_6law2")
 region = Rect2(384, 0, 96, 40)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yhlft"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc87u"]
 atlas = ExtResource("1_6law2")
 region = Rect2(480, 0, 96, 40)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nyqfy"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhlft"]
 atlas = ExtResource("1_6law2")
 region = Rect2(576, 0, 96, 40)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_24nnd"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyqfy"]
 atlas = ExtResource("1_6law2")
 region = Rect2(672, 0, 96, 40)
 filter_clip = true
@@ -45,6 +45,9 @@ filter_clip = true
 [resource]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6law2")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fla2v")
 }, {
@@ -65,9 +68,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nyqfy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_24nnd")
 }],
 "loop": 0,
 "name": &"default",

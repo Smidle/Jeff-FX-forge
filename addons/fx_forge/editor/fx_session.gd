@@ -8,6 +8,7 @@ extends RefCounted
 signal changed(scope: String)
 signal loaded
 
+const I18n := preload("i18n.gd")
 const FxPreset := preload("../core/fx_preset.gd")
 const FxPresetUtil := preload("../core/fx_preset_util.gd")
 
@@ -81,7 +82,7 @@ func set_values(scope: String, layer: int, values: Dictionary, merge: bool = fal
 	if undo == null:
 		_apply(_generation, scope, layer, values)
 		return
-	var action := "特效工坊：修改 " + ", ".join(PackedStringArray(values.keys()))
+	var action := I18n.T("特效工坊：修改 ") + ", ".join(PackedStringArray(values.keys()))
 	undo.create_action(action, UndoRedo.MERGE_ENDS if merge else UndoRedo.MERGE_DISABLE, self, false, false)
 	undo.add_do_method(self, &"_apply", _generation, scope, layer, values.duplicate(true))
 	undo.add_undo_method(self, &"_apply", _generation, scope, layer, old)
@@ -115,7 +116,7 @@ func set_layers(new_layers: Array, select: int, action: String) -> void:
 	if undo == null:
 		_apply_layers(_generation, new_layers.duplicate(true), select)
 		return
-	undo.create_action("特效工坊：" + action, UndoRedo.MERGE_DISABLE, self, false, false)
+	undo.create_action(I18n.T("特效工坊：") + action, UndoRedo.MERGE_DISABLE, self, false, false)
 	undo.add_do_method(self, &"_apply_layers", _generation, new_layers.duplicate(true), select)
 	undo.add_undo_method(self, &"_apply_layers", _generation, preset.layers.duplicate(true), layer_index)
 	undo.commit_action()
@@ -136,7 +137,7 @@ func add_layer(module_id: String) -> void:
 		return
 	var layers := preset.layers.duplicate(true)
 	layers.append(l)
-	set_layers(layers, layers.size() - 1, "添加图层")
+	set_layers(layers, layers.size() - 1, I18n.T("添加图层"))
 
 
 func remove_layer(i: int) -> void:
@@ -144,7 +145,7 @@ func remove_layer(i: int) -> void:
 		return
 	var layers := preset.layers.duplicate(true)
 	layers.remove_at(i)
-	set_layers(layers, mini(i, layers.size() - 1), "删除图层")
+	set_layers(layers, mini(i, layers.size() - 1), I18n.T("删除图层"))
 
 
 ## delta = +1：往上（盖在更上面，画得更晚）；-1：往下
@@ -159,7 +160,7 @@ func move_layer(i: int, delta: int) -> void:
 	var tmp: Variant = layers[i]
 	layers[i] = layers[j]
 	layers[j] = tmp
-	set_layers(layers, j, "调整图层顺序")
+	set_layers(layers, j, I18n.T("调整图层顺序"))
 
 
 func duplicate_layer(i: int) -> void:
@@ -167,9 +168,9 @@ func duplicate_layer(i: int) -> void:
 		return
 	var layers := preset.layers.duplicate(true)
 	var copy: Dictionary = (layers[i] as Dictionary).duplicate(true)
-	copy["name"] = str(copy.get("name", "")) + " 副本"
+	copy["name"] = str(copy.get("name", "")) + I18n.T(" 副本")
 	layers.insert(i + 1, copy)
-	set_layers(layers, i + 1, "复制图层")
+	set_layers(layers, i + 1, I18n.T("复制图层"))
 
 
 ## 保存到文件（成为用户预设）

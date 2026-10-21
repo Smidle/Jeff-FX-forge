@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="DashTrail" type="AnimatedSprite2D" unique_id=774743863]
+[node name="DashTrail" type="AnimatedSprite2D" unique_id=685630470]
 texture_filter = 1
 sprite_frames = ExtResource("1_xjy2j")
 autoplay = "default"

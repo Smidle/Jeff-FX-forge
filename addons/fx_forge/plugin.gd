@@ -3,6 +3,7 @@ extends EditorPlugin
 ## 插件入口：只负责注册「特效工坊」主屏幕标签页。
 ## 规则：这里只 preload 脚本，不预加载图片/场景（Godot 4.7 在首次导入资源前就会加载插件）。
 
+const I18n := preload("editor/i18n.gd")
 const MainPanel := preload("editor/main_panel.gd")
 const FxPreset := preload("core/fx_preset.gd")
 const SelfTest := preload("editor/selftest.gd")
@@ -45,7 +46,7 @@ func _make_visible(visible: bool) -> void:
 
 
 func _get_plugin_name() -> String:
-	return "特效工坊"
+	return I18n.T("特效工坊")
 
 
 func _get_plugin_icon() -> Texture2D:

@@ -7,4 +7,4 @@
 - 你保存的预设在 `res://fx_forge_presets/`，导出文件默认在 `res://fx_exports/`（都在插件文件夹外，升级插件不会覆盖）。
 - 导出的 `.tscn` 不依赖本插件，删掉插件也能在游戏里正常播放。
 
-完整说明见开发仓库根目录的 README.md。
+完整说明见开发仓库根目录的 README.md 和中文使用手册 docs/manual.md。

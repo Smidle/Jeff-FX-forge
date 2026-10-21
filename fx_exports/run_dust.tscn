@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="RunDust" type="AnimatedSprite2D" unique_id=24500854]
+[node name="RunDust" type="AnimatedSprite2D" unique_id=541173589]
 texture_filter = 1
 sprite_frames = ExtResource("1_4o2q6")
 autoplay = "default"

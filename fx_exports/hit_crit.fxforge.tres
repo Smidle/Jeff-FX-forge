@@ -7,12 +7,14 @@ script = ExtResource("1_2kwhq")
 preset_id = "hit_crit"
 display_name = "暴击"
 category = "combat"
-description = "红白配色的暴击：白色星芒 + 长短交替的红色射线 + 旋转的分段环。"
+description = "红白配色的暴击：白色星芒 + 长短交替的红色射线 + 旋转的分段环。第 1 帧打击停顿 3 倍时长。"
 globals = {
 "canvas_h": 88,
 "canvas_w": 88,
 "fps": 20,
 "frames": 9,
+"hold_frame": 1,
+"hold_mult": 3.0,
 "palette_accent": "spark",
 "palette_main": "blood",
 "palette_smoke": "smoke",
@@ -98,6 +100,9 @@ export_settings = {
 "blend": "normal",
 "columns": 8,
 "directions": "none",
+"gif": false,
+"gif_bg": "transparent",
+"gif_scale": 3,
 "json": true,
 "layout": "auto",
 "margin": 0,

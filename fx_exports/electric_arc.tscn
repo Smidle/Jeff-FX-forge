@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="ElectricArc" type="AnimatedSprite2D" unique_id=125211711]
+[node name="ElectricArc" type="AnimatedSprite2D" unique_id=883413602]
 texture_filter = 1
 sprite_frames = ExtResource("1_a632e")
 autoplay = "default"

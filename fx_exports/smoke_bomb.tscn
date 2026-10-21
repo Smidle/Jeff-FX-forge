@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="SmokeBomb" type="AnimatedSprite2D" unique_id=1328048605]
+[node name="SmokeBomb" type="AnimatedSprite2D" unique_id=1818348037]
 texture_filter = 1
 sprite_frames = ExtResource("1_5468s")
 autoplay = "default"

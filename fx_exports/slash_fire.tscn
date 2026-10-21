@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="SlashFire" type="AnimatedSprite2D" unique_id=1729865662]
+[node name="SlashFire" type="AnimatedSprite2D" unique_id=111155859]
 texture_filter = 1
 sprite_frames = ExtResource("1_mcs7k")
 autoplay = "default"

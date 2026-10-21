@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="Charge" type="AnimatedSprite2D" unique_id=1425197164]
+[node name="Charge" type="AnimatedSprite2D" unique_id=7043252]
 texture_filter = 1
 sprite_frames = ExtResource("1_ppnym")
 autoplay = "default"

@@ -1,0 +1,89 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://dbr6omrbxlduw"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_4kjp6"]
+
+[resource]
+script = ExtResource("1_4kjp6")
+preset_id = "thrust"
+display_name = "突刺"
+category = "combat"
+description = "长枪、细剑的直线突刺：一道锋芒向前冲出，枪尖炸开小火花。原点在左侧，方向朝右。"
+globals = {
+"canvas_h": 40,
+"canvas_w": 80,
+"fps": 20,
+"frames": 8,
+"origin_x": 0.2,
+"origin_y": 0.5,
+"palette_accent": "spark",
+"palette_main": "steel",
+"palette_smoke": "smoke",
+"theme": "steel"
+}
+layers = [{
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "streak",
+"name": "锋芒",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"count": 3,
+"easing": "out_expo",
+"head": 0.6,
+"length": 40.0,
+"length_random": 0.4,
+"main_boost": 0.7,
+"spread": 12.0,
+"stagger": 0.25,
+"taper": 0.8,
+"travel": 22.0,
+"width": 5.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "burst",
+"name": "枪尖火花",
+"offset_x": 40.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "accent",
+"params": {
+"detach": 0.6,
+"flash": "star",
+"flash_size": 7.0,
+"flash_time": 0.35,
+"length": 9.0,
+"ray_time": 0.7,
+"rays": 5,
+"spread": 140.0,
+"width": 2.5
+},
+"t_end": 0.8,
+"t_start": 0.15
+}]
+export_settings = {
+"base_name": "thrust",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

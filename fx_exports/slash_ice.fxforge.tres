@@ -45,6 +45,35 @@ layers = [{
 },
 "t_end": 1.0,
 "t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "particles",
+"name": "冰屑",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "accent",
+"params": {
+"cool": 0.3,
+"count": 14,
+"drag": 2.0,
+"emit_mode": "stream",
+"emit_radius": 20.0,
+"emit_shape": "ring",
+"emit_time": 0.4,
+"gravity": 25.0,
+"life": 0.55,
+"shape": "diamond",
+"size": 2.5,
+"size_end": 0.6,
+"speed": 26.0,
+"speed_random": 0.6,
+"spread": 140.0
+},
+"t_end": 1.0,
+"t_start": 0.1
 }]
 export_settings = {
 "base_name": "slash_ice",

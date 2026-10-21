@@ -1,0 +1,93 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://chiaia6bgbor"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_64ndp"]
+
+[resource]
+script = ExtResource("1_64ndp")
+preset_id = "ground_shockwave"
+display_name = "地面冲击波"
+category = "combat"
+description = "砸地、落地的冲击：贴着地面扩散的两道椭圆波 + 扬起的尘土。原点在地面上。"
+globals = {
+"canvas_h": 56,
+"canvas_w": 120,
+"fps": 20,
+"frames": 10,
+"origin_x": 0.5,
+"origin_y": 0.62,
+"palette_accent": "steel",
+"palette_main": "dust",
+"palette_smoke": "smoke",
+"theme": "custom"
+}
+layers = [{
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": false,
+"module": "ring",
+"name": "地面冲击环",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"easing": "out_cubic",
+"radius": 52.0,
+"rim": 0.7,
+"ring_delay": 0.18,
+"rings": 2,
+"squash": 0.32,
+"start": 0.08,
+"thin": 0.8,
+"width": 7.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 270.0,
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "扬尘",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "smoke",
+"params": {
+"cool": 0.3,
+"count": 24,
+"drag": 3.0,
+"emit_radius": 18.0,
+"emit_shape": "line",
+"gravity": 70.0,
+"life": 0.8,
+"life_random": 0.3,
+"shape": "disc",
+"size": 4.0,
+"size_end": 1.4,
+"size_random": 0.5,
+"speed": 90.0,
+"speed_random": 0.6,
+"spread": 170.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "ground_shockwave",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

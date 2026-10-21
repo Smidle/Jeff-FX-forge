@@ -3,7 +3,8 @@ extends RefCounted
 ## 编辑会话：正在编辑的特效（工作副本）、来源、未保存标记，以及撤销 / 重做。
 ## 撤销动作挂在本对象（RefCounted）上，进入编辑器的全局历史，不会把正在编辑的场景标成未保存。
 
-## scope：global（全局参数）/ layer（图层设置）/ param（模块参数）/ meta（名称等）/ all
+## scope：global（全局参数）/ layer（图层设置）/ param（模块参数）/ meta（名称等）/
+##        structure（图层增删、排序）/ all（载入了新预设）
 signal changed(scope: String)
 signal loaded
 
@@ -19,7 +20,9 @@ var source_path := ""
 var builtin_id := ""
 var dirty := false
 var layer_index := 0
-var undo: EditorUndoRedoManager = null
+## 编辑器的 EditorUndoRedoManager（无头测试时为空，修改直接生效）。
+## 用 Object 类型而不是 EditorUndoRedoManager：后者只在编辑器里存在，写死类型会让无头测试无法加载本脚本。
+var undo: Object = null
 ## 每次载入新预设加一；旧预设留下的撤销动作执行时发现代数不同就跳过
 var _generation := 0
 
@@ -103,6 +106,70 @@ func _apply(generation: int, scope: String, layer: int, values: Dictionary) -> v
 				preset.set(id, v)
 	dirty = true
 	changed.emit(scope)
+
+
+## 结构性修改（增删 / 排序 / 复制图层）：整组图层的前后快照进撤销历史
+func set_layers(new_layers: Array, select: int, action: String) -> void:
+	if preset == null:
+		return
+	if undo == null:
+		_apply_layers(_generation, new_layers.duplicate(true), select)
+		return
+	undo.create_action("特效工坊：" + action, UndoRedo.MERGE_DISABLE, self, false, false)
+	undo.add_do_method(self, &"_apply_layers", _generation, new_layers.duplicate(true), select)
+	undo.add_undo_method(self, &"_apply_layers", _generation, preset.layers.duplicate(true), layer_index)
+	undo.commit_action()
+
+
+func _apply_layers(generation: int, layers: Array, select: int) -> void:
+	if generation != _generation or preset == null:
+		return
+	preset.layers = layers.duplicate(true)
+	layer_index = clampi(select, 0, maxi(preset.layers.size() - 1, 0))
+	dirty = true
+	changed.emit("structure")
+
+
+func add_layer(module_id: String) -> void:
+	var l := FxPresetUtil.normalize_layer(FxPresetUtil.make_layer(module_id))
+	if l.is_empty():
+		return
+	var layers := preset.layers.duplicate(true)
+	layers.append(l)
+	set_layers(layers, layers.size() - 1, "添加图层")
+
+
+func remove_layer(i: int) -> void:
+	if preset == null or preset.layers.size() <= 1 or i < 0 or i >= preset.layers.size():
+		return
+	var layers := preset.layers.duplicate(true)
+	layers.remove_at(i)
+	set_layers(layers, mini(i, layers.size() - 1), "删除图层")
+
+
+## delta = +1：往上（盖在更上面，画得更晚）；-1：往下
+func move_layer(i: int, delta: int) -> void:
+	if preset == null:
+		return
+	var j := i + delta
+	var n := preset.layers.size()
+	if i < 0 or j < 0 or i >= n or j >= n:
+		return
+	var layers := preset.layers.duplicate(true)
+	var tmp: Variant = layers[i]
+	layers[i] = layers[j]
+	layers[j] = tmp
+	set_layers(layers, j, "调整图层顺序")
+
+
+func duplicate_layer(i: int) -> void:
+	if preset == null or i < 0 or i >= preset.layers.size():
+		return
+	var layers := preset.layers.duplicate(true)
+	var copy: Dictionary = (layers[i] as Dictionary).duplicate(true)
+	copy["name"] = str(copy.get("name", "")) + " 副本"
+	layers.insert(i + 1, copy)
+	set_layers(layers, i + 1, "复制图层")
 
 
 ## 保存到文件（成为用户预设）

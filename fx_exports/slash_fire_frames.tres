@@ -2,52 +2,52 @@
 
 [ext_resource type="Texture2D" uid="uid://7guy0rmqjm6y" path="res://fx_exports/slash_fire.png" id="1_ihn7q"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jko4g"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ihn7q"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(0, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2dmt5"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jko4g"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(64, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jolv3"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_2dmt5"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(128, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_erac6"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jolv3"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(192, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_thv18"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_erac6"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(256, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_amvjw"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_thv18"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(320, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_82s5c"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_amvjw"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(384, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1g0yp"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_82s5c"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(448, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_88d6s"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1g0yp"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(512, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8l1uk"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_88d6s"]
 atlas = ExtResource("1_ihn7q")
 region = Rect2(576, 0, 64, 64)
 filter_clip = true
@@ -55,6 +55,9 @@ filter_clip = true
 [resource]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ihn7q")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jko4g")
 }, {
@@ -81,9 +84,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_88d6s")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8l1uk")
 }],
 "loop": 0,
 "name": &"default",

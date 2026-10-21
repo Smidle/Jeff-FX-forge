@@ -54,7 +54,8 @@ func test_builtin_presets_render() -> bool:
 		for r: Dictionary in job.results:
 			var img: Image = r["image"]
 			check_eq(img.get_size(), Vector2i(job.w, job.h), p.preset_id + " 帧尺寸")
-			if int(r["opaque"]) > 0:
+			# 有可见像素就算有内容（淡出时的半透明像素也算）
+			if (r["bbox"] as Rect2i).size.x > 0:
 				non_empty += 1
 			touched = touched or bool(r["edge"])
 		check(non_empty >= job.frame_count - 1, "%s 几乎每帧都有内容（%d/%d）" % [p.preset_id, non_empty, job.frame_count])

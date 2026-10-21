@@ -324,16 +324,30 @@ func _outline_inner(width: int, square: bool, oc: Color) -> void:
 			mask[i] = 0
 
 
-## 柔光：把当前不透明度模糊两次，作为分级半透明的外晕垫在下面
+## 柔光：把当前画面模糊两次，作为分级半透明的外晕垫在下面。
+## 外晕颜色取附近像素的颜色（预乘颜色模糊后除以模糊后的不透明度），再往白色提亮一点；
+## 附近没有像素颜色时退回 gc（主色板次亮色）。
 func _glow(rad: int, soft: float, levels: int, gc: Color) -> void:
-	var src := PackedFloat32Array()
-	src.resize(w * h)
-	src.fill(0.0)
+	var n := w * h
+	var sa := PackedFloat32Array()
+	sa.resize(n)
+	sa.fill(0.0)
+	var sr := sa.duplicate()
+	var sg := sa.duplicate()
+	var sb := sa.duplicate()
 	for y in range(by0, by1 + 1):
 		var row := y * w
 		for x in range(bx0, bx1 + 1):
-			src[row + x] = ca[row + x]
-	var blurred := _box_blur(_box_blur(src, rad), rad)
+			var i := row + x
+			var al := ca[i]
+			sa[i] = al
+			sr[i] = cr[i] * al
+			sg[i] = cg[i] * al
+			sb[i] = cb[i] * al
+	var ba := _box_blur(_box_blur(sa, rad), rad)
+	var br := _box_blur(_box_blur(sr, rad), rad)
+	var bgr := _box_blur(_box_blur(sg, rad), rad)
+	var bb := _box_blur(_box_blur(sb, rad), rad)
 	var gl := float(maxi(levels, 2))
 	var strength := (0.6 + 0.6 * soft) * 1.6
 	for y in range(by0, by1 + 1):
@@ -343,20 +357,29 @@ func _glow(rad: int, soft: float, levels: int, gc: Color) -> void:
 			var oa := ca[i]
 			if oa >= 1.0:
 				continue
-			var gv := blurred[i] * strength
+			var bl := ba[i]
+			var gv := bl * strength
 			if gv > 0.75:
 				gv = 0.75
 			gv = floorf(gv * gl + 0.5) / gl
 			if gv <= 0.0:
 				continue
+			var gr := gc.r
+			var gg := gc.g
+			var gb := gc.b
+			if bl > 0.001:
+				gr = lerpf(br[i] / bl, 1.0, 0.25)
+				gg = lerpf(bgr[i] / bl, 1.0, 0.25)
+				gb = lerpf(bb[i] / bl, 1.0, 0.25)
 			var keep := gv * (1.0 - oa)
 			var na := oa + keep
-			cr[i] = (cr[i] * oa + gc.r * keep) / na
-			cg[i] = (cg[i] * oa + gc.g * keep) / na
-			cb[i] = (cb[i] * oa + gc.b * keep) / na
+			cr[i] = (cr[i] * oa + gr * keep) / na
+			cg[i] = (cg[i] * oa + gg * keep) / na
+			cb[i] = (cb[i] * oa + gb * keep) / na
 			ca[i] = na
 
 
+## 盒式模糊（滑动窗口，耗时与半径无关），只处理当前内容区域，区域外当作 0
 func _box_blur(src: PackedFloat32Array, rad: int) -> PackedFloat32Array:
 	var n := w * h
 	var tmp := PackedFloat32Array()
@@ -368,20 +391,29 @@ func _box_blur(src: PackedFloat32Array, rad: int) -> PackedFloat32Array:
 	var inv := 1.0 / float(rad * 2 + 1)
 	for y in range(by0, by1 + 1):
 		var row := y * w
+		var acc := 0.0
+		for xx in range(bx0, mini(bx0 + rad, bx1) + 1):
+			acc += src[row + xx]
 		for x in range(bx0, bx1 + 1):
-			var acc := 0.0
-			for xx in range(maxi(x - rad, bx0), mini(x + rad, bx1) + 1):
-				acc += src[row + xx]
 			tmp[row + x] = acc * inv
-	for y in range(by0, by1 + 1):
-		var row := y * w
-		var ya := maxi(y - rad, by0)
-		var yb := mini(y + rad, by1)
-		for x in range(bx0, bx1 + 1):
-			var acc := 0.0
-			for yy in range(ya, yb + 1):
-				acc += tmp[yy * w + x]
-			out[row + x] = acc * inv
+			var add_x := x + rad + 1
+			if add_x <= bx1:
+				acc += src[row + add_x]
+			var rem_x := x - rad
+			if rem_x >= bx0:
+				acc -= src[row + rem_x]
+	for x in range(bx0, bx1 + 1):
+		var acc := 0.0
+		for yy in range(by0, mini(by0 + rad, by1) + 1):
+			acc += tmp[yy * w + x]
+		for y in range(by0, by1 + 1):
+			out[y * w + x] = acc * inv
+			var add_y := y + rad + 1
+			if add_y <= by1:
+				acc += tmp[add_y * w + x]
+			var rem_y := y - rad
+			if rem_y >= by0:
+				acc -= tmp[rem_y * w + x]
 	return out
 
 

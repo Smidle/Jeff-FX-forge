@@ -68,10 +68,42 @@ func _run() -> void:
 		_check(res2["ok"], "重复导出（覆盖）：" + str(res2["message"]))
 		if res2["ok"]:
 			_verify()
+	await _ui_smoke()
 	print("FXFORGE_SELFTEST: " + ("PASS" if _errors.is_empty() else "FAIL"))
 	for e in _errors:
 		print("  - ", e)
 	get_tree().quit(0 if _errors.is_empty() else 1)
+
+
+## 界面冒烟：在真实的主界面上打开多图层预设，执行图层操作和参数修改，等渲染完成
+func _ui_smoke() -> void:
+	var panel := EditorInterface.get_editor_main_screen().get_node_or_null("FxForgeMainPanel")
+	_check(panel != null, "找到特效工坊主界面")
+	if panel == null:
+		return
+	panel.open_preset(Builtin.find("hit_heavy"))
+	await _wait_render(panel)
+	_check(panel.session.layer_count() == 3, "打开「重击」：3 个图层")
+	panel._on_layer_action("add", -1, "streak")
+	panel._on_layer_action("dup", 0, "")
+	panel._on_layer_action("up", 0, "")
+	panel._on_layer_action("del", 3, "")
+	await get_tree().process_frame
+	_check(panel.session.layer_count() == 4, "添加、复制、上移、删除后 4 个图层（实际 %d）" % panel.session.layer_count())
+	panel._on_value_edited("param", panel.session.layer_index, "length", 20.0, 0)
+	panel._on_value_edited("global", -1, "outline", "none", 0)
+	panel._on_theme_chosen("ice")
+	await _wait_render(panel)
+	var job: RefCounted = panel._last_job
+	_check(job != null and job.results.size() == 9, "修改后完整渲染了 9 帧")
+	_check(panel.session.get_value("global", -1, "palette_main") == "ice", "换配色主题生效")
+
+
+func _wait_render(panel: Node) -> void:
+	for i in 300:
+		await get_tree().process_frame
+		if not panel._scheduler.is_busy() and not panel._scheduler._want_full:
+			return
 
 
 func _verify() -> void:

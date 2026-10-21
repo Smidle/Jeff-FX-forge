@@ -1,0 +1,207 @@
+{
+	"frames": [
+		{
+			"duration": 50,
+			"filename": "thrust default 0.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 50,
+			"filename": "thrust default 1.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 80,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 50,
+			"filename": "thrust default 2.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 160,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 50,
+			"filename": "thrust default 3.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 240,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 50,
+			"filename": "thrust default 4.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 320,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 50,
+			"filename": "thrust default 5.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 400,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 50,
+			"filename": "thrust default 6.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 480,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 50,
+			"filename": "thrust default 7.png",
+			"frame": {
+				"h": 40,
+				"w": 80,
+				"x": 560,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 40,
+				"w": 80
+			},
+			"spriteSourceSize": {
+				"h": 40,
+				"w": 80,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	],
+	"meta": {
+		"app": "FX Forge 像素特效工坊",
+		"format": "RGBA8888",
+		"fps": 20,
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "default",
+				"to": 7
+			}
+		],
+		"image": "thrust.png",
+		"layers": [],
+		"loop": false,
+		"pivot": {
+			"x": 16,
+			"y": 20
+		},
+		"scale": "1",
+		"size": {
+			"h": 40,
+			"w": 640
+		},
+		"slices": [],
+		"version": "0.2.0"
+	}
+}

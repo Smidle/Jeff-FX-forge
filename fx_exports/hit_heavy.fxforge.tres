@@ -1,0 +1,111 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://cij2871dqhs6"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_brdo2"]
+
+[resource]
+script = ExtResource("1_brdo2")
+preset_id = "hit_heavy"
+display_name = "重击"
+category = "combat"
+description = "势大力沉的重击：冲击环 + 大火花 + 往下掉的碎屑。"
+globals = {
+"canvas_h": 104,
+"canvas_w": 88,
+"fps": 20,
+"frames": 9,
+"origin_x": 0.5,
+"origin_y": 0.42,
+"palette_accent": "steel",
+"palette_main": "spark",
+"palette_smoke": "dust",
+"theme": "custom"
+}
+layers = [{
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "ring",
+"name": "冲击环",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "accent",
+"params": {
+"easing": "out_expo",
+"fill": 1.0,
+"radius": 34.0,
+"start": 0.2,
+"thin": 0.85,
+"width": 7.0
+},
+"t_end": 0.95,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "burst",
+"name": "重击火花",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"alternate": 0.5,
+"detach": 0.7,
+"flash": "star",
+"flash_size": 15.0,
+"flash_time": 0.3,
+"inner": 0.25,
+"length": 30.0,
+"length_random": 0.4,
+"ray_time": 0.85,
+"rays": 10,
+"width": 6.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 270.0,
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "碎屑",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "smoke",
+"params": {
+"cool": 0.3,
+"count": 14,
+"drag": 1.6,
+"gravity": 110.0,
+"life": 0.8,
+"shape": "square",
+"size": 2.0,
+"size_end": 0.8,
+"speed": 100.0,
+"speed_random": 0.6,
+"spread": 240.0
+},
+"t_end": 1.0,
+"t_start": 0.05
+}]
+export_settings = {
+"base_name": "hit_heavy",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

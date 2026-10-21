@@ -35,6 +35,11 @@ func get_param_defs() -> Array:
 	return []
 
 
+## 新建这种图层时的默认图层设置（例如粒子默认用辅色板、不描边）
+func get_layer_defaults() -> Dictionary:
+	return {}
+
+
 ## 主线程调用：生成只读数据（随机表、噪声表……）。rng 已按图层种子初始化。
 func prepare(_p: Dictionary, _ctx: FxContext, _rng: RandomNumberGenerator) -> Dictionary:
 	return {}

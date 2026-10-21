@@ -6,6 +6,10 @@ const FxModule := preload("../modules/fx_module.gd")
 
 const _SCRIPTS := {
 	"arc": preload("../modules/arc.gd"),
+	"burst": preload("../modules/burst.gd"),
+	"ring": preload("../modules/ring.gd"),
+	"particles": preload("../modules/particles.gd"),
+	"streak": preload("../modules/streak.gd"),
 }
 
 ## 模块实例无状态，全局共用一份（在主线程加载脚本时创建）

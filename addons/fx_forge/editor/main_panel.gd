@@ -122,6 +122,7 @@ func _ready() -> void:
 		session.layer_index = i
 		_params.build.call_deferred())
 	_params.action_requested.connect(_on_action)
+	_params.layer_action.connect(_on_layer_action)
 	_timeline.play_toggled.connect(_toggle_play)
 	_timeline.step.connect(_step)
 	_timeline.jump.connect(_jump)
@@ -458,6 +459,10 @@ func _on_changed(scope: String) -> void:
 	_update_title()
 	if scope == "meta" or scope == "all":
 		return
+	if scope == "structure":
+		_params.build()
+		_scheduler.request_full()
+		return
 	if not _dragging:
 		_scheduler.request_full()
 		_params.sync_values()
@@ -480,6 +485,9 @@ func _on_value_edited(scope: String, layer: int, id: String, value: Variant, pha
 		session.set_values(scope, layer, vals, merge)
 	else:
 		session.set_value(scope, layer, id, value, merge)
+	if scope == "layer" and (id == "name" or id == "enabled"):
+		# 图层列表里显示名称和显示状态，需要重建
+		_params.build.call_deferred()
 	if _dragging:
 		if _last_full_ms <= DRAG_FULL_BUDGET_MS:
 			_scheduler.request_full()
@@ -498,6 +506,20 @@ func _on_theme_chosen(theme_id: String) -> void:
 func _on_action(action: String) -> void:
 	if action == "fit_canvas":
 		_fit_canvas()
+
+
+func _on_layer_action(action: String, index: int, arg: String) -> void:
+	match action:
+		"add":
+			session.add_layer(arg)
+		"up":
+			session.move_layer(index, 1)
+		"down":
+			session.move_layer(index, -1)
+		"dup":
+			session.duplicate_layer(index)
+		"del":
+			session.remove_layer(index)
 
 
 func _update_title() -> void:

@@ -2,47 +2,47 @@
 
 [ext_resource type="Texture2D" uid="uid://coylytstaw1wd" path="res://fx_exports/slash_basic.png" id="1_pdlud"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jly6i"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pdlud"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(0, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oiokh"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jly6i"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(64, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vj82h"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_oiokh"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(128, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ommuj"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_vj82h"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(192, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gi10y"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ommuj"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(256, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ij7gw"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gi10y"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(320, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_aqfij"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ij7gw"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(384, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sgods"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_aqfij"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(448, 0, 64, 64)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_562as"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_sgods"]
 atlas = ExtResource("1_pdlud")
 region = Rect2(512, 0, 64, 64)
 filter_clip = true
@@ -50,6 +50,9 @@ filter_clip = true
 [resource]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pdlud")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jly6i")
 }, {
@@ -73,9 +76,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sgods")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_562as")
 }],
 "loop": 0,
 "name": &"default",

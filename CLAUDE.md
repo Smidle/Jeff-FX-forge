@@ -44,13 +44,14 @@ addons/fx_forge/
     fx_params.gd            参数说明表：构造、补默认、校正、按整体缩放换算
     fx_globals.gd           全局参数、图层通用参数、分组中文名
     fx_palette.gd           18 套色板、15 个配色主题、Bayer 抖动表、单色生成色阶
-    fx_buffer.gd            图层强度画布（v 亮度 / a 可见度）+ 绘制原语
-    fx_post.gd              后期合成：着色、消散、清理、描边、柔光、翻转、打包 RGBA8
+    fx_buffer.gd            图层强度画布（v 亮度 / a 可见度）+ 绘制原语（点、圆、胶囊线、直线、矩形、菱形、多边形）
+    fx_particles.gd         解析式粒子：spawn() 主线程生成粒子表，draw() 按时间闭式求值（阻力 + 重力）
+    fx_post.gd              后期合成：着色、消散、清理、描边、柔光（外晕取局部颜色）、翻转、打包 RGBA8
     fx_job.gd / fx_renderer.gd   渲染任务（工作线程逐帧并行）/ 入口（同步、异步）
     fx_registry.gd          模块注册表
     fx_preset.gd            预设 Resource（class_name FxForgePreset）
     fx_preset_util.gd       预设构造、规范化
-  modules/                  特效模块：fx_module.gd 基类，arc.gd 弧光
+  modules/                  特效模块：fx_module.gd 基类；arc 弧光、burst 射线爆发、ring 环、particles 粒子、streak 冲刺线
   presets/builtin_presets.gd  内置预设（代码定义）
   export/fx_export.gd       导出纯计算：动画规划、拼图、JSON、SpriteFrames、即用场景
   export/fx_exporter.gd     编辑器内落盘与导入（协程，调用方要 await）
@@ -80,6 +81,10 @@ docs/                       design.md（设计方案）、images/
 12. 导出场景的内嵌脚本不能是 `@tool`；不要在根节点保存 `animation_finished → queue_free` 连接（编辑器预览会删掉场景根）。
 13. 提交插件的 `.uid` 文件。
 14. Windows 下调用图形界面程序（如 Aseprite 命令行）要用 `Start-Process -Wait`，否则不会等它跑完。
+15. 参数说明表可加 `show_if = [参数 id, 值]` / `hide_if = [参数 id, 值]`（同一作用域内比较），参数面板据此隐藏无关参数，依赖值变化时自动重建。
+16. `FxSession.undo` 用 `Object` 类型：`EditorUndoRedoManager` 只在编辑器里存在，写死类型会让无头测试加载不了这个脚本。
+17. 模块可以实现 `get_layer_defaults()`，规定新建这种图层时的默认图层设置（例如粒子默认用辅色板、不描边）。
+18. 预设里的粒子图层要算好飞行距离（无阻力时速度 = 整段走过的像素；有阻力时最远约 速度 ÷ 阻力），画廊脚本和单元测试都会报「超出画布」。
 
 ## 新增特效模块
 
@@ -95,7 +100,9 @@ docs/                       design.md（设计方案）、images/
 - [x] M2 编辑器界面（预设库、预览、时间轴、自动参数面板、撤销重做、保存 / 另存为、参考图、自动适配画布）
 - [x] M3 导出（PNG / JSON / SpriteFrames / 即用场景 / 单帧序列 / 预设副本，方向批量、变体、裁边、放大）+ 演示场景
       —— 第一版 0.1，已推到 GitHub 私有仓库 Smidle/Jeff-FX-forge
-- [ ] M4 战斗打击包：burst / ring / particles / streak 模块、图层增删排序界面、柔光细化、12 个预设（火焰斩可加火星粒子层）
+- [x] M4 战斗打击包（0.2）：burst / ring / particles / streak 模块；图层增删、复制、排序、隐藏、改名界面（可撤销）；
+      参数按条件显示；柔光外晕取局部颜色；新增突刺、普通打击、重击、暴击、格挡火花、地面冲击波、能量冲击环，
+      火焰斩加火星、寒冰斩加冰屑——内置预设共 13 个；编辑器自检加了界面冒烟（图层操作、改参数、换主题）
 - [ ] M5 爆炸与元素：blob / flame / bolt 模块、循环首尾校验、9 个预设
 - [ ] M6 魔法与状态：orb / glyph / beam 模块、粒子汇聚、8 个预设
 - [ ] M7 环境与通用：8 个预设
@@ -104,6 +111,7 @@ docs/                       design.md（设计方案）、images/
 ## 已知小问题 / 待办
 
 - 预设库没有右键菜单（删除 / 重命名「我的预设」）。
-- 「固定描边色」在「主色板最暗色」模式下也会显示。
+- 预设库缩略图固定取时间轴 40% 处的一帧，打击类特效不一定是最好看的那帧。
+- README 里的界面截图还是 0.1 版的（图层区是下拉框）；用户不在用电脑时可以用 `-- --fxforge-show` 重拍。
 - 「左右镜像」批量导出时，如果原点 X 不在 0.5，left 动画的锚点会偏（保持原点水平居中即可）。
 - 撤销 / 重做按钮直接操作编辑器全局历史，会连带撤销其他全局操作（和 Ctrl+Z 行为一致）。

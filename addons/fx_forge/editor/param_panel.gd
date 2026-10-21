@@ -8,6 +8,8 @@ signal value_edited(scope: String, layer: int, id: String, value: Variant, phase
 signal theme_chosen(theme_id: String)
 signal layer_selected(index: int)
 signal action_requested(action: String)
+## 图层结构操作：add（arg = 模块 id）/ up / down / dup / del
+signal layer_action(action: String, index: int, arg: String)
 
 const FxParams := preload("../core/fx_params.gd")
 const FxGlobals := preload("../core/fx_globals.gd")
@@ -31,6 +33,8 @@ var _folded := {}
 var _controls := {}
 ## key → 1（拖动刚开始）/ 2（拖动中）
 var _drag := {}
+## 显示条件（show_if / hide_if）依赖的参数：key → 构建面板时的值；值变了就重建面板
+var _deps := {}
 var _swatches := {}
 var _scale := 1.0
 var _bold: Font = null
@@ -42,6 +46,7 @@ func build() -> void:
 		c.queue_free()
 	_controls.clear()
 	_drag.clear()
+	_deps.clear()
 	if session == null or session.preset == null:
 		return
 	_scale = EditorInterface.get_editor_scale()
@@ -55,7 +60,7 @@ func build() -> void:
 		elif group == "direction":
 			_add_direction_pad(box)
 		for d: Dictionary in gdefs:
-			if d["group"] == group and _is_shown(d):
+			if d["group"] == group and _is_shown(d, "global", -1):
 				_add_row(box, "global", -1, d)
 		if group == "canvas":
 			_add_action_button(box, "自动适配画布", "按整段动画的实际范围重新设置画布大小和原点", "fit_canvas")
@@ -70,10 +75,15 @@ func build() -> void:
 	add_child(adv)
 
 
-## 撤销 / 重做 / 换主题后，把控件刷新成会话里的值（不发信号）
+## 撤销 / 重做 / 换主题后，把控件刷新成会话里的值（不发信号）；显示条件变了就重建面板
 func sync_values() -> void:
 	if session == null or session.preset == null:
 		return
+	for key: String in _deps:
+		var parts := key.split("|")
+		if session.get_value(parts[0], int(parts[1]), parts[2]) != _deps[key]:
+			build.call_deferred()
+			return
 	for key: String in _controls:
 		if _drag.has(key):
 			continue
@@ -96,8 +106,20 @@ func sync_values() -> void:
 				(c as ColorPickerButton).color = v
 
 
-func _is_shown(d: Dictionary) -> bool:
-	return show_advanced or not d.get("advanced", false)
+## 是否显示这个参数：高级参数要勾选「显示高级参数」；show_if = [参数 id, 值] 满足才显示；hide_if 满足就隐藏
+func _is_shown(d: Dictionary, scope: String, layer: int) -> bool:
+	if d.get("advanced", false) and not show_advanced:
+		return false
+	for rule: String in ["show_if", "hide_if"]:
+		if not d.has(rule):
+			continue
+		var cond: Array = d[rule]
+		var current: Variant = session.get_value(scope, layer, cond[0])
+		_deps["%s|%d|%s" % [scope, layer, cond[0]]] = current
+		var hit: bool = current == cond[1]
+		if (rule == "show_if" and not hit) or (rule == "hide_if" and hit):
+			return false
+	return true
 
 
 func _key(scope: String, id: String) -> String:
@@ -360,6 +382,90 @@ func _add_direction_pad(box: VBoxContainer) -> void:
 	box.add_child(row)
 
 
+## 图层列表：上面的图层盖住下面的；每行可以显示 / 隐藏、选中、上移、下移、复制、删除
+func _add_layer_list(layers: Array, selected: int) -> void:
+	var theme := EditorInterface.get_editor_theme()
+	add_child(HSeparator.new())
+	var head := HBoxContainer.new()
+	var title := Label.new()
+	title.text = "图层"
+	title.tooltip_text = "一个特效由若干图层叠成，列表上面的图层盖住下面的"
+	title.mouse_filter = Control.MOUSE_FILTER_STOP
+	if _bold != null:
+		title.add_theme_font_override("font", _bold)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(title)
+	var add := MenuButton.new()
+	add.text = "添加图层"
+	add.icon = _theme_icon(theme, &"Add")
+	add.flat = false
+	add.tooltip_text = "添加一个新图层（加在最上面）"
+	var ids := FxRegistry.module_ids()
+	var popup := add.get_popup()
+	for k in ids.size():
+		var mod: FxModule = FxRegistry.get_module(ids[k])
+		popup.add_item("%s —— %s" % [mod.get_display_name(), mod.get_description()], k)
+	popup.id_pressed.connect(func(k: int) -> void: layer_action.emit("add", -1, ids[k]))
+	head.add_child(add)
+	add_child(head)
+
+	var n := layers.size()
+	for i in range(n - 1, -1, -1):
+		var l: Dictionary = layers[i]
+		var lm: FxModule = FxRegistry.get_module(l["module"])
+		var visible_now: bool = l.get("enabled", true)
+		var row := HBoxContainer.new()
+		var eye := _mini_button(theme, &"GuiVisibilityVisible" if visible_now else &"GuiVisibilityHidden", "显" if visible_now else "隐", "显示 / 隐藏这个图层")
+		eye.pressed.connect(func() -> void: value_edited.emit("layer", i, "enabled", not visible_now, 0))
+		row.add_child(eye)
+		var pick := Button.new()
+		pick.text = "%s（%s）" % [l["name"], lm.get_display_name() if lm != null else l["module"]]
+		pick.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		pick.toggle_mode = true
+		pick.button_pressed = i == selected
+		pick.clip_text = true
+		pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		pick.focus_mode = Control.FOCUS_NONE
+		pick.tooltip_text = "点击编辑这个图层的参数"
+		if not visible_now:
+			pick.modulate = Color(1, 1, 1, 0.5)
+		pick.pressed.connect(func() -> void: layer_selected.emit(i))
+		row.add_child(pick)
+		var up := _mini_button(theme, &"MoveUp", "↑", "往上移（盖在更上面）")
+		up.disabled = i == n - 1
+		up.pressed.connect(func() -> void: layer_action.emit("up", i, ""))
+		row.add_child(up)
+		var down := _mini_button(theme, &"MoveDown", "↓", "往下移")
+		down.disabled = i == 0
+		down.pressed.connect(func() -> void: layer_action.emit("down", i, ""))
+		row.add_child(down)
+		var dup := _mini_button(theme, &"Duplicate", "复", "复制这个图层")
+		dup.pressed.connect(func() -> void: layer_action.emit("dup", i, ""))
+		row.add_child(dup)
+		var del := _mini_button(theme, &"Remove", "删", "删除这个图层")
+		del.disabled = n <= 1
+		del.pressed.connect(func() -> void: layer_action.emit("del", i, ""))
+		row.add_child(del)
+		add_child(row)
+
+
+func _mini_button(theme: Theme, icon: StringName, fallback: String, tip: String) -> Button:
+	var b := Button.new()
+	b.flat = true
+	b.focus_mode = Control.FOCUS_NONE
+	b.tooltip_text = tip
+	var tex := _theme_icon(theme, icon)
+	if tex != null:
+		b.icon = tex
+	else:
+		b.text = fallback
+	return b
+
+
+func _theme_icon(theme: Theme, icon: StringName) -> Texture2D:
+	return theme.get_icon(icon, &"EditorIcons") if theme.has_icon(icon, &"EditorIcons") else null
+
+
 func _add_action_button(box: VBoxContainer, text: String, tip: String, action: String) -> void:
 	var b := Button.new()
 	b.text = text
@@ -374,24 +480,22 @@ func _add_layers() -> void:
 	var layer: Dictionary = layers[li]
 	var m: FxModule = FxRegistry.get_module(layer["module"])
 	var module_name: String = m.get_display_name() if m != null else str(layer["module"])
-
-	add_child(HSeparator.new())
-	var row := HBoxContainer.new()
-	row.add_child(_label("当前图层", "一个特效可以由多个图层叠成；这里选择要编辑哪一层"))
-	var sel := OptionButton.new()
-	sel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	for i in layers.size():
-		var l: Dictionary = layers[i]
-		var lm: FxModule = FxRegistry.get_module(l["module"])
-		sel.add_item("%d. %s（%s）" % [i + 1, l["name"], lm.get_display_name() if lm != null else l["module"]])
-	sel.select(li)
-	sel.item_selected.connect(func(i: int) -> void: layer_selected.emit(i))
-	row.add_child(sel)
-	add_child(row)
+	_add_layer_list(layers, li)
 
 	var lbox := _section("layer", "图层设置 · " + str(layer["name"]))
+	var name_row := HBoxContainer.new()
+	name_row.add_child(_label("名称", "图层的名字，只用来区分图层"))
+	var name_edit := LineEdit.new()
+	name_edit.text = str(layer["name"])
+	name_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_edit.text_submitted.connect(func(t: String) -> void: value_edited.emit("layer", li, "name", t.strip_edges(), 0))
+	name_edit.focus_exited.connect(func() -> void:
+		if name_edit.text.strip_edges() != str(layer["name"]):
+			value_edited.emit("layer", li, "name", name_edit.text.strip_edges(), 0))
+	name_row.add_child(name_edit)
+	lbox.add_child(name_row)
 	for d: Dictionary in FxGlobals.layer_defs():
-		if _is_shown(d):
+		if d["id"] != "enabled" and _is_shown(d, "layer", li):
 			_add_row(lbox, "layer", li, d)
 	if m == null:
 		return
@@ -399,7 +503,7 @@ func _add_layers() -> void:
 	for group: String in PARAM_GROUPS:
 		var defs: Array = []
 		for d: Dictionary in mdefs:
-			if d.get("group", "detail") == group and _is_shown(d):
+			if d.get("group", "detail") == group and _is_shown(d, "param", li):
 				defs.append(d)
 		if defs.is_empty():
 			continue

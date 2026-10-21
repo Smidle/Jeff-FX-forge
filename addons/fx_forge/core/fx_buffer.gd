@@ -175,3 +175,99 @@ func line_px(xa: int, ya: int, xb: int, yb: int, val: float, alpha: float) -> vo
 			err += dx
 			y += sy
 	touch(mini(xa, xb), mini(ya, yb), maxi(xa, xb), maxi(ya, yb))
+
+
+## 实心矩形（整数像素坐标）
+func rect(rx: int, ry: int, rw: int, rh: int, val: float, alpha: float) -> void:
+	var xa := maxi(rx, 0)
+	var ya := maxi(ry, 0)
+	var xb := mini(rx + rw - 1, w - 1)
+	var yb := mini(ry + rh - 1, h - 1)
+	if xa > xb or ya > yb:
+		return
+	for y in range(ya, yb + 1):
+		var row := y * w
+		for x in range(xa, xb + 1):
+			var i := row + x
+			if val > v[i]:
+				v[i] = val
+			if alpha > a[i]:
+				a[i] = alpha
+	touch(xa, ya, xb, yb)
+
+
+## 菱形（|dx| + |dy| ≤ r），亮度从中心过渡到边缘
+func diamond(cx: float, cy: float, r: float, v_center: float, v_edge: float, alpha: float) -> void:
+	if r <= 0.0:
+		return
+	var xa := maxi(floori(cx - r), 0)
+	var xb := mini(ceili(cx + r), w - 1)
+	var ya := maxi(floori(cy - r), 0)
+	var yb := mini(ceili(cy + r), h - 1)
+	if xa > xb or ya > yb:
+		return
+	var inv_r := 1.0 / r
+	var dv := v_edge - v_center
+	var drew := false
+	for y in range(ya, yb + 1):
+		var dy := absf(float(y) + 0.5 - cy)
+		var row := y * w
+		for x in range(xa, xb + 1):
+			var d := absf(float(x) + 0.5 - cx) + dy
+			if d > r:
+				continue
+			var val := v_center + dv * d * inv_r
+			var i := row + x
+			if val > v[i]:
+				v[i] = val
+			if alpha > a[i]:
+				a[i] = alpha
+			drew = true
+	if drew:
+		touch(xa, ya, xb, yb)
+
+
+## 多边形填充（扫描线，奇偶规则），在像素中心采样
+func polygon(points: PackedVector2Array, val: float, alpha: float) -> void:
+	var n := points.size()
+	if n < 3:
+		return
+	var min_y := INF
+	var max_y := -INF
+	var min_x := INF
+	var max_x := -INF
+	for p in points:
+		min_y = minf(min_y, p.y)
+		max_y = maxf(max_y, p.y)
+		min_x = minf(min_x, p.x)
+		max_x = maxf(max_x, p.x)
+	var ya := maxi(floori(min_y), 0)
+	var yb := mini(ceili(max_y), h - 1)
+	var drew := false
+	var xs := PackedFloat32Array()
+	for y in range(ya, yb + 1):
+		var sy := float(y) + 0.5
+		xs.clear()
+		for k in n:
+			var p0 := points[k]
+			var p1 := points[(k + 1) % n]
+			if (p0.y <= sy and p1.y > sy) or (p1.y <= sy and p0.y > sy):
+				xs.append(p0.x + (sy - p0.y) / (p1.y - p0.y) * (p1.x - p0.x))
+		if xs.size() < 2:
+			continue
+		xs.sort()
+		var row := y * w
+		var k2 := 0
+		while k2 + 1 < xs.size():
+			var xa := maxi(ceili(xs[k2] - 0.5), 0)
+			var xb := mini(floori(xs[k2 + 1] - 0.5), w - 1)
+			for x in range(xa, xb + 1):
+				var i := row + x
+				if val > v[i]:
+					v[i] = val
+				if alpha > a[i]:
+					a[i] = alpha
+				drew = true
+			k2 += 2
+	if drew:
+		touch(maxi(floori(min_x), 0), ya, mini(ceili(max_x), w - 1), yb)

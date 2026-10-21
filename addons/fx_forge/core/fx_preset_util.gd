@@ -25,20 +25,37 @@ static func from_dict(d: Dictionary) -> FxPreset:
 	return p
 
 
-## 新建图层字典；opts 里可以覆盖图层设置（palette_slot、t_start ……）
+## 新建图层字典：先用图层设置默认值，再套模块自己的默认设置（get_layer_defaults），最后套 opts
 static func make_layer(module_id: String, name: String = "", params: Dictionary = {}, opts: Dictionary = {}) -> Dictionary:
 	var layer := FxParams.defaults(FxGlobals.layer_defs())
+	var m: FxModule = FxRegistry.get_module(module_id)
+	var module_defaults: Dictionary = m.get_layer_defaults() if m != null else {}
 	for d: Dictionary in FxGlobals.layer_defs():
 		var id: String = d["id"]
 		if opts.has(id):
 			layer[id] = opts[id]
+		elif module_defaults.has(id):
+			layer[id] = module_defaults[id]
 	layer["module"] = module_id
-	var m: FxModule = FxRegistry.get_module(module_id)
 	if name.is_empty():
 		name = m.get_display_name() if m != null else module_id
 	layer["name"] = name
 	layer["params"] = params.duplicate(true)
 	return layer
+
+
+## 单个图层补齐并校正（模块参数也补齐）；未知模块返回空字典
+static func normalize_layer(l: Dictionary) -> Dictionary:
+	var module_id := str(l.get("module", ""))
+	var m: FxModule = FxRegistry.get_module(module_id)
+	if m == null:
+		return {}
+	var nl := FxParams.normalize(FxGlobals.layer_defs(), l)
+	nl["module"] = module_id
+	nl["name"] = str(l.get("name", m.get_display_name()))
+	var params: Variant = l.get("params", {})
+	nl["params"] = FxParams.normalize(m.get_param_defs(), params if params is Dictionary else {})
+	return nl
 
 
 ## 规范化：补齐缺省、校正非法值、丢掉未知模块的图层（不改原件）。
@@ -47,19 +64,10 @@ static func normalized(preset: FxPreset) -> Dictionary:
 	var g := FxParams.normalize(FxGlobals.global_defs(), preset.globals)
 	var layers: Array = []
 	for raw: Variant in preset.layers:
-		if not (raw is Dictionary):
-			continue
-		var l: Dictionary = raw
-		var module_id := str(l.get("module", ""))
-		var m: FxModule = FxRegistry.get_module(module_id)
-		if m == null:
-			continue
-		var nl := FxParams.normalize(FxGlobals.layer_defs(), l)
-		nl["module"] = module_id
-		nl["name"] = str(l.get("name", m.get_display_name()))
-		var params: Variant = l.get("params", {})
-		nl["params"] = FxParams.normalize(m.get_param_defs(), params if params is Dictionary else {})
-		layers.append(nl)
+		if raw is Dictionary:
+			var nl := normalize_layer(raw)
+			if not nl.is_empty():
+				layers.append(nl)
 	return {"globals": g, "layers": layers}
 
 

@@ -1,0 +1,6 @@
+# 跨机器开发：文本统一用 LF 换行
+* text=auto eol=lf
+
+*.png binary
+*.gif binary
+*.ps1 text eol=crlf

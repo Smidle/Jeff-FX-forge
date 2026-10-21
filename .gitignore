@@ -1,0 +1,11 @@
+# Godot 生成的缓存（每台机器各自生成，新机器先跑 --import）
+.godot/
+/android/
+
+# 测试与自检输出
+/tests/output/
+/fx_exports/_selftest/
+
+# 系统文件
+.DS_Store
+Thumbs.db

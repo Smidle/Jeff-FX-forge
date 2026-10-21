@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="ExplosionBig" type="AnimatedSprite2D" unique_id=1513231199]
+[node name="ExplosionBig" type="AnimatedSprite2D" unique_id=495096780]
 texture_filter = 1
 sprite_frames = ExtResource("1_sbobd")
 autoplay = "default"

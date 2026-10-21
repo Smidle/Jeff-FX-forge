@@ -21,6 +21,7 @@ const PALETTES := {
 	"heal": ["治愈", "Heal", ["0c281a", "185c38", "2c9e5e", "5cda88", "b2ffc6", "ffffff"]],
 	"smoke": ["烟雾", "Smoke", ["1a1a24", "363644", "5c5c6a", "8c8c98", "c2c2ca"]],
 	"dust": ["尘土", "Dust", ["2a190e", "543420", "845e3a", "b68e5c", "e0c598"]],
+	"sand": ["沙尘", "Sand", ["4a3a2e", "7a6450", "a8927a", "d0bea2", "efe4cc"]],
 	"ink": ["水墨", "Ink", ["0a0a0e", "1a1a22", "2e2e38", "4a4a56", "727280"]],
 	"rose": ["樱花", "Rose", ["380b24", "781c48", "c03872", "ee689e", "ffb2ce", "fff0f6"]],
 }
@@ -42,6 +43,8 @@ const THEMES := {
 	"heal": ["治愈", "Heal", "heal", "holy", "dust"],
 	"ink": ["水墨", "Ink", "ink", "steel", "smoke"],
 	"rose": ["樱花", "Rose", "rose", "holy", "smoke"],
+	"dust": ["尘土", "Dust", "sand", "dust", "smoke"],
+	"smoke": ["烟雾", "Smoke", "smoke", "spark", "smoke"],
 }
 
 ## 4×4 Bayer 阈值（0~1）：按 ((y & 3) << 2) | (x & 3) 取值

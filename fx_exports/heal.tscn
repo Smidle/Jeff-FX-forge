@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="Heal" type="AnimatedSprite2D" unique_id=2104969051]
+[node name="Heal" type="AnimatedSprite2D" unique_id=1986866509]
 texture_filter = 1
 sprite_frames = ExtResource("1_3ei2b")
 autoplay = "default"

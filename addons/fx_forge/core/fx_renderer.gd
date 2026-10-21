@@ -88,7 +88,7 @@ static func make_job(preset: FxPreset, opts: Dictionary = {}) -> FxJob:
 		job.layers.append({
 			"module": m, "params": params, "state": state, "ctx": ctx,
 			"t0": float(l["t_start"]), "t1": float(l["t_end"]),
-			"r": r, "g": gg, "b": b, "outline": l["outline"],
+			"r": r, "g": gg, "b": b, "outline": l["outline"], "keep": m.keeps_tiny_pixels(),
 			# -1 = 跟随全局
 			"dissolve": _DISSOLVE_IDS.find(l["dissolve"]),
 		})

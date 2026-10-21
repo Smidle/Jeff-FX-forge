@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="BuffAura" type="AnimatedSprite2D" unique_id=712255905]
+[node name="BuffAura" type="AnimatedSprite2D" unique_id=1250931697]
 texture_filter = 1
 sprite_frames = ExtResource("1_wpvfr")
 autoplay = "default"

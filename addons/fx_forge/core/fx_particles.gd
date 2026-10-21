@@ -8,14 +8,14 @@ const FxBuffer := preload("fx_buffer.gd")
 
 const SHAPE_OPTIONS := [
 	["pixel", "像素点"], ["square", "方块"], ["disc", "圆点"], ["plus", "十字"],
-	["diamond", "菱形"], ["star", "四角星"], ["streak", "拖影线"], ["shard", "碎片"],
+	["diamond", "菱形"], ["star", "四角星"], ["streak", "拖影线"], ["shard", "碎片"], ["puff", "烟团"],
 ]
 const EMIT_SHAPE_OPTIONS := [["point", "一个点"], ["circle", "圆形区域"], ["ring", "圆环上"], ["line", "一条横线"], ["box", "矩形区域"]]
 const EMIT_MODE_OPTIONS := [["burst", "一次爆发"], ["stream", "持续发射"]]
 const FLOW_OPTIONS := [["out", "向外飞散"], ["gather", "向中心汇聚"]]
 
-enum Shape { PIXEL, SQUARE, DISC, PLUS, DIAMOND, STAR, STREAK, SHARD }
-const _SHAPE_IDS := ["pixel", "square", "disc", "plus", "diamond", "star", "streak", "shard"]
+enum Shape { PIXEL, SQUARE, DISC, PLUS, DIAMOND, STAR, STREAK, SHARD, PUFF }
+const _SHAPE_IDS := ["pixel", "square", "disc", "plus", "diamond", "star", "streak", "shard", "puff"]
 
 
 static func shape_index(id: String) -> int:
@@ -24,7 +24,8 @@ static func shape_index(id: String) -> int:
 
 ## 生成粒子表（主线程调用）。cfg 键：
 ##   count, emit_shape, emit_radius, emit_height（矩形区域的高）, angle（弧度，发射中心方向）, spread（度）,
-##   speed, speed_random, life, life_random, emit_mode, emit_time, size, size_random, spin（圈 / 整段）
+##   speed, speed_random, life, life_random, emit_mode, emit_time, size, size_random, spin（圈 / 整段）,
+##   mirror（true = 一半粒子左右镜像：从原点往两侧对称地飞，例如落地扬起的尘土）
 ## 返回字典，每项是 PackedFloat32Array：x y（出生点相对原点）, vx vy（初速度）, t0（出生时间）,
 ##   life, size, bright（0.75~1 的随机亮度）, rot（初始朝向）, spin, phase（闪烁相位）
 static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
@@ -43,6 +44,7 @@ static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 	var size: float = cfg["size"]
 	var size_rnd: float = cfg["size_random"]
 	var spin: float = cfg["spin"]
+	var mirror: bool = cfg.get("mirror", false)
 	var t := {}
 	for key: String in ["x", "y", "vx", "vy", "t0", "life", "size", "bright", "rot", "spin", "phase"]:
 		var arr := PackedFloat32Array()
@@ -97,9 +99,11 @@ static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 				py = (rng.randf() - 0.5) * float(cfg.get("emit_height", radius * 2.0))
 				ang = center + (rng.randf() - 0.5) * spread
 		var sp := speed * (1.0 - speed_rnd * rng.randf())
-		xs[i] = px
+		# 左右对称：奇数号粒子沿竖直线翻到另一边
+		var mx := -1.0 if mirror and i % 2 == 1 else 1.0
+		xs[i] = px * mx
 		ys[i] = py
-		vxs[i] = cos(ang) * sp
+		vxs[i] = cos(ang) * sp * mx
 		vys[i] = sin(ang) * sp
 		t0s[i] = rng.randf() * emit_time if not stream else k * maxf(emit_time, 0.001)
 		lifes[i] = maxf(life * (1.0 - life_rnd * rng.randf()), 0.02)
@@ -113,7 +117,8 @@ static func spawn(cfg: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 
 ## 把 u 时刻的粒子画进画布。cfg 键：
 ##   shape（Shape 枚举值）, size_end, gravity, drag, cool, bright, flicker, streak_len, loop, ox, oy,
-##   gather（true = 向中心汇聚：从「向外飞散时会到达的位置」出发，越来越快地被吸到原点）
+##   gather（true = 向中心汇聚：从「向外飞散时会到达的位置」出发，越来越快地被吸到原点）,
+##   sway（左右摆动的幅度，像素）, floor_y（粒子落到原点下方这么多像素就消失；不设 = 不限制）
 ## 返回这一帧画了多少个粒子
 static func draw(buf: FxBuffer, t: Dictionary, cfg: Dictionary, u: float) -> int:
 	var xs: PackedFloat32Array = t["x"]
@@ -139,6 +144,9 @@ static func draw(buf: FxBuffer, t: Dictionary, cfg: Dictionary, u: float) -> int
 	var ox: float = cfg["ox"]
 	var oy: float = cfg["oy"]
 	var gather: bool = cfg.get("gather", false)
+	var sway: float = cfg.get("sway", 0.0)
+	var use_floor: bool = cfg.has("floor_y")
+	var floor_y: float = oy + float(cfg.get("floor_y", 0.0))
 	var drawn := 0
 	for i in xs.size():
 		var ta := u - t0s[i]
@@ -181,6 +189,11 @@ static func draw(buf: FxBuffer, t: Dictionary, cfg: Dictionary, u: float) -> int
 				y += 0.5 * g * ta * ta
 				vy_now += g * ta
 			vx_now = vxs[i] * e
+			if sway > 0.0:
+				# 左右摆动（飘落的灰、上升的光点）：每个粒子相位不同，出生时从 0 开始摆
+				x += sway * (sin(TAU * (phases[i] + tau * 1.25)) - sin(TAU * phases[i]))
+			if use_floor and y > floor_y:
+				continue
 		var sz := maxf(sizes[i] * lerpf(1.0, size_end, tau), 0.5)
 		var val := clampf(bright * brights[i] * (1.0 - cool * tau), 0.0, 1.0)
 		if alpha <= 0.0:
@@ -230,6 +243,8 @@ static func _draw_one(buf: FxBuffer, shape: int, x: float, y: float, sz: float, 
 				Vector2(x + cos(rot - 2.4) * r * 0.55, y + sin(rot - 2.4) * r * 0.55),
 			])
 			buf.polygon(pts, val, alpha)
+		Shape.PUFF:
+			buf.puff(x, y, maxf(sz * 0.5, 0.6), val, alpha)
 
 
 ## 四角星：四条尖臂 + 菱形核心（射线爆发的闪光也用它）

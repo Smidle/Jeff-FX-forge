@@ -70,6 +70,8 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 	var ox := ctx.ox
 	var oy := ctx.oy
 	var inv_sq := 1.0 / maxf(squash, 0.05)
+	# 压扁后环的上下两端会薄到不足 1 像素而断成点：那里按屏幕上的实际厚度补足到 1 像素
+	var min_hw := 0.5 * inv_sq if squash < 0.999 else 0.0
 	var span := maxf(1.0 - delay * float(rings - 1), 0.05)
 	var need_angle := segments > 0 or wobble > 0.0
 	var phase := ctx.angle + spin_turns * TAU * u
@@ -108,14 +110,14 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 			first_w = wd
 		var half_w := wd * 0.5
 		var amp := wobble * wd * 1.5
-		var reach := r + half_w + amp + 1.0
+		var reach := r + maxf(half_w, min_hw) + amp + 1.0
 		var xa := maxi(floori(ox - reach), 0)
 		var xb := mini(ceili(ox + reach), buf.w - 1)
 		var ya := maxi(floori(oy - reach * squash), 0)
 		var yb := mini(ceili(oy + reach * squash), buf.h - 1)
 		if xa > xb or ya > yb:
 			continue
-		var inner2 := maxf(r - half_w - amp - 1.0, 0.0)
+		var inner2 := maxf(r - maxf(half_w, min_hw) - amp - 1.0, 0.0)
 		inner2 *= inner2
 		var outer2 := reach * reach
 		var vmul := 1.0 if k == 0 else 0.85
@@ -135,7 +137,12 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 						rr += (noise[int(fposmod(th, TAU) / TAU * nn) % nn] - 0.5) * amp
 					if segments > 0 and fposmod(th / TAU * segments, 1.0) > 1.0 - gap:
 						continue
-				var q := (d - (rr - half_w)) / wd
+				var hw := half_w
+				if min_hw > 0.0 and d > 0.001:
+					# 这一点上「压扁空间的 1 单位」在屏幕上有多长的倒数（椭圆距离场的梯度）
+					var g := sqrt(dx * dx + dy * dy * inv_sq * inv_sq) / d
+					hw = maxf(half_w, 0.5 * g)
+				var q := (d - (rr - hw)) / (hw * 2.0)
 				if q < 0.0 or q > 1.0:
 					continue
 				var val := (0.45 + 0.55 * pow(q, rim_pow)) * vmul

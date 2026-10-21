@@ -1,0 +1,123 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://dp4q5cdqupsaf"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_5rbq4"]
+
+[resource]
+script = ExtResource("1_5rbq4")
+preset_id = "teleport_beam"
+display_name = "传送光柱"
+category = "env"
+description = "传送、复活、出生点：地面光圈先收拢，随后一道光柱冲天而起，光点往上飞，最后光柱收成一条线消失。原点在脚下。"
+globals = {
+"canvas_h": 112,
+"canvas_w": 64,
+"fps": 15,
+"frames": 16,
+"origin_x": 0.5,
+"origin_y": 0.86,
+"outline": "none",
+"palette_accent": "thunder",
+"palette_main": "energy",
+"palette_smoke": "smoke",
+"soft": 0.3,
+"theme": "energy"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "ring",
+"name": "地面光圈",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"easing": "in_quad",
+"mode": "contract",
+"radius": 24.0,
+"squash": 0.3,
+"start": 0.3,
+"thin": 0.3,
+"width": 3.0
+},
+"t_end": 0.45,
+"t_start": 0.0
+}, {
+"angle_offset": 270.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "beam",
+"name": "光柱",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"base_glow": 0.4,
+"close_time": 0.4,
+"core": 0.35,
+"easing": "out_expo",
+"flow": 4,
+"length": 84.0,
+"open_time": 0.15,
+"pulse": 0.2,
+"ripple": 0.25,
+"streaks": 0.5,
+"taper": 0.3,
+"width": 18.0
+},
+"t_end": 1.0,
+"t_start": 0.15
+}, {
+"angle_offset": 270.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "上升光点",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "accent",
+"params": {
+"cool": 0.3,
+"count": 16,
+"drag": 0.3,
+"emit_mode": "stream",
+"emit_radius": 14.0,
+"emit_shape": "line",
+"emit_time": 0.6,
+"flicker": 0.2,
+"life": 0.45,
+"shape": "streak",
+"size": 1.5,
+"size_end": 1.0,
+"speed": 160.0,
+"speed_random": 0.5,
+"spread": 6.0,
+"streak_len": 0.6
+},
+"t_end": 1.0,
+"t_start": 0.15
+}]
+export_settings = {
+"base_name": "teleport_beam",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

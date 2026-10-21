@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="SlashInk" type="AnimatedSprite2D" unique_id=426727221]
+[node name="SlashInk" type="AnimatedSprite2D" unique_id=1165912351]
 texture_filter = 1
 sprite_frames = ExtResource("1_yxaip")
 autoplay = "default"

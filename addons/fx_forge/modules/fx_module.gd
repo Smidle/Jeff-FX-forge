@@ -40,6 +40,11 @@ func get_layer_defaults() -> Dictionary:
 	return {}
 
 
+## 画出的零散单个像素是有意的（粒子、火星）：后期「去除孤立像素」「最小团块」不清理这个图层的像素
+func keeps_tiny_pixels() -> bool:
+	return false
+
+
 ## 主线程调用：生成只读数据（随机表、噪声表……）。rng 已按图层种子初始化。
 func prepare(_p: Dictionary, _ctx: FxContext, _rng: RandomNumberGenerator) -> Dictionary:
 	return {}

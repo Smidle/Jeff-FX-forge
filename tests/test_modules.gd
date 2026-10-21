@@ -306,3 +306,67 @@ func test_buffer_polyline_and_ellipse() -> bool:
 	check(absf(m - PI * 20.0 * 8.0) < 40.0, "椭圆面积约 πab（%d）" % m)
 	check(el.v[32 * 64 + 32] > el.v[32 * 64 + 50], "椭圆中心比边缘亮")
 	return true
+
+
+func test_particles_mirror_floor_sway() -> bool:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 5
+	var cfg := {"count": 20, "emit_shape": "point", "emit_radius": 0.0, "angle": 0.0, "spread": 20.0, "speed": 50.0,
+		"speed_random": 0.0, "life": 0.5, "life_random": 0.0, "emit_mode": "burst", "emit_time": 0.0, "size": 2.0,
+		"size_random": 0.0, "spin": 0.0, "mirror": true}
+	var t := FxParticles.spawn(cfg, rng)
+	var left := 0
+	for v in (t["vx"] as PackedFloat32Array):
+		if v < 0.0:
+			left += 1
+	check_eq(left, 10, "左右对称：一半粒子往左飞")
+	# 落地消失：重力很大时，粒子不会出现在地面线以下
+	var params := {"use_floor": true, "floor_y": 0.0, "gravity": 600.0, "drag": 0.0, "spread": 360.0, "speed": 60.0,
+		"count": 40, "shape": "pixel", "size": 1.0, "life": 1.0, "life_random": 0.0}
+	var buf := _render("particles", params, 0.35)
+	var below := 0
+	for y in range(66, 128):
+		for x in 128:
+			if buf.a[y * 128 + x] > 0.0:
+				below += 1
+	check_eq(below, 0, "落地消失：地面线以下没有粒子")
+	check(_count(_render("particles", params.merged({"use_floor": false}, true), 0.35)) > _count(buf), "关掉落地消失后，掉下去的粒子还在")
+	var still := _render("particles", {"count": 10, "speed": 20.0}, 0.5)
+	var swayed := _render("particles", {"count": 10, "speed": 20.0, "sway": 6.0}, 0.5)
+	check(still.v != swayed.v, "左右摆动改变了粒子位置")
+	return true
+
+
+func test_puff_and_kept_pixels() -> bool:
+	var b := FxBuffer.new(32, 32)
+	b.puff(16.0, 16.0, 6.0, 1.0, 1.0)
+	check(b.v[11 * 32 + 16] > b.v[21 * 32 + 16], "烟团上亮下暗")
+	# 粒子图层的单个像素不会被「去除孤立像素」清掉
+	var s := {
+		"bayer": FxPalette.BAYER4, "dither_tab": FxPalette.FLAT, "dither_strength": 0.0,
+		"dissolve": FxPost.Dissolve.DITHER, "alpha_levels": 2, "cleanup": true, "min_cluster": 1,
+		"outline": FxPost.Outline.NONE, "outline_width": 1, "outline_square": false, "outline_rgb": Color.BLACK,
+		"soft": 0.0, "glow_rgb": Color.WHITE, "flip_h": false, "flip_v": false,
+	}
+	var c := PackedFloat32Array([0.25, 1.0])
+	var dot := FxBuffer.new(8, 8)
+	dot.plot(4, 4, 1.0, 1.0)
+	var plain: Dictionary = FxPost.new(8, 8).run([{"buf": dot, "fade": 1.0, "r": c, "g": c, "b": c, "outline": false}], s)
+	var kept: Dictionary = FxPost.new(8, 8).run([{"buf": dot, "fade": 1.0, "r": c, "g": c, "b": c, "outline": false, "keep": true}], s)
+	check_eq(int(plain["opaque"]), 0, "普通图层的孤立像素被清理")
+	check_eq(int(kept["opaque"]), 1, "粒子图层的单个像素保留")
+	return true
+
+
+func test_squashed_ring_is_continuous() -> bool:
+	var buf := _render("ring", {"radius": 30.0, "start": 1.0, "width": 2.0, "thin": 0.0, "squash": 0.25, "mode": "static"})
+	var gaps := 0
+	for x in range(64 - 24, 64 + 25):
+		var n := 0
+		for y in 128:
+			if buf.a[y * 128 + x] > 0.0:
+				n += 1
+		if n < 2:
+			gaps += 1
+	check_eq(gaps, 0, "压扁的细环上下两端没有断开")
+	return true

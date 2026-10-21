@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://k8ej0t178lvh"]
+
+[ext_resource type="SpriteFrames" uid="uid://cd5jcplx1iewl" path="res://fx_exports/water_splash_frames.tres" id="1_fntrf"]
+
+[sub_resource type="GDScript" id="GDScript_3xlu3"]
+script/source = "extends AnimatedSprite2D
+## FX Forge 导出的特效：自动播放；一次性特效播完自动删除自己。
+
+## 一次性（不循环）的特效播完后自动删除
+@export var free_on_finish := true
+## 生成时随机左右镜像（用 scale.x 翻转，锚点保持不动）
+@export var random_flip_h := false
+
+
+func _ready() -> void:
+	if random_flip_h and randf() < 0.5:
+		scale.x = -scale.x
+	if free_on_finish and sprite_frames != null and not sprite_frames.get_animation_loop(animation):
+		animation_finished.connect(queue_free)
+	play()
+"
+
+[node name="WaterSplash" type="AnimatedSprite2D" unique_id=1900524519]
+texture_filter = 1
+sprite_frames = ExtResource("1_fntrf")
+autoplay = "default"
+centered = false
+offset = Vector2(-36, -51)
+script = SubResource("GDScript_3xlu3")

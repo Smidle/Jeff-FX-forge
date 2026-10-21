@@ -467,4 +467,158 @@ static func _defs() -> Array:
 					"life": 0.5, "cool": 0.2, "streak_len": 0.8}},
 			],
 		},
+		# ---------------------------------------------------------------- 环境与通用
+		{
+			"id": "landing_dust", "name": "落地尘土", "category": "env",
+			"description": "跳跃落地：脚下往左右两边滚开的尘团 + 溅起又落下的小石子 + 贴地的一圈冲击线。原点在脚下。",
+			"globals": {"canvas_w": 80, "canvas_h": 40, "frames": 10, "fps": 15, "origin_x": 0.5, "origin_y": 0.8,
+				"theme": "dust", "palette_main": "sand", "palette_accent": "dust", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "ring", "name": "冲击线", "follow_dir": false, "outline": false, "t_end": 0.45, "params": {
+					"radius": 30.0, "width": 2.0, "thin": 0.5, "start": 0.3, "squash": 0.2, "easing": "out_cubic"}},
+				{"module": "particles", "name": "尘团", "palette_slot": "main", "follow_dir": false, "angle_offset": 348.0,
+						"dissolve": "shrink", "params": {
+					"count": 14, "shape": "puff", "size": 7.0, "size_end": 1.6, "size_random": 0.5, "mirror": true,
+					"spread": 24.0, "speed": 115.0, "speed_random": 0.6, "gravity": -20.0, "drag": 3.5,
+					"emit_time": 0.05, "life": 1.0, "life_random": 0.1, "cool": 0.2}},
+				{"module": "particles", "name": "小石子", "follow_dir": false, "angle_offset": 305.0, "params": {
+					"count": 6, "shape": "square", "size": 2.0, "size_end": 1.0, "mirror": true, "spread": 40.0,
+					"speed": 75.0, "gravity": 240.0, "drag": 0.8, "life": 0.6, "cool": 0.2, "use_floor": true, "floor_y": 1.0}},
+			],
+		},
+		{
+			"id": "run_dust", "name": "跑步扬尘", "category": "env",
+			"description": "跑步、急停时脚后跟扬起的一小股尘土。方向 = 跑步方向（朝左跑用「水平翻转」）。原点在脚下。",
+			"globals": {"canvas_w": 44, "canvas_h": 28, "frames": 8, "fps": 15, "origin_x": 0.7, "origin_y": 0.85,
+				"theme": "dust", "palette_main": "sand", "palette_accent": "dust", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "particles", "name": "扬尘", "palette_slot": "main", "angle_offset": 200.0, "dissolve": "shrink", "params": {
+					"count": 6, "shape": "puff", "size": 5.0, "size_end": 1.4, "size_random": 0.5, "spread": 40.0,
+					"speed": 45.0, "speed_random": 0.5, "gravity": -15.0, "drag": 3.0, "emit_time": 0.1,
+					"life": 0.9, "life_random": 0.15, "cool": 0.2}},
+				{"module": "particles", "name": "沙粒", "palette_slot": "main", "angle_offset": 215.0, "params": {
+					"count": 4, "shape": "pixel", "size": 1.0, "size_end": 1.0, "spread": 30.0, "speed": 60.0,
+					"gravity": 160.0, "drag": 1.0, "life": 0.55, "cool": 0.3, "use_floor": true, "floor_y": 1.0}},
+			],
+		},
+		{
+			"id": "smoke_bomb", "name": "烟雾弹", "category": "env",
+			"description": "烟雾弹、遁术、出场：一下爆闪，随后翻滚的浓烟和向四周滚开的烟团慢慢散去。原点在地面。",
+			"globals": {"canvas_w": 96, "canvas_h": 96, "frames": 16, "fps": 12, "origin_x": 0.5, "origin_y": 0.62,
+				"theme": "smoke", "palette_main": "smoke", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "blob", "name": "浓烟", "dissolve": "shrink", "params": {
+					"puffs": 8, "radius": 19.0, "spread": 15.0, "start": 0.35, "squash": 0.85, "noise": 0.55,
+					"noise_scale": 1.0, "rise": 14.0, "heat": 0.85, "cool": 0.3, "core": 0.35, "burn": 0.85,
+					"expand_time": 0.35, "stagger": 0.2}},
+				{"module": "particles", "name": "四散烟团", "palette_slot": "main", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "dissolve": "shrink", "params": {
+					"count": 12, "shape": "puff", "size": 10.0, "size_end": 1.5, "size_random": 0.4, "spread": 220.0,
+					"speed": 115.0, "speed_random": 0.35, "gravity": -12.0, "drag": 3.0, "emit_time": 0.05,
+					"life": 0.85, "life_random": 0.25, "cool": 0.35}},
+				{"module": "burst", "name": "爆闪", "palette_slot": "accent", "follow_dir": false, "outline": false, "t_end": 0.3, "params": {
+					"rays": 8, "length": 16.0, "width": 3.0, "ray_time": 0.8, "flash": "star", "flash_size": 12.0,
+					"flash_time": 0.6}},
+			],
+		},
+		{
+			"id": "water_splash", "name": "落水水花", "category": "env",
+			"description": "掉进水里、石头入水：向上溅起的水柱和水滴落回水面消失，水面荡开两圈涟漪。原点在水面。",
+			"globals": {"canvas_w": 72, "canvas_h": 64, "frames": 12, "fps": 15, "origin_x": 0.5, "origin_y": 0.8,
+				"theme": "water", "palette_main": "water", "palette_accent": "ice", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "ring", "name": "涟漪", "follow_dir": false, "outline": false, "params": {
+					"radius": 30.0, "width": 2.0, "thin": 0.5, "start": 0.15, "squash": 0.25, "rings": 2,
+					"ring_delay": 0.25, "easing": "out_cubic"}},
+				{"module": "particles", "name": "水柱", "palette_slot": "main", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "params": {
+					"count": 4, "shape": "streak", "size": 5.0, "size_end": 2.0, "spread": 12.0, "speed": 170.0,
+					"speed_random": 0.3, "gravity": 400.0, "drag": 0.3, "emit_time": 0.08, "life": 1.0, "life_random": 0.0,
+					"cool": 0.0, "streak_len": 0.5, "use_floor": true, "floor_y": 0.0}},
+				{"module": "particles", "name": "水滴", "palette_slot": "main", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "params": {
+					"count": 12, "shape": "disc", "size": 3.5, "size_end": 1.5, "spread": 50.0, "speed": 135.0,
+					"speed_random": 0.5, "gravity": 380.0, "drag": 0.8, "emit_time": 0.1, "life": 1.0, "life_random": 0.1,
+					"cool": 0.1, "use_floor": true, "floor_y": 0.0}},
+				{"module": "particles", "name": "飞沫", "follow_dir": false, "angle_offset": 270.0, "params": {
+					"count": 10, "shape": "square", "size": 1.5, "size_end": 1.0, "spread": 90.0, "speed": 100.0,
+					"gravity": 300.0, "drag": 0.8, "emit_time": 0.1, "life": 0.8, "cool": 0.1, "use_floor": true, "floor_y": 2.0}},
+			],
+		},
+		{
+			"id": "pickup_sparkle", "name": "拾取闪光", "category": "env",
+			"description": "捡到金币、道具、升级时的一闪：十字星芒 + 扩散的光圈 + 往上飘的闪粉。",
+			"globals": {"canvas_w": 48, "canvas_h": 48, "frames": 8, "fps": 15,
+				"theme": "holy", "palette_main": "holy", "palette_accent": "spark", "palette_smoke": "dust",
+				"outline": "none"},
+			"layers": [
+				{"module": "burst", "name": "星芒", "follow_dir": false, "t_end": 0.75, "params": {
+					"rays": 8, "length": 18.0, "width": 2.0, "length_random": 0.0, "angle_random": 0.0, "alternate": 0.6,
+					"inner": 0.05, "ray_time": 0.7, "detach": 0.0, "flash": "star", "flash_size": 8.0, "flash_time": 0.5}},
+				{"module": "burst", "name": "余闪", "palette_slot": "accent", "follow_dir": false, "t_start": 0.45,
+						"offset_x": 7.0, "offset_y": -6.0, "params": {
+					"rays": 4, "length": 7.0, "width": 1.5, "length_random": 0.0, "angle_random": 0.0, "alternate": 0.0,
+					"inner": 0.05, "ray_time": 0.9, "detach": 0.0, "flash": "star", "flash_size": 4.0, "flash_time": 0.8}},
+				{"module": "particles", "name": "闪粉", "palette_slot": "main", "follow_dir": false, "params": {
+					"count": 8, "shape": "star", "size": 3.0, "size_end": 0.4, "speed": 45.0, "gravity": -30.0, "drag": 1.5,
+					"emit_time": 0.1, "life": 0.9, "life_random": 0.05, "cool": 0.1, "flicker": 0.25}},
+			],
+		},
+		{
+			"id": "teleport_beam", "name": "传送光柱", "category": "env",
+			"description": "传送、复活、出生点：地面光圈先收拢，随后一道光柱冲天而起，光点往上飞，最后光柱收成一条线消失。原点在脚下。",
+			"globals": {"canvas_w": 64, "canvas_h": 112, "frames": 16, "fps": 15, "origin_x": 0.5, "origin_y": 0.86,
+				"theme": "energy", "palette_main": "energy", "palette_accent": "thunder", "palette_smoke": "smoke",
+				"outline": "none", "soft": 0.3},
+			"layers": [
+				{"module": "ring", "name": "地面光圈", "follow_dir": false, "t_end": 0.45, "params": {
+					"radius": 24.0, "width": 3.0, "thin": 0.3, "start": 0.3, "squash": 0.3, "mode": "contract", "easing": "in_quad"}},
+				{"module": "beam", "name": "光柱", "follow_dir": false, "angle_offset": 270.0, "t_start": 0.15, "params": {
+					"length": 84.0, "width": 18.0, "core": 0.35, "taper": 0.3, "ripple": 0.25, "base_glow": 0.4,
+					"open_time": 0.15, "close_time": 0.4, "easing": "out_expo", "flow": 4, "pulse": 0.2, "streaks": 0.5}},
+				{"module": "particles", "name": "上升光点", "follow_dir": false, "angle_offset": 270.0, "t_start": 0.15, "params": {
+					"count": 16, "shape": "streak", "size": 1.5, "size_end": 1.0, "emit_shape": "line", "emit_radius": 14.0,
+					"spread": 6.0, "speed": 160.0, "speed_random": 0.5, "drag": 0.3, "emit_mode": "stream", "emit_time": 0.6,
+					"life": 0.45, "cool": 0.3, "flicker": 0.2, "streak_len": 0.6}},
+			],
+		},
+		{
+			"id": "dissolve_away", "name": "消散", "category": "env",
+			"description": "角色死亡、灵体消失：整个身体范围里不断冒出微粒，一边摇摆一边往上飘散。叠在角色身上用，原点在脚下。",
+			"globals": {"canvas_w": 48, "canvas_h": 72, "frames": 16, "fps": 12, "origin_x": 0.5, "origin_y": 0.85,
+				"theme": "arcane", "palette_main": "arcane", "palette_accent": "rose", "palette_smoke": "smoke",
+				"outline": "none"},
+			"layers": [
+				{"module": "particles", "name": "飘散微粒", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -17.0, "params": {
+					"count": 60, "shape": "square", "size": 2.5, "size_end": 0.5, "size_random": 0.5, "emit_shape": "box",
+					"emit_radius": 10.0, "emit_height": 34.0, "spread": 30.0, "speed": 45.0, "speed_random": 0.6,
+					"gravity": -40.0, "drag": 1.0, "sway": 2.5, "emit_mode": "stream", "emit_time": 0.7, "life": 0.45,
+					"life_random": 0.4, "cool": 0.5, "flicker": 0.15}},
+				{"module": "particles", "name": "亮点", "follow_dir": false, "angle_offset": 270.0, "offset_y": -17.0, "params": {
+					"count": 14, "shape": "pixel", "size": 1.0, "size_end": 1.0, "emit_shape": "box", "emit_radius": 10.0,
+					"emit_height": 34.0, "spread": 20.0, "speed": 60.0, "gravity": -30.0, "drag": 1.0, "sway": 1.5,
+					"emit_mode": "stream", "emit_time": 0.7, "life": 0.35, "cool": 0.2, "flicker": 0.4}},
+			],
+		},
+		{
+			"id": "dash_trail", "name": "冲刺残影", "category": "env",
+			"description": "冲刺、闪避：身后拉出几道渐隐的速度残影，起步的地方扬起尘土。方向 = 冲刺方向，原点在角色身上。",
+			"globals": {"canvas_w": 96, "canvas_h": 40, "frames": 8, "fps": 15, "origin_x": 0.8, "origin_y": 0.55,
+				"theme": "steel", "palette_main": "steel", "palette_accent": "spark", "palette_smoke": "sand"},
+			"layers": [
+				{"module": "particles", "name": "起步尘土", "palette_slot": "smoke", "angle_offset": 200.0, "dissolve": "shrink",
+						"offset_x": -52.0, "offset_y": 10.0, "params": {
+					"count": 6, "shape": "puff", "size": 6.0, "size_end": 1.4, "size_random": 0.5, "spread": 40.0,
+					"speed": 35.0, "speed_random": 0.5, "gravity": -15.0, "drag": 3.0, "emit_time": 0.05,
+					"life": 0.9, "life_random": 0.2, "cool": 0.3}},
+				{"module": "streak", "name": "残影", "offset_x": -30.0, "params": {
+					"count": 5, "length": 60.0, "width": 7.0, "spread": 26.0, "length_random": 0.5, "main_boost": 0.5,
+					"taper": 0.6, "travel": 10.0, "stagger": 0.25, "head": 0.0}},
+				{"module": "particles", "name": "速度线", "palette_slot": "main", "angle_offset": 180.0, "offset_x": -8.0, "params": {
+					"count": 8, "shape": "streak", "size": 1.0, "size_end": 1.0, "emit_shape": "line", "emit_radius": 14.0,
+					"spread": 0.0, "speed": 120.0, "drag": 0.5, "emit_mode": "stream", "emit_time": 0.5, "life": 0.5,
+					"cool": 0.3, "streak_len": 1.2}},
+			],
+		},
 	]

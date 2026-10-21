@@ -1,0 +1,75 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://cvpjmypwfmn0n"]
+
+[ext_resource type="Texture2D" uid="uid://d0x8crvq002tk" path="res://fx_exports/run_dust.png" id="1_421gr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8f65"]
+atlas = ExtResource("1_421gr")
+region = Rect2(0, 0, 44, 28)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kqoub"]
+atlas = ExtResource("1_421gr")
+region = Rect2(44, 0, 44, 28)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqi2k"]
+atlas = ExtResource("1_421gr")
+region = Rect2(88, 0, 44, 28)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_38w4b"]
+atlas = ExtResource("1_421gr")
+region = Rect2(132, 0, 44, 28)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t75ji"]
+atlas = ExtResource("1_421gr")
+region = Rect2(176, 0, 44, 28)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lwnx"]
+atlas = ExtResource("1_421gr")
+region = Rect2(220, 0, 44, 28)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rf4lg"]
+atlas = ExtResource("1_421gr")
+region = Rect2(264, 0, 44, 28)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aecyr"]
+atlas = ExtResource("1_421gr")
+region = Rect2(308, 0, 44, 28)
+filter_clip = true
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8f65")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kqoub")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gqi2k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_38w4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t75ji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lwnx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rf4lg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aecyr")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 15.0
+}]

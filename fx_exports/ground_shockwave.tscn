@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="GroundShockwave" type="AnimatedSprite2D" unique_id=1831140163]
+[node name="GroundShockwave" type="AnimatedSprite2D" unique_id=1654282085]
 texture_filter = 1
 sprite_frames = ExtResource("1_s4141")
 autoplay = "default"

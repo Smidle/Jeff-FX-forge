@@ -105,6 +105,39 @@ func disc(cx: float, cy: float, r: float, v_center: float, v_edge: float, alpha:
 		touch(xa, ya, xb, yb)
 
 
+## 烟团：光从左上方照来的实心圆（尘土、烟雾粒子）。越靠上越亮，底部暗一半，几个叠在一起就是一团云
+func puff(cx: float, cy: float, r: float, val: float, alpha: float) -> void:
+	if r <= 0.0:
+		return
+	var xa := maxi(floori(cx - r), 0)
+	var xb := mini(ceili(cx + r), w - 1)
+	var ya := maxi(floori(cy - r), 0)
+	var yb := mini(ceili(cy + r), h - 1)
+	if xa > xb or ya > yb:
+		return
+	var r2 := r * r
+	var k := 0.65 / r
+	var drew := false
+	for y in range(ya, yb + 1):
+		var dy := float(y) + 0.5 - cy
+		var dy2 := dy * dy
+		var row := y * w
+		for x in range(xa, xb + 1):
+			var dx := float(x) + 0.5 - cx
+			if dx * dx + dy2 > r2:
+				continue
+			var lit := clampf(0.5 - (dx * 0.3 + dy * 0.7) * k, 0.0, 1.0)
+			var val2 := val * (0.5 + 0.5 * lit)
+			var i := row + x
+			if val2 > v[i]:
+				v[i] = val2
+			if alpha > a[i]:
+				a[i] = alpha
+			drew = true
+	if drew:
+		touch(xa, ya, xb, yb)
+
+
 ## 粗细、亮度都可渐变的线段（胶囊）
 func capsule(ax: float, ay: float, bx: float, by: float, r0: float, r1: float, v0: float, v1: float, alpha: float) -> void:
 	var rm := maxf(r0, r1)

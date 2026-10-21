@@ -1,0 +1,121 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://bmheow2w1aqra"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_v2rpd"]
+
+[resource]
+script = ExtResource("1_v2rpd")
+preset_id = "smoke_bomb"
+display_name = "烟雾弹"
+category = "env"
+description = "烟雾弹、遁术、出场：一下爆闪，随后翻滚的浓烟和向四周滚开的烟团慢慢散去。原点在地面。"
+globals = {
+"canvas_h": 96,
+"canvas_w": 96,
+"fps": 12,
+"frames": 16,
+"origin_x": 0.5,
+"origin_y": 0.62,
+"palette_accent": "spark",
+"palette_main": "smoke",
+"palette_smoke": "smoke",
+"theme": "smoke"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "shrink",
+"enabled": true,
+"follow_dir": true,
+"module": "blob",
+"name": "浓烟",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"burn": 0.85,
+"cool": 0.3,
+"core": 0.35,
+"expand_time": 0.35,
+"heat": 0.85,
+"noise": 0.55,
+"noise_scale": 1.0,
+"puffs": 8,
+"radius": 19.0,
+"rise": 14.0,
+"spread": 15.0,
+"squash": 0.85,
+"stagger": 0.2,
+"start": 0.35
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 270.0,
+"dissolve": "shrink",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "四散烟团",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"cool": 0.35,
+"count": 12,
+"drag": 3.0,
+"emit_time": 0.05,
+"gravity": -12.0,
+"life": 0.85,
+"life_random": 0.25,
+"shape": "puff",
+"size": 10.0,
+"size_end": 1.5,
+"size_random": 0.4,
+"speed": 115.0,
+"speed_random": 0.35,
+"spread": 220.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "burst",
+"name": "爆闪",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "accent",
+"params": {
+"flash": "star",
+"flash_size": 12.0,
+"flash_time": 0.6,
+"length": 16.0,
+"ray_time": 0.8,
+"rays": 8,
+"width": 3.0
+},
+"t_end": 0.3,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "smoke_bomb",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

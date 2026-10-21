@@ -19,6 +19,8 @@ var ca: PackedFloat32Array
 var om: PackedByteArray
 ## 抖动溶解程度（1 = 实心；小于 1 表示这个像素是溶解点阵的一部分：不当作孤立像素清理，描边也按同样密度溶解）
 var dl: PackedFloat32Array
+## 1 = 有意画出的零散像素（粒子图层）：不参与孤立像素和小碎块清理
+var kp: PackedByteArray
 var bayer: PackedFloat32Array
 ## 当前有内容的区域（含边界）；bx1 < bx0 表示空
 var bx0: int
@@ -43,6 +45,8 @@ func _init(width: int, height: int) -> void:
 	om.fill(0)
 	dl.resize(n)
 	dl.fill(1.0)
+	kp.resize(n)
+	kp.fill(0)
 	bx0 = w
 	by0 = h
 	bx1 = -1
@@ -106,6 +110,7 @@ func _shade(part: Dictionary, s: Dictionary) -> void:
 	var fsteps := float(steps)
 	var damt: float = float(s["dither_strength"]) / fsteps
 	var oflag: int = 1 if part["outline"] else 0
+	var kflag: int = 1 if part.get("keep", false) else 0
 	bx0 = mini(bx0, buf.x0)
 	by0 = mini(by0, buf.y0)
 	bx1 = maxi(bx1, buf.x1)
@@ -148,6 +153,7 @@ func _shade(part: Dictionary, s: Dictionary) -> void:
 				ca[i] = 1.0
 				om[i] = oflag
 				dl[i] = dith
+				kp[i] = kflag
 			else:
 				var keep := ca[i] * (1.0 - alpha)
 				var na := alpha + keep
@@ -157,6 +163,8 @@ func _shade(part: Dictionary, s: Dictionary) -> void:
 				ca[i] = na
 				if oflag == 1 and na >= 0.5:
 					om[i] = 1
+				if kflag == 1:
+					kp[i] = 1
 
 
 ## 去掉周围 8 格都没有邻居的单个像素（斜向相连算邻居：像素画里的斜线是合法的；溶解点阵不清理）
@@ -168,7 +176,7 @@ func _remove_orphans() -> void:
 		var down := y < h - 1
 		for x in range(bx0, bx1 + 1):
 			var i := row + x
-			if ca[i] <= 0.0 or dl[i] < 1.0:
+			if ca[i] <= 0.0 or dl[i] < 1.0 or kp[i] == 1:
 				continue
 			var left := x > 0
 			var right := x < w - 1
@@ -197,7 +205,7 @@ func _remove_small_clusters(min_size: int) -> void:
 	for y in range(by0, by1 + 1):
 		for x in range(bx0, bx1 + 1):
 			var start := y * w + x
-			if seen[start] == 1 or ca[start] <= 0.0 or dl[start] < 1.0:
+			if seen[start] == 1 or ca[start] <= 0.0 or dl[start] < 1.0 or kp[start] == 1:
 				continue
 			comp.clear()
 			stack.clear()
@@ -218,7 +226,7 @@ func _remove_small_clusters(min_size: int) -> void:
 						if nx < 0 or nx >= w:
 							continue
 						var j := ny * w + nx
-						if seen[j] == 0 and ca[j] > 0.0 and dl[j] >= 1.0:
+						if seen[j] == 0 and ca[j] > 0.0 and dl[j] >= 1.0 and kp[j] == 0:
 							seen[j] = 1
 							stack.append(j)
 			if comp.size() < min_size:

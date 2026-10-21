@@ -1,0 +1,120 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://bodmyam20or6s"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_nxpwe"]
+
+[resource]
+script = ExtResource("1_nxpwe")
+preset_id = "landing_dust"
+display_name = "落地尘土"
+category = "env"
+description = "跳跃落地：脚下往左右两边滚开的尘团 + 溅起又落下的小石子 + 贴地的一圈冲击线。原点在脚下。"
+globals = {
+"canvas_h": 40,
+"canvas_w": 80,
+"fps": 15,
+"frames": 10,
+"origin_x": 0.5,
+"origin_y": 0.8,
+"palette_accent": "dust",
+"palette_main": "sand",
+"palette_smoke": "smoke",
+"theme": "dust"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "ring",
+"name": "冲击线",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "main",
+"params": {
+"easing": "out_cubic",
+"radius": 30.0,
+"squash": 0.2,
+"start": 0.3,
+"thin": 0.5,
+"width": 2.0
+},
+"t_end": 0.45,
+"t_start": 0.0
+}, {
+"angle_offset": 348.0,
+"dissolve": "shrink",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "尘团",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "main",
+"params": {
+"cool": 0.2,
+"count": 14,
+"drag": 3.5,
+"emit_time": 0.05,
+"gravity": -20.0,
+"life": 1.0,
+"life_random": 0.1,
+"mirror": true,
+"shape": "puff",
+"size": 7.0,
+"size_end": 1.6,
+"size_random": 0.5,
+"speed": 115.0,
+"speed_random": 0.6,
+"spread": 24.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 305.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "小石子",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "accent",
+"params": {
+"cool": 0.2,
+"count": 6,
+"drag": 0.8,
+"floor_y": 1.0,
+"gravity": 240.0,
+"life": 0.6,
+"mirror": true,
+"shape": "square",
+"size": 2.0,
+"size_end": 1.0,
+"speed": 75.0,
+"spread": 40.0,
+"use_floor": true
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "landing_dust",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

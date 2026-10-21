@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="BlueFlame" type="AnimatedSprite2D" unique_id=1950908139]
+[node name="BlueFlame" type="AnimatedSprite2D" unique_id=2076093865]
 texture_filter = 1
 sprite_frames = ExtResource("1_83iko")
 autoplay = "default"

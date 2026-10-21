@@ -20,7 +20,7 @@ func _ready() -> void:
 	play()
 "
 
-[node name="Campfire" type="AnimatedSprite2D" unique_id=1611246109]
+[node name="Campfire" type="AnimatedSprite2D" unique_id=223851678]
 texture_filter = 1
 sprite_frames = ExtResource("1_f1uft")
 autoplay = "default"

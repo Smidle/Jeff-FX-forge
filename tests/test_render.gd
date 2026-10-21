@@ -117,6 +117,23 @@ func test_frame_time_mapping() -> bool:
 	return true
 
 
+## 循环首尾校验：循环预设的「第 N 帧」（t = 1）必须和第 0 帧逐字节相同，且动画确实在动
+func test_loop_presets_are_seamless() -> bool:
+	var looped := 0
+	for p: Resource in Builtin.all():
+		if not bool(p.globals.get("loop", false)):
+			continue
+		looped += 1
+		var n: int = p.globals["frames"]
+		var first: Image = FxRenderer.render_images(p, {"frames": PackedInt32Array([0])})[0]
+		var second: Image = FxRenderer.render_images(p, {"frames": PackedInt32Array([1])})[0]
+		var wrap: Image = FxRenderer.render_images(p, {"frames": PackedInt32Array([n])})[0]
+		check(first.get_data() == wrap.get_data(), p.preset_id + "：循环首尾无缝（第 N 帧 = 第 0 帧）")
+		check(first.get_data() != second.get_data(), p.preset_id + "：动画在动（第 0、1 帧不同）")
+	check(looped >= 4, "至少 4 个循环预设（实际 %d）" % looped)
+	return true
+
+
 func test_unknown_module_layer_is_skipped() -> bool:
 	var p: Resource = FxPresetUtil.new_blank()
 	p.layers.append({"module": "不存在的模块", "params": {}})

@@ -10,6 +10,9 @@ const _SCRIPTS := {
 	"ring": preload("../modules/ring.gd"),
 	"particles": preload("../modules/particles.gd"),
 	"streak": preload("../modules/streak.gd"),
+	"blob": preload("../modules/blob.gd"),
+	"flame": preload("../modules/flame.gd"),
+	"bolt": preload("../modules/bolt.gd"),
 }
 
 ## 模块实例无状态，全局共用一份（在主线程加载脚本时创建）

@@ -1,0 +1,123 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://s3ib578l64mn"]
+
+[ext_resource type="Texture2D" uid="uid://ckgij1h4jhf5k" path="res://fx_exports/explosion_big.png" id="1_opspe"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_opspe"]
+atlas = ExtResource("1_opspe")
+region = Rect2(0, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukuws"]
+atlas = ExtResource("1_opspe")
+region = Rect2(120, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u51nm"]
+atlas = ExtResource("1_opspe")
+region = Rect2(240, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ynm3"]
+atlas = ExtResource("1_opspe")
+region = Rect2(360, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u7lc5"]
+atlas = ExtResource("1_opspe")
+region = Rect2(480, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msi4d"]
+atlas = ExtResource("1_opspe")
+region = Rect2(600, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sm2mf"]
+atlas = ExtResource("1_opspe")
+region = Rect2(720, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_de382"]
+atlas = ExtResource("1_opspe")
+region = Rect2(840, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f44sr"]
+atlas = ExtResource("1_opspe")
+region = Rect2(960, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxa2e"]
+atlas = ExtResource("1_opspe")
+region = Rect2(1080, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s7f02"]
+atlas = ExtResource("1_opspe")
+region = Rect2(1200, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_roidy"]
+atlas = ExtResource("1_opspe")
+region = Rect2(1320, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc32a"]
+atlas = ExtResource("1_opspe")
+region = Rect2(1440, 0, 120, 120)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4aa3"]
+atlas = ExtResource("1_opspe")
+region = Rect2(1560, 0, 120, 120)
+filter_clip = true
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_opspe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ukuws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u51nm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ynm3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u7lc5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msi4d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sm2mf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_de382")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f44sr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fxa2e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s7f02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_roidy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jc32a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4aa3")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 15.0
+}]

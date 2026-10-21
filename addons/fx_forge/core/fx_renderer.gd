@@ -89,6 +89,8 @@ static func make_job(preset: FxPreset, opts: Dictionary = {}) -> FxJob:
 			"module": m, "params": params, "state": state, "ctx": ctx,
 			"t0": float(l["t_start"]), "t1": float(l["t_end"]),
 			"r": r, "g": gg, "b": b, "outline": l["outline"],
+			# -1 = 跟随全局
+			"dissolve": _DISSOLVE_IDS.find(l["dissolve"]),
 		})
 
 	var main_cols: PackedColorArray = palettes["main"]

@@ -66,4 +66,5 @@ static func layer_defs() -> Array:
 		P.num("offset_x", "位置偏移 X", "Offset X", -256.0, 256.0, 0.0, {group = "layer", unit = "px", scale = true, step = 0.5}),
 		P.num("offset_y", "位置偏移 Y", "Offset Y", -256.0, 256.0, 0.0, {group = "layer", unit = "px", scale = true, step = 0.5}),
 		P.boolean("outline", "参与描边", "Outlined", true, {group = "layer"}),
+		P.choice("dissolve", "消散方式", "Dissolve", [["global", "跟随全局"]] + DISSOLVE_OPTIONS, "global", {group = "layer", tip = "这个图层变淡时的表现，可以和其他图层不同（例如烟雾用淡出）"}),
 	]

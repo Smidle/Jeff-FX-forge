@@ -1,0 +1,251 @@
+{
+	"frames": [
+		{
+			"duration": 83,
+			"filename": "torch default 0.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 1.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 32,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 2.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 64,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 3.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 96,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 4.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 128,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 5.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 160,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 6.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 192,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 7.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 224,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 8.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 256,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 83,
+			"filename": "torch default 9.png",
+			"frame": {
+				"h": 48,
+				"w": 32,
+				"x": 288,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 32
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 32,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	],
+	"meta": {
+		"app": "FX Forge 像素特效工坊",
+		"format": "RGBA8888",
+		"fps": 12,
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "default",
+				"to": 9
+			}
+		],
+		"image": "torch.png",
+		"layers": [],
+		"loop": true,
+		"pivot": {
+			"x": 16,
+			"y": 44
+		},
+		"scale": "1",
+		"size": {
+			"h": 48,
+			"w": 320
+		},
+		"slices": [],
+		"version": "0.3.0"
+	}
+}

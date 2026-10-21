@@ -1,0 +1,101 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://dg8edw705mj03"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_5v5bv"]
+
+[resource]
+script = ExtResource("1_5v5bv")
+preset_id = "campfire"
+display_name = "篝火"
+category = "element"
+description = "循环播放的篝火：平底火焰 + 往上飘的火星。原点在火堆底部。"
+globals = {
+"canvas_h": 64,
+"canvas_w": 48,
+"fps": 12,
+"frames": 12,
+"loop": true,
+"origin_x": 0.5,
+"origin_y": 0.92,
+"palette_accent": "spark",
+"palette_main": "fire",
+"palette_smoke": "smoke",
+"theme": "fire"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "flame",
+"name": "火焰",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"base": "flat",
+"core": 0.6,
+"flicker": 0.3,
+"height": 40.0,
+"noise_scale": 1.4,
+"speed": 1.5,
+"sway": 0.25,
+"taper": 0.3,
+"tongue_depth": 0.45,
+"tongues": 3,
+"turbulence": 0.55,
+"width": 26.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 270.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "火星",
+"offset_x": 0.0,
+"offset_y": -6.0,
+"outline": false,
+"palette_slot": "accent",
+"params": {
+"cool": 0.5,
+"count": 10,
+"drag": 1.0,
+"emit_mode": "stream",
+"emit_radius": 7.0,
+"emit_shape": "line",
+"emit_time": 1.0,
+"flicker": 0.3,
+"gravity": -20.0,
+"life": 0.6,
+"life_random": 0.3,
+"shape": "square",
+"size": 1.5,
+"size_end": 0.6,
+"speed": 70.0,
+"speed_random": 0.5,
+"spread": 40.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "campfire",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

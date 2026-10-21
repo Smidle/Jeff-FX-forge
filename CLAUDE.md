@@ -46,12 +46,14 @@ addons/fx_forge/
     fx_palette.gd           18 套色板、15 个配色主题、Bayer 抖动表、单色生成色阶
     fx_buffer.gd            图层强度画布（v 亮度 / a 可见度）+ 绘制原语（点、圆、胶囊线、直线、矩形、菱形、多边形）
     fx_particles.gd         解析式粒子：spawn() 主线程生成粒子表，draw() 按时间闭式求值（阻力 + 重力）
+    fx_noise.gd             可平铺的 128×128 值噪声表（按种子缓存），供模块逐像素查表
     fx_post.gd              后期合成：着色、消散、清理、描边、柔光（外晕取局部颜色）、翻转、打包 RGBA8
     fx_job.gd / fx_renderer.gd   渲染任务（工作线程逐帧并行）/ 入口（同步、异步）
     fx_registry.gd          模块注册表
     fx_preset.gd            预设 Resource（class_name FxForgePreset）
     fx_preset_util.gd       预设构造、规范化
-  modules/                  特效模块：fx_module.gd 基类；arc 弧光、burst 射线爆发、ring 环、particles 粒子、streak 冲刺线
+  modules/                  特效模块：fx_module.gd 基类；arc 弧光、burst 射线爆发、ring 环、particles 粒子、streak 冲刺线、
+                            blob 能量团、flame 火焰、bolt 闪电
   presets/builtin_presets.gd  内置预设（代码定义）
   export/fx_export.gd       导出纯计算：动画规划、拼图、JSON、SpriteFrames、即用场景
   export/fx_exporter.gd     编辑器内落盘与导入（协程，调用方要 await）
@@ -85,6 +87,10 @@ docs/                       design.md（设计方案）、images/
 16. `FxSession.undo` 用 `Object` 类型：`EditorUndoRedoManager` 只在编辑器里存在，写死类型会让无头测试加载不了这个脚本。
 17. 模块可以实现 `get_layer_defaults()`，规定新建这种图层时的默认图层设置（例如粒子默认用辅色板、不描边）。
 18. 预设里的粒子图层要算好飞行距离（无阻力时速度 = 整段走过的像素；有阻力时最远约 速度 ÷ 阻力），画廊脚本和单元测试都会报「超出画布」。
+19. 逐像素噪声一律查 `fx_noise.gd` 的表（`table[((y & MASK) << SHIFT) | (x & MASK)]`），表在 prepare 里取、按种子缓存。
+20. 循环特效必须在 u = 0 和 u = 1 完全相同（单元测试逐字节校验每个循环预设的第 N 帧 = 第 0 帧）。做法：噪声采样点绕圆周
+    移动（能量团）、两份相差一个周期的滚动噪声交叉淡化再做方差补偿（火焰）、随时间变化的量用整数圈的 sin/cos、粒子用 fposmod。
+21. 图层的「消散方式」可以覆盖全局（渲染任务里 -1 = 跟随全局）。
 
 ## 新增特效模块
 
@@ -103,7 +109,9 @@ docs/                       design.md（设计方案）、images/
 - [x] M4 战斗打击包（0.2）：burst / ring / particles / streak 模块；图层增删、复制、排序、隐藏、改名界面（可撤销）；
       参数按条件显示；柔光外晕取局部颜色；新增突刺、普通打击、重击、暴击、格挡火花、地面冲击波、能量冲击环，
       火焰斩加火星、寒冰斩加冰屑——内置预设共 13 个；编辑器自检加了界面冒烟（图层操作、改参数、换主题）
-- [ ] M5 爆炸与元素：blob / flame / bolt 模块、循环首尾校验、9 个预设
+- [x] M5 爆炸与元素（0.3）：blob 能量团（内部噪声明暗、后半段噪声烧穿）、flame 火焰（多火舌 + 交叉淡化循环）、
+      bolt 闪电（落雷 / 电弧 / 放射）；可平铺噪声表；图层级消散方式；循环首尾逐字节校验；
+      新增小型 / 大型 / 毒气爆炸、篝火、火把、蓝焰、落雷、电弧、冰晶爆裂——内置预设共 22 个
 - [ ] M6 魔法与状态：orb / glyph / beam 模块、粒子汇聚、8 个预设
 - [ ] M7 环境与通用：8 个预设
 - [ ] M8 打磨：GIF 导出、色板编辑与导入、帧停留（打击停顿）、多语言、性能优化

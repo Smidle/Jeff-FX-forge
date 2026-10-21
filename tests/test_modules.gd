@@ -7,6 +7,8 @@ const FxContext := preload("res://addons/fx_forge/core/fx_context.gd")
 const FxPalette := preload("res://addons/fx_forge/core/fx_palette.gd")
 const FxParams := preload("res://addons/fx_forge/core/fx_params.gd")
 const FxParticles := preload("res://addons/fx_forge/core/fx_particles.gd")
+const FxNoise := preload("res://addons/fx_forge/core/fx_noise.gd")
+const FxPost := preload("res://addons/fx_forge/core/fx_post.gd")
 
 
 func _ctx(size: int, angle_deg: float) -> FxContext:
@@ -23,10 +25,11 @@ func _ctx(size: int, angle_deg: float) -> FxContext:
 	return c
 
 
-func _render(id: String, overrides: Dictionary = {}, u: float = 0.3, angle: float = 0.0, size: int = 128) -> FxBuffer:
+func _render(id: String, overrides: Dictionary = {}, u: float = 0.3, angle: float = 0.0, size: int = 128, loop: bool = false) -> FxBuffer:
 	var m: RefCounted = FxRegistry.get_module(id)
 	var p := FxParams.normalize(m.get_param_defs(), overrides)
 	var ctx := _ctx(size, angle)
+	ctx.loop = loop
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7
 	var st: Dictionary = m.prepare(p, ctx, rng)
@@ -61,9 +64,14 @@ func _extent(buf: FxBuffer) -> Vector2i:
 
 func test_every_module_draws_with_defaults() -> bool:
 	for id: String in FxRegistry.module_ids():
-		var buf := _render(id)
-		check(_count(buf) > 0, "模块 %s 用默认参数能画出像素" % id)
-		check(not buf.is_empty(), "模块 %s 记录了包围盒" % id)
+		# 闪电之类会有熄灭的时刻，所以看几个时刻里至少有一个画出了东西
+		var best: FxBuffer = null
+		for u: float in [0.1, 0.3, 0.5]:
+			var buf := _render(id, {}, u)
+			if best == null or _count(buf) > _count(best):
+				best = buf
+		check(_count(best) > 0, "模块 %s 用默认参数能画出像素" % id)
+		check(not best.is_empty(), "模块 %s 记录了包围盒" % id)
 		var m: RefCounted = FxRegistry.get_module(id)
 		for d: Dictionary in m.get_param_defs():
 			check(["shape", "motion", "detail"].has(d["group"]), "%s.%s 的分组合法" % [id, d["id"]])
@@ -132,6 +140,74 @@ func test_streak_moves_forward() -> bool:
 	var early := _centroid(_render("streak", {"count": 1}, 0.2, 90.0))
 	var late := _centroid(_render("streak", {"count": 1}, 0.6, 90.0))
 	check(late.y > early.y + 2.0, "方向 90° 时冲刺线向下冲（%s → %s）" % [early, late])
+	return true
+
+
+func test_noise_table() -> bool:
+	var t := FxNoise.table(123, 16, 3)
+	check_eq(t.size(), FxNoise.SIZE * FxNoise.SIZE, "噪声表大小")
+	var lo := 1.0
+	var hi := 0.0
+	for v in t:
+		lo = minf(lo, v)
+		hi = maxf(hi, v)
+	check(lo >= 0.0 and hi <= 1.0 and hi - lo > 0.9, "取值铺满 0~1（%.2f~%.2f）" % [lo, hi])
+	check(FxNoise.table(123, 16, 3) == t, "同种子取到缓存的同一张表")
+	# 可平铺：最右一列和最左一列相邻，差值应该和普通相邻列差不多
+	var edge := 0.0
+	var inner := 0.0
+	for y in FxNoise.SIZE:
+		var row := y * FxNoise.SIZE
+		edge += absf(t[row + FxNoise.SIZE - 1] - t[row])
+		inner += absf(t[row + 64] - t[row + 63])
+	check(edge < inner * 2.5 + 1.0, "左右边缘可以无缝拼接（边缘差 %.1f，内部差 %.1f）" % [edge, inner])
+	return true
+
+
+func test_blob_burns_out() -> bool:
+	var mid := _count(_render("blob", {"burn": 0.9}, 0.45))
+	var late := _count(_render("blob", {"burn": 0.9}, 0.95))
+	check(late < mid * 0.6, "能量团后期被烧穿（%d → %d）" % [mid, late])
+	var smoke := _render("blob", {"rise": 40.0}, 0.9)
+	check(_centroid(smoke).y < -8.0, "上升距离让团块往上飘（%s）" % _centroid(smoke))
+	return true
+
+
+func test_flame_loops_seamlessly() -> bool:
+	var a := _render("flame", {}, 0.0, 0.0, 96, true)
+	var b := _render("flame", {}, 1.0, 0.0, 96, true)
+	var c := _render("flame", {}, 0.4, 0.0, 96, true)
+	check(a.v == b.v and a.a == b.a, "火焰在 u = 0 和 u = 1 完全相同")
+	check(a.v != c.v, "火焰在动")
+	check(_centroid(a).y < 0.0, "火焰在原点上方")
+	return true
+
+
+func test_bolt_flashes() -> bool:
+	var params := {"flashes": 3, "on_ratio": 0.6, "mode": "arc"}
+	var f0 := _render("bolt", params, 0.1)
+	var f1 := _render("bolt", params, 0.43)
+	var off := _render("bolt", params, 0.3)
+	check(_count(f0) > 0 and _count(f1) > 0, "闪电亮的时候有像素")
+	check(f0.v != f1.v, "每一下换一个形状")
+	check_eq(_count(off), 0, "两下之间的熄灭期没有像素")
+	return true
+
+
+func test_layer_dissolve_override() -> bool:
+	var buf := FxBuffer.new(8, 8)
+	buf.rect(0, 0, 8, 8, 1.0, 1.0)
+	var c := PackedFloat32Array([0.25, 1.0])
+	var s := {
+		"bayer": FxPalette.BAYER4, "dither_tab": FxPalette.FLAT, "dither_strength": 0.0,
+		"dissolve": FxPost.Dissolve.DITHER, "alpha_levels": 2, "cleanup": false, "min_cluster": 1,
+		"outline": FxPost.Outline.NONE, "outline_width": 1, "outline_square": false, "outline_rgb": Color.BLACK,
+		"soft": 0.0, "glow_rgb": Color.WHITE, "flip_h": false, "flip_v": false,
+	}
+	var part := {"buf": buf, "fade": 0.5, "r": c, "g": c, "b": c, "outline": false, "dissolve": FxPost.Dissolve.FADE}
+	var res := FxPost.new(8, 8).run([part], s)
+	var px: PackedInt32Array = res["pixels"]
+	check_eq((px[0] >> 24) & 0xff, 128, "图层设成淡出时，覆盖全局的抖动溶解（半透明）")
 	return true
 
 

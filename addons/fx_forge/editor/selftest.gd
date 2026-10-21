@@ -97,6 +97,13 @@ func _ui_smoke() -> void:
 	var job: RefCounted = panel._last_job
 	_check(job != null and job.results.size() == 9, "修改后完整渲染了 9 帧")
 	_check(panel.session.get_value("global", -1, "palette_main") == "ice", "换配色主题生效")
+	# 循环预设：直接载入（当前有未保存修改，走 open_preset 会弹出确认框）
+	panel.session.load_preset(Builtin.find("campfire"), "", "campfire")
+	await _wait_render(panel)
+	panel._on_value_edited("param", 0, "tongues", 4, 0)
+	await _wait_render(panel)
+	job = panel._last_job
+	_check(job != null and job.loop and job.results.size() == 12, "篝火：改火舌数后整段 12 帧循环渲染")
 
 
 func _wait_render(panel: Node) -> void:

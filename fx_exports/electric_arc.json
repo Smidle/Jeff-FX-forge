@@ -1,0 +1,207 @@
+{
+	"frames": [
+		{
+			"duration": 67,
+			"filename": "electric_arc default 0.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 67,
+			"filename": "electric_arc default 1.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 96,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 67,
+			"filename": "electric_arc default 2.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 192,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 67,
+			"filename": "electric_arc default 3.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 288,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 67,
+			"filename": "electric_arc default 4.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 384,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 67,
+			"filename": "electric_arc default 5.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 480,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 67,
+			"filename": "electric_arc default 6.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 576,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		},
+		{
+			"duration": 67,
+			"filename": "electric_arc default 7.png",
+			"frame": {
+				"h": 48,
+				"w": 96,
+				"x": 672,
+				"y": 0
+			},
+			"rotated": false,
+			"sourceSize": {
+				"h": 48,
+				"w": 96
+			},
+			"spriteSourceSize": {
+				"h": 48,
+				"w": 96,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": false
+		}
+	],
+	"meta": {
+		"app": "FX Forge 像素特效工坊",
+		"format": "RGBA8888",
+		"fps": 15,
+		"frameTags": [
+			{
+				"direction": "forward",
+				"from": 0,
+				"name": "default",
+				"to": 7
+			}
+		],
+		"image": "electric_arc.png",
+		"layers": [],
+		"loop": true,
+		"pivot": {
+			"x": 9,
+			"y": 24
+		},
+		"scale": "1",
+		"size": {
+			"h": 48,
+			"w": 768
+		},
+		"slices": [],
+		"version": "0.3.0"
+	}
+}

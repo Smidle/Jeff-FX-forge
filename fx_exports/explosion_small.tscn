@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bhkhwt5p5sl32"]
+
+[ext_resource type="SpriteFrames" uid="uid://bhnu01538u1ll" path="res://fx_exports/explosion_small_frames.tres" id="1_e5dat"]
+
+[sub_resource type="GDScript" id="GDScript_g78h6"]
+script/source = "extends AnimatedSprite2D
+## FX Forge 导出的特效：自动播放；一次性特效播完自动删除自己。
+
+## 一次性（不循环）的特效播完后自动删除
+@export var free_on_finish := true
+## 生成时随机左右镜像（用 scale.x 翻转，锚点保持不动）
+@export var random_flip_h := false
+
+
+func _ready() -> void:
+	if random_flip_h and randf() < 0.5:
+		scale.x = -scale.x
+	if free_on_finish and sprite_frames != null and not sprite_frames.get_animation_loop(animation):
+		animation_finished.connect(queue_free)
+	play()
+"
+
+[node name="ExplosionSmall" type="AnimatedSprite2D" unique_id=1203012675]
+texture_filter = 1
+sprite_frames = ExtResource("1_e5dat")
+autoplay = "default"
+centered = false
+offset = Vector2(-32, -35)
+script = SubResource("GDScript_g78h6")

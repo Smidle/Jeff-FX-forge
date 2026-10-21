@@ -1,0 +1,75 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://c3f317ri4qkgo"]
+
+[ext_resource type="Texture2D" uid="uid://ckgvd4nfxcyst" path="res://fx_exports/electric_arc.png" id="1_rot7x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rot7x"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(0, 0, 96, 48)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7b0p"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(96, 0, 96, 48)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ox883"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(192, 0, 96, 48)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pij5g"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(288, 0, 96, 48)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5k8ql"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(384, 0, 96, 48)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_us2v8"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(480, 0, 96, 48)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xmp3"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(576, 0, 96, 48)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gytnu"]
+atlas = ExtResource("1_rot7x")
+region = Rect2(672, 0, 96, 48)
+filter_clip = true
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rot7x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7b0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ox883")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pij5g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5k8ql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_us2v8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xmp3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gytnu")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}]

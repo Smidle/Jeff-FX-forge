@@ -96,7 +96,10 @@ func _shade(part: Dictionary, s: Dictionary) -> void:
 	var pg: PackedFloat32Array = part["g"]
 	var pb: PackedFloat32Array = part["b"]
 	var dtab: PackedFloat32Array = s["dither_tab"]
-	var dmode: int = s["dissolve"]
+	# 图层可以有自己的消散方式（-1 = 跟随全局）
+	var dmode: int = part.get("dissolve", -1)
+	if dmode < 0:
+		dmode = s["dissolve"]
 	var levels: int = s["alpha_levels"]
 	var flevels := float(levels)
 	var steps := pr.size()

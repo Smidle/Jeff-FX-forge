@@ -196,4 +196,135 @@ static func _defs() -> Array:
 					"speed": 110.0, "speed_random": 0.4, "drag": 2.2, "life": 0.7, "cool": 0.2, "spin": 0.5}},
 			],
 		},
+		# ---------------------------------------------------------------- 爆炸与元素
+		{
+			"id": "explosion_small", "name": "小型爆炸", "category": "element",
+			"description": "手雷、火焰弹的小爆炸：白热火球迅速膨胀、变红、烧穿成碎块，随后冒出一团烟。",
+			"globals": {"canvas_w": 64, "canvas_h": 64, "frames": 10, "fps": 15, "origin_x": 0.5, "origin_y": 0.56,
+				"theme": "fire", "palette_main": "fire", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "blob", "name": "烟", "palette_slot": "smoke", "t_start": 0.35, "dissolve": "shrink", "params": {
+					"puffs": 3, "radius": 11.0, "spread": 7.0, "start": 0.5, "noise": 0.6, "rise": 14.0, "heat": 0.75,
+					"cool": 0.45, "core": 0.3, "burn": 0.9, "expand_time": 0.5}},
+				{"module": "blob", "name": "火球", "params": {
+					"puffs": 4, "radius": 14.0, "spread": 7.0, "start": 0.2, "noise": 0.55, "expand_time": 0.3, "rise": 4.0,
+					"heat": 1.0, "cool": 0.85, "core": 0.6, "burn": 0.75}},
+			],
+		},
+		{
+			"id": "explosion_big", "name": "大型爆炸", "category": "element",
+			"description": "火药桶、大招的大爆炸：冲击波 + 翻滚的火球 + 飞溅的碎片 + 延迟升起的浓烟。",
+			"globals": {"canvas_w": 120, "canvas_h": 120, "frames": 14, "fps": 15, "origin_x": 0.5, "origin_y": 0.5,
+				"theme": "fire", "palette_main": "fire", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "blob", "name": "浓烟", "palette_slot": "smoke", "t_start": 0.3, "dissolve": "shrink", "params": {
+					"puffs": 6, "radius": 20.0, "spread": 16.0, "start": 0.5, "noise": 0.6, "rise": 24.0, "heat": 0.75,
+					"cool": 0.45, "core": 0.3, "burn": 0.9, "expand_time": 0.5, "stagger": 0.25}},
+				{"module": "ring", "name": "冲击波", "palette_slot": "accent", "t_end": 0.55, "params": {
+					"radius": 48.0, "width": 5.0, "thin": 0.9, "start": 0.15, "easing": "out_expo"}},
+				{"module": "blob", "name": "火球", "params": {
+					"puffs": 7, "radius": 24.0, "spread": 15.0, "start": 0.15, "noise": 0.55, "expand_time": 0.3,
+					"rise": 8.0, "heat": 1.0, "cool": 0.85, "core": 0.6, "burn": 0.75, "stagger": 0.12}},
+				{"module": "particles", "name": "碎片", "palette_slot": "smoke", "outline": true, "t_start": 0.05,
+						"follow_dir": false, "angle_offset": 270.0, "params": {
+					"count": 16, "shape": "shard", "size": 3.0, "size_end": 0.8, "spread": 260.0, "speed": 150.0,
+					"speed_random": 0.6, "gravity": 120.0, "drag": 1.6, "life": 0.75, "cool": 0.2, "spin": 1.5}},
+			],
+		},
+		{
+			"id": "explosion_poison", "name": "毒气爆炸", "category": "element",
+			"description": "毒瓶、毒雾陷阱：紫绿色的毒爆，炸开后留下一大片贴地翻滚的毒雾和冒泡。",
+			"globals": {"canvas_w": 88, "canvas_h": 72, "frames": 12, "fps": 12, "origin_x": 0.5, "origin_y": 0.62,
+				"theme": "poison", "palette_main": "poison", "palette_accent": "nature", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "blob", "name": "毒雾", "palette_slot": "main", "t_start": 0.2, "dissolve": "shrink", "params": {
+					"puffs": 7, "radius": 14.0, "spread": 22.0, "start": 0.4, "squash": 0.6, "noise": 0.6, "rise": 4.0,
+					"boil": 2.0, "heat": 0.75, "cool": 0.35, "core": 0.3, "burn": 0.85, "expand_time": 0.45, "stagger": 0.25}},
+				{"module": "blob", "name": "毒爆", "params": {
+					"puffs": 5, "radius": 16.0, "spread": 8.0, "start": 0.2, "noise": 0.55, "expand_time": 0.3, "rise": 3.0,
+					"heat": 1.0, "cool": 0.6, "core": 0.5, "burn": 0.8}},
+				{"module": "particles", "name": "毒泡", "palette_slot": "accent", "outline": true, "t_start": 0.2, "params": {
+					"count": 10, "shape": "disc", "size": 3.0, "size_end": 0.6, "emit_shape": "circle", "emit_radius": 18.0,
+					"spread": 360.0, "speed": 10.0, "gravity": -60.0, "drag": 1.0, "emit_mode": "stream", "emit_time": 0.5,
+					"life": 0.45, "cool": 0.2}},
+			],
+		},
+		{
+			"id": "campfire", "name": "篝火", "category": "element",
+			"description": "循环播放的篝火：平底火焰 + 往上飘的火星。原点在火堆底部。",
+			"globals": {"canvas_w": 48, "canvas_h": 64, "frames": 12, "fps": 12, "loop": true, "origin_x": 0.5, "origin_y": 0.92,
+				"theme": "fire", "palette_main": "fire", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "flame", "name": "火焰", "params": {
+					"width": 26.0, "height": 40.0, "base": "flat", "tongues": 3, "tongue_depth": 0.45, "taper": 0.3,
+					"speed": 1.5, "sway": 0.25,
+					"turbulence": 0.55, "noise_scale": 1.4, "core": 0.6, "flicker": 0.3}},
+				{"module": "particles", "name": "火星", "follow_dir": false, "angle_offset": 270.0, "offset_y": -6.0, "params": {
+					"count": 10, "shape": "square", "size": 1.5, "size_end": 0.6, "emit_shape": "line", "emit_radius": 7.0,
+					"spread": 40.0, "speed": 70.0, "speed_random": 0.5, "gravity": -20.0, "drag": 1.0,
+					"emit_mode": "stream", "emit_time": 1.0, "life": 0.6, "life_random": 0.3, "cool": 0.5, "flicker": 0.3}},
+			],
+		},
+		{
+			"id": "torch", "name": "火把", "category": "element",
+			"description": "循环播放的小火苗：尖底、摇曳得厉害，适合火把、蜡烛、灯台。原点在火苗底部。",
+			"globals": {"canvas_w": 32, "canvas_h": 48, "frames": 10, "fps": 12, "loop": true, "origin_x": 0.5, "origin_y": 0.92,
+				"theme": "fire", "palette_main": "fire", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [{"module": "flame", "name": "火苗", "params": {
+				"width": 12.0, "height": 28.0, "base": "point", "taper": 0.5, "speed": 1.6, "sway": 0.45,
+				"turbulence": 0.45, "noise_scale": 1.6, "core": 0.7, "flicker": 0.4}}],
+		},
+		{
+			"id": "blue_flame", "name": "蓝焰", "category": "element",
+			"description": "循环播放的冷色火焰（冥火、法术火），带柔光。原点在火焰底部。",
+			"globals": {"canvas_w": 48, "canvas_h": 64, "frames": 12, "fps": 12, "loop": true, "origin_x": 0.5, "origin_y": 0.9,
+				"theme": "ice", "palette_main": "ice", "palette_accent": "water", "palette_smoke": "smoke",
+				"soft": 0.4, "outline": "none"},
+			"layers": [{"module": "flame", "name": "蓝色火焰", "params": {
+				"width": 20.0, "height": 38.0, "base": "round", "taper": 0.6, "speed": 1.2, "sway": 0.35,
+				"turbulence": 0.6, "noise_scale": 1.3, "core": 0.5, "flicker": 0.25}}],
+		},
+		{
+			"id": "lightning_strike", "name": "落雷", "category": "element",
+			"description": "从天而降的闪电：先劈下来，再闪两下；落点有电火花和贴地的冲击环。原点在落点。",
+			"globals": {"canvas_w": 80, "canvas_h": 112, "frames": 10, "fps": 15, "origin_x": 0.5, "origin_y": 0.88,
+				"theme": "thunder", "palette_main": "thunder", "palette_accent": "energy", "palette_smoke": "smoke",
+				"soft": 0.45, "outline": "none"},
+			"layers": [
+				{"module": "ring", "name": "落点冲击", "palette_slot": "accent", "follow_dir": false, "t_start": 0.08, "t_end": 0.7, "params": {
+					"radius": 24.0, "width": 4.0, "thin": 0.8, "squash": 0.35, "start": 0.1, "fill": 0.5, "easing": "out_expo"}},
+				{"module": "bolt", "name": "雷电", "follow_dir": false, "angle_offset": 270.0, "params": {
+					"mode": "strike", "length": 92.0, "segments": 12, "jag": 0.3, "branches": 3, "branch_len": 0.3,
+					"width": 1.2, "glow": 2.5, "flashes": 3, "on_ratio": 0.75, "grow": 0.12, "end_glow": 0.7}},
+				{"module": "burst", "name": "电火花", "palette_slot": "accent", "follow_dir": false, "t_start": 0.08, "t_end": 0.6, "params": {
+					"rays": 8, "length": 12.0, "width": 2.0, "flash": "star", "flash_size": 8.0, "flash_time": 0.4, "detach": 0.6}},
+			],
+		},
+		{
+			"id": "electric_arc", "name": "电弧", "category": "element",
+			"description": "循环跳动的电弧：两点之间不停变形的电流，适合电网、充能、连锁闪电。原点在左端，方向朝右。",
+			"globals": {"canvas_w": 96, "canvas_h": 48, "frames": 8, "fps": 15, "loop": true, "origin_x": 0.1, "origin_y": 0.5,
+				"theme": "thunder", "palette_main": "thunder", "palette_accent": "energy", "palette_smoke": "smoke",
+				"soft": 0.4, "outline": "none"},
+			"layers": [{"module": "bolt", "name": "电弧", "params": {
+				"mode": "arc", "length": 76.0, "segments": 14, "jag": 0.25, "branches": 1, "branch_len": 0.22,
+				"width": 1.0, "glow": 2.0, "flashes": 8, "on_ratio": 1.0, "end_glow": 0.5}}],
+		},
+		{
+			"id": "ice_burst", "name": "冰晶爆裂", "category": "element",
+			"description": "冰系命中或冰块碎裂：菱形冰光 + 旋转飞散的冰晶碎片 + 一圈霜环。",
+			"globals": {"canvas_w": 88, "canvas_h": 88, "frames": 10, "fps": 15, "theme": "ice",
+				"palette_main": "ice", "palette_accent": "water", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "ring", "name": "霜环", "palette_slot": "accent", "params": {
+					"radius": 32.0, "width": 3.0, "thin": 0.4, "start": 0.3, "segments": 10, "gap": 0.3, "spin": 0.15,
+					"easing": "out_cubic"}},
+				{"module": "burst", "name": "冰光", "params": {
+					"rays": 6, "length": 24.0, "width": 5.0, "length_random": 0.3, "angle_random": 0.15, "alternate": 0.4,
+					"flash": "diamond", "flash_size": 10.0, "flash_time": 0.35, "ray_time": 0.9, "detach": 0.5}},
+				{"module": "particles", "name": "冰晶", "palette_slot": "main", "outline": true, "params": {
+					"count": 12, "shape": "shard", "size": 5.0, "size_end": 0.6, "speed": 110.0, "speed_random": 0.5,
+					"gravity": 50.0, "drag": 1.8, "life": 0.9, "cool": 0.25, "spin": 1.5}},
+			],
+		},
 	]

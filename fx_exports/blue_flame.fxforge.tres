@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://cou1e5nuy2c31"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_mddc7"]
+
+[resource]
+script = ExtResource("1_mddc7")
+preset_id = "blue_flame"
+display_name = "蓝焰"
+category = "element"
+description = "循环播放的冷色火焰（冥火、法术火），带柔光。原点在火焰底部。"
+globals = {
+"canvas_h": 64,
+"canvas_w": 48,
+"fps": 12,
+"frames": 12,
+"loop": true,
+"origin_x": 0.5,
+"origin_y": 0.9,
+"outline": "none",
+"palette_accent": "water",
+"palette_main": "ice",
+"palette_smoke": "smoke",
+"soft": 0.4,
+"theme": "ice"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "flame",
+"name": "蓝色火焰",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"base": "round",
+"core": 0.5,
+"flicker": 0.25,
+"height": 38.0,
+"noise_scale": 1.3,
+"speed": 1.2,
+"sway": 0.35,
+"taper": 0.6,
+"turbulence": 0.6,
+"width": 20.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "blue_flame",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

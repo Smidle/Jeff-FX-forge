@@ -22,6 +22,7 @@ globals = {
 }
 layers = [{
 "angle_offset": 0.0,
+"dissolve": "global",
 "enabled": true,
 "follow_dir": false,
 "module": "ring",
@@ -45,6 +46,7 @@ layers = [{
 "t_start": 0.0
 }, {
 "angle_offset": 270.0,
+"dissolve": "global",
 "enabled": true,
 "follow_dir": false,
 "module": "particles",

@@ -49,7 +49,8 @@ func render_frame(idx: int) -> void:
 		var buf := FxBuffer.new(w, h)
 		var m: FxModule = layer["module"]
 		var fade := clampf(m.render(buf, layer["params"], layer["state"], u, layer["ctx"]), 0.0, 1.0)
-		parts.append({"buf": buf, "fade": fade, "r": layer["r"], "g": layer["g"], "b": layer["b"], "outline": layer["outline"]})
+		parts.append({"buf": buf, "fade": fade, "r": layer["r"], "g": layer["g"], "b": layer["b"],
+			"outline": layer["outline"], "dissolve": layer.get("dissolve", -1)})
 	var res := FxPost.new(w, h).run(parts, post)
 	var pixels: PackedInt32Array = res["pixels"]
 	res.erase("pixels")

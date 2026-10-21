@@ -22,6 +22,7 @@ globals = {
 }
 layers = [{
 "angle_offset": 0.0,
+"dissolve": "global",
 "enabled": true,
 "follow_dir": true,
 "module": "arc",

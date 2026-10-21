@@ -1,0 +1,114 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://gbf62foikive"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_ynmcu"]
+
+[resource]
+script = ExtResource("1_ynmcu")
+preset_id = "lightning_strike"
+display_name = "落雷"
+category = "element"
+description = "从天而降的闪电：先劈下来，再闪两下；落点有电火花和贴地的冲击环。原点在落点。"
+globals = {
+"canvas_h": 112,
+"canvas_w": 80,
+"fps": 15,
+"frames": 10,
+"origin_x": 0.5,
+"origin_y": 0.88,
+"outline": "none",
+"palette_accent": "energy",
+"palette_main": "thunder",
+"palette_smoke": "smoke",
+"soft": 0.45,
+"theme": "thunder"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "ring",
+"name": "落点冲击",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "accent",
+"params": {
+"easing": "out_expo",
+"fill": 0.5,
+"radius": 24.0,
+"squash": 0.35,
+"start": 0.1,
+"thin": 0.8,
+"width": 4.0
+},
+"t_end": 0.7,
+"t_start": 0.08
+}, {
+"angle_offset": 270.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "bolt",
+"name": "雷电",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": false,
+"palette_slot": "main",
+"params": {
+"branch_len": 0.3,
+"branches": 3,
+"end_glow": 0.7,
+"flashes": 3,
+"glow": 2.5,
+"grow": 0.12,
+"jag": 0.3,
+"length": 92.0,
+"mode": "strike",
+"on_ratio": 0.75,
+"segments": 12,
+"width": 1.2
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "burst",
+"name": "电火花",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "accent",
+"params": {
+"detach": 0.6,
+"flash": "star",
+"flash_size": 8.0,
+"flash_time": 0.4,
+"length": 12.0,
+"rays": 8,
+"width": 2.0
+},
+"t_end": 0.6,
+"t_start": 0.08
+}]
+export_settings = {
+"base_name": "lightning_strike",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

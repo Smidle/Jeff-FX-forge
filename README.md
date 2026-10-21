@@ -2,7 +2,7 @@
 
 Godot 4.7 编辑器插件：挑一个像素特效预设，拖滑条调宽度、描边、方向、配色，一键导出**精灵图**和**能直接拖进游戏的场景**。
 
-**完整的中文使用手册：[docs/manual.md](docs/manual.md)**
+**完整的中文使用手册：[docs/manual.md](docs/manual.md)** · 1.0 测试清单：[docs/test-checklist.md](docs/test-checklist.md)
 
 ![特效工坊界面](docs/images/editor.png)
 

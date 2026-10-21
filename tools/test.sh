@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # FX Forge dev test runner (macOS / Linux / Git Bash).
-#   tools/test.sh [unit|gallery|editor|selftest|all] [filter]
+#   tools/test.sh [unit|gallery|runtime|editor|selftest|all] [filter]
 # Godot is located via $GODOT, then common install paths, then PATH.
 set -uo pipefail
 
@@ -65,6 +65,14 @@ if [[ "$SUITE" == gallery || "$SUITE" == all ]]; then
 	ensure_imported "$ROOT"
 	run_godot "$ROOT" gallery.log --script res://tests/render_gallery.gd
 	report "gallery" $?
+fi
+
+if [[ "$SUITE" == runtime || "$SUITE" == all ]]; then
+	ensure_imported "$ROOT"
+	run_godot "$ROOT" runtime.log --fixed-fps 60 --script res://tests/runtime_check.gd
+	code=$?
+	grep -q "FXFORGE_RUNTIME: PASS" "$OUT/runtime.log" || code=1
+	report "runtime check" $code
 fi
 
 if [[ "$SUITE" == editor || "$SUITE" == all ]]; then

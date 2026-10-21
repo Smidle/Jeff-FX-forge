@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://ddyfrvlskpi32"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_0jryd"]
+
+[resource]
+script = ExtResource("1_0jryd")
+preset_id = "slash_shadow"
+display_name = "暗影斩"
+category = "combat"
+description = "紫黑色的宽刀光，柔光外晕 + 两道抖动残影，不描边。"
+globals = {
+"canvas_h": 64,
+"canvas_w": 64,
+"fps": 20,
+"frames": 11,
+"outline": "none",
+"palette_accent": "arcane",
+"palette_main": "shadow",
+"palette_smoke": "smoke",
+"soft": 0.55,
+"theme": "shadow"
+}
+layers = [{
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "arc",
+"name": "暗影刀光",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"crescent": 0.7,
+"easing": "out_cubic",
+"edge_noise": 0.55,
+"ghosts": 2,
+"radius": 27.0,
+"rim": 0.5,
+"span": 220.0,
+"sweep": 0.55,
+"taper": 0.6,
+"thickness": 13.0,
+"trail": 0.7
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "slash_shadow",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

@@ -14,7 +14,12 @@ const FxPresetUtil := preload("../core/fx_preset_util.gd")
 const FxRenderer := preload("../core/fx_renderer.gd")
 const FxPalette := preload("../core/fx_palette.gd")
 const FxJob := preload("../core/fx_job.gd")
+const FxRegistry := preload("../core/fx_registry.gd")
+const FxModule := preload("../modules/fx_module.gd")
 const Builtin := preload("../presets/builtin_presets.gd")
+const ExportDialog := preload("export_dialog.gd")
+const FxExport := preload("../export/fx_export.gd")
+const FxExporter := preload("../export/fx_exporter.gd")
 
 ## 一次性特效循环预览时，播完后停顿多久再重播（秒）
 const LOOP_GAP := 0.35
@@ -42,7 +47,13 @@ var _save_dialog: ConfirmationDialog
 var _save_name: LineEdit
 var _save_file: LineEdit
 var _ref_dialog: FileDialog
+var _export_dialog: ExportDialog
+var _overwrite_dialog: ConfirmationDialog
+var _result_dialog: AcceptDialog
 var _pending: Array = []
+var _pending_export := {}
+var _result_files := PackedStringArray()
+var _exporting := false
 
 var _textures: Array = []
 var _images: Array = []
@@ -192,8 +203,7 @@ func _make_toolbar() -> Control:
 	_export_button = Button.new()
 	_export_button.text = "导出精灵图…"
 	_export_button.icon = _icon(&"Save")
-	_export_button.disabled = true
-	_export_button.tooltip_text = "导出功能将在下一阶段（M3）接入"
+	_export_button.tooltip_text = "导出精灵图、SpriteFrames 和即用场景"
 	_export_button.pressed.connect(_on_export)
 	bar.add_child(_export_button)
 	return bar
@@ -351,6 +361,34 @@ func _make_dialogs() -> void:
 	_ref_dialog.add_filter("*.png, *.jpg, *.jpeg, *.webp", "图片")
 	_ref_dialog.file_selected.connect(_on_reference_selected)
 	add_child(_ref_dialog)
+
+	_export_dialog = ExportDialog.new()
+	_export_dialog.export_requested.connect(_on_export_requested)
+	add_child(_export_dialog)
+
+	_overwrite_dialog = ConfirmationDialog.new()
+	_overwrite_dialog.title = "覆盖已有文件？"
+	_overwrite_dialog.ok_button_text = "覆盖并导出"
+	_overwrite_dialog.cancel_button_text = "取消"
+	_overwrite_dialog.confirmed.connect(func() -> void:
+		if not _pending_export.is_empty():
+			_run_export(_pending_export)
+		_pending_export = {})
+	add_child(_overwrite_dialog)
+
+	_result_dialog = AcceptDialog.new()
+	_result_dialog.title = "导出结果"
+	_result_dialog.ok_button_text = "好的"
+	_result_dialog.add_button("在文件系统中显示", true, "show")
+	_result_dialog.custom_action.connect(func(action: StringName) -> void:
+		if action == &"show" and not _result_files.is_empty():
+			var target := _result_files[0]
+			for f: String in _result_files:
+				if f.ends_with(".tscn"):
+					target = f
+			EditorInterface.select_file(target)
+			_result_dialog.hide())
+	add_child(_result_dialog)
 
 
 # ---------------------------------------------------------------- 预设载入与修改
@@ -719,7 +757,52 @@ func _on_reseed() -> void:
 
 
 func _on_export() -> void:
-	pass
+	var p := session.preset
+	var saved: Variant = _meta_get("export_" + p.preset_id, {})
+	var s := FxExport.normalize_settings(saved if saved is Dictionary else {}, p)
+	var directional := false
+	for l: Dictionary in p.layers:
+		var m: FxModule = FxRegistry.get_module(l.get("module", ""))
+		if m != null and m.is_directional() and l.get("follow_dir", true):
+			directional = true
+	_export_dialog.open(s, int(session.get_value("global", -1, "frames")), directional)
+
+
+func _on_export_requested(settings: Dictionary) -> void:
+	var s := FxExport.normalize_settings(settings, session.preset)
+	_meta_set("export_" + session.preset.preset_id, s)
+	var existing := FxExporter.existing_files(s)
+	if not existing.is_empty():
+		_pending_export = s
+		_overwrite_dialog.dialog_text = "下面这些文件已经存在，导出会覆盖它们：\n\n" + "\n".join(existing) \
+				+ "\n\n游戏里引用它们的场景会自动用上新效果。"
+		_overwrite_dialog.popup_centered()
+		return
+	_run_export(s)
+
+
+func _run_export(s: Dictionary) -> void:
+	if _exporting:
+		return
+	_exporting = true
+	_export_button.disabled = true
+	_status.text = "正在导出……"
+	var res: Dictionary = await FxExporter.run(session.preset, s)
+	_exporting = false
+	_export_button.disabled = false
+	_result_files = res["files"]
+	var lines := PackedStringArray([str(res["message"])])
+	if not _result_files.is_empty():
+		lines.append("")
+		lines.append("生成的文件：")
+		for f: String in _result_files:
+			lines.append("  " + f)
+	if res["ok"] and s["scene"]:
+		lines.append("")
+		lines.append("用法：把 %s%s.tscn 拖进游戏场景，或在代码里 instantiate() 后 add_child()，播完会自动消失。" % [s["out_dir"], s["base_name"]])
+	_result_dialog.dialog_text = "\n".join(lines)
+	_result_dialog.popup_centered()
+	_status.text = str(res["message"])
 
 
 func _on_reference_selected(path: String) -> void:

@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://1yxoc0gcpos6"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_voicp"]
+
+[resource]
+script = ExtResource("1_voicp")
+preset_id = "slash_ice"
+display_name = "寒冰斩"
+category = "combat"
+description = "细而锋利的冰蓝刀光，用点阵抖动和选择性描边表现冷硬质感。"
+globals = {
+"canvas_h": 64,
+"canvas_w": 64,
+"dither": "bayer4",
+"dither_strength": 0.6,
+"fps": 20,
+"frames": 9,
+"outline": "selective",
+"palette_accent": "water",
+"palette_main": "ice",
+"palette_smoke": "smoke",
+"theme": "ice"
+}
+layers = [{
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "arc",
+"name": "冰刃",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"crescent": 0.4,
+"easing": "out_cubic",
+"edge_noise": 0.25,
+"radius": 26.0,
+"rim": 0.8,
+"span": 190.0,
+"sweep": 0.5,
+"taper": 0.85,
+"thickness": 9.0,
+"trail": 0.55
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "slash_ice",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

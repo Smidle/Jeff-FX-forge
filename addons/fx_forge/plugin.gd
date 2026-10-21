@@ -5,6 +5,7 @@ extends EditorPlugin
 
 const MainPanel := preload("editor/main_panel.gd")
 const FxPreset := preload("core/fx_preset.gd")
+const SelfTest := preload("editor/selftest.gd")
 
 var _panel: Control
 
@@ -16,6 +17,11 @@ func _enter_tree() -> void:
 	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	EditorInterface.get_editor_main_screen().add_child(_panel)
 	_make_visible(false)
+	# 开发用：带 -- --fxforge-selftest（导出自检）或 -- --fxforge-export-samples（生成示例导出）
+	# 启动（无头）编辑器，见 editor/selftest.gd
+	var args := OS.get_cmdline_user_args()
+	if args.has("--fxforge-selftest") or args.has("--fxforge-export-samples"):
+		EditorInterface.get_base_control().add_child(SelfTest.new())
 	# 开发用：带 -- --fxforge-show 启动编辑器时自动切到「特效工坊」标签（便于截图检查）
 	if OS.get_cmdline_user_args().has("--fxforge-show"):
 		get_tree().create_timer(3.0).timeout.connect(func() -> void:

@@ -12,6 +12,7 @@ config_version=5
 
 config/name="FX Forge 像素特效工坊"
 config/description="像素风特效生成与精灵图导出插件的开发与演示工程"
+run/main_scene="res://demo/demo.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [display]

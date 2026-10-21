@@ -6,6 +6,7 @@ Usage:
 
   unit      headless unit tests (tests/run_tests.gd)
   gallery   render every built-in preset to tests/output/gallery
+  runtime   play every exported scene in res://fx_exports/ (one-shots must free themselves) + demo scene
   editor    copy the project to a temp folder, start the editor headless, check the plugin loads cleanly
   selftest  same copy, run the in-editor export self test (--fxforge-selftest)
   all       everything above
@@ -15,7 +16,7 @@ On a new machine set:  $env:GODOT = "<path>\Godot_v4.7.x-stable_win64_console.ex
 This file is ASCII-only on purpose (Windows PowerShell 5.1 reads BOM-less files as ANSI).
 #>
 param(
-	[ValidateSet("unit", "gallery", "editor", "selftest", "all")]
+	[ValidateSet("unit", "gallery", "runtime", "editor", "selftest", "all")]
 	[string]$Suite = "unit",
 	[string]$Filter = ""
 )
@@ -91,6 +92,12 @@ if ($Suite -eq "unit" -or $Suite -eq "all") {
 if ($Suite -eq "gallery" -or $Suite -eq "all") {
 	Ensure-Imported $Root
 	$allOk = (Report "gallery" (Invoke-Godot $Root @("--script", "res://tests/render_gallery.gd") "gallery.log")) -and $allOk
+}
+
+if ($Suite -eq "runtime" -or $Suite -eq "all") {
+	Ensure-Imported $Root
+	$r = Invoke-Godot $Root @("--fixed-fps", "60", "--script", "res://tests/runtime_check.gd") "runtime.log"
+	$allOk = (Report "runtime check" $r ($r.Text -and $r.Text.Contains("FXFORGE_RUNTIME: PASS"))) -and $allOk
 }
 
 if ($Suite -eq "editor" -or $Suite -eq "all") {

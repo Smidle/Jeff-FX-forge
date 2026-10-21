@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3 uid="uid://boik2cda1s8as"]
+
+[ext_resource type="Script" uid="uid://y1rgfs8pi3i4" path="res://addons/fx_forge/core/fx_preset.gd" id="1_iusds"]
+
+[resource]
+script = ExtResource("1_iusds")
+preset_id = "slash_fire"
+display_name = "火焰斩"
+category = "combat"
+description = "带火焰色和毛糙边缘的重斩，附一道残影。"
+globals = {
+"canvas_h": 64,
+"canvas_w": 64,
+"fps": 20,
+"frames": 10,
+"palette_accent": "spark",
+"palette_main": "fire",
+"palette_smoke": "smoke",
+"theme": "fire"
+}
+layers = [{
+"angle_offset": 0.0,
+"enabled": true,
+"follow_dir": true,
+"module": "arc",
+"name": "火焰刀光",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"crescent": 0.6,
+"easing": "out_cubic",
+"edge_noise": 0.45,
+"ghosts": 1,
+"radius": 27.0,
+"rim": 0.75,
+"span": 210.0,
+"sweep": 0.5,
+"taper": 0.6,
+"thickness": 12.0,
+"trail": 0.65
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]
+export_settings = {
+"base_name": "slash_fire",
+"blend": "normal",
+"columns": 8,
+"directions": "none",
+"json": true,
+"layout": "auto",
+"margin": 0,
+"out_dir": "res://fx_exports/",
+"padding": 0,
+"preset_copy": true,
+"scale": 1,
+"scene": true,
+"sequence": false,
+"sprite_frames": true,
+"trim": false,
+"variants": 1
+}

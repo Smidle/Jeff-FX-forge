@@ -21,6 +21,7 @@ const MAX_CANVAS := 1024
 
 ## opts：
 ##   frames: PackedInt32Array —— 只渲染这些帧（默认全部）
+##   frame_ratio: float —— 只渲染时间轴上这个比例处的一帧（缩略图用）
 ##   direction: float —— 覆盖全局方向（多方向批量导出用）
 ##   seed_offset: int —— 种子偏移（导出多个变体用）
 static func make_job(preset: FxPreset, opts: Dictionary = {}) -> FxJob:
@@ -34,6 +35,8 @@ static func make_job(preset: FxPreset, opts: Dictionary = {}) -> FxJob:
 	job.fps = g["fps"]
 	job.loop = g["loop"]
 	var ids: PackedInt32Array = opts.get("frames", PackedInt32Array())
+	if opts.has("frame_ratio"):
+		ids = PackedInt32Array([clampi(int(float(opts["frame_ratio"]) * job.frame_count), 0, job.frame_count - 1)])
 	if ids.is_empty():
 		ids = PackedInt32Array(range(job.frame_count))
 	job.frame_ids = ids

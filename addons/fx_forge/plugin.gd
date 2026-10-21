@@ -12,9 +12,14 @@ var _panel: Control
 func _enter_tree() -> void:
 	_panel = MainPanel.new()
 	_panel.name = "FxForgeMainPanel"
+	_panel.setup(get_undo_redo())
 	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	EditorInterface.get_editor_main_screen().add_child(_panel)
 	_make_visible(false)
+	# 开发用：带 -- --fxforge-show 启动编辑器时自动切到「特效工坊」标签（便于截图检查）
+	if OS.get_cmdline_user_args().has("--fxforge-show"):
+		get_tree().create_timer(3.0).timeout.connect(func() -> void:
+			EditorInterface.set_main_screen_editor(_get_plugin_name()))
 
 
 func _exit_tree() -> void:
@@ -54,7 +59,7 @@ func _get_unsaved_status(for_scene: String) -> String:
 	if not for_scene.is_empty() or not is_instance_valid(_panel):
 		return ""
 	if _panel.has_unsaved_changes():
-		return "特效工坊里的预设有未保存的修改。"
+		return _panel.unsaved_message()
 	return ""
 
 

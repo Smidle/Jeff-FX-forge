@@ -386,10 +386,12 @@ func _box_blur(src: PackedFloat32Array, rad: int) -> PackedFloat32Array:
 
 
 ## 翻转并打包成 RGBA8 整数（小端：r | g<<8 | b<<16 | a<<24）
+## 结果里的 colors 是这一帧用到的颜色集合（最多记 256 种，用于统计颜色数）
 func _pack(flip_h: bool, flip_v: bool) -> Dictionary:
 	var px := PackedInt32Array()
 	px.resize(w * h)
 	px.fill(0)
+	var colors := {}
 	var opaque := 0
 	var edge := false
 	var qx0 := w
@@ -414,6 +416,8 @@ func _pack(flip_h: bool, flip_v: bool) -> Dictionary:
 				c -= 0x100000000
 			var tx := (w - 1 - x) if flip_h else x
 			px[ty * w + tx] = c
+			if colors.size() < 256:
+				colors[c] = true
 			if a8 >= 128:
 				opaque += 1
 			if tx == 0 or ty == 0 or tx == w - 1 or ty == h - 1:
@@ -423,4 +427,4 @@ func _pack(flip_h: bool, flip_v: bool) -> Dictionary:
 			qx1 = maxi(qx1, tx)
 			qy1 = maxi(qy1, ty)
 	var bbox := Rect2i() if qx1 < qx0 else Rect2i(qx0, qy0, qx1 - qx0 + 1, qy1 - qy0 + 1)
-	return {"pixels": px, "opaque": opaque, "edge": edge, "bbox": bbox}
+	return {"pixels": px, "opaque": opaque, "edge": edge, "bbox": bbox, "colors": colors}

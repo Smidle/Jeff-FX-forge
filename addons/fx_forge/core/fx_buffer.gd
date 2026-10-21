@@ -1,0 +1,177 @@
+@tool
+extends RefCounted
+## 一个图层一帧的强度画布。
+##   v：亮度 0~1（决定用色板里哪一阶颜色）
+##   a：可见度 0~1（0 = 空；小于 1 时按「消散方式」处理）
+## 写像素一律取较大值（max 混合）。
+##
+## 性能约定：模块自己写大循环时
+##   var bv := buf.v
+##   var ba := buf.a
+##   buf.release()          # 让数组只剩一个引用，写入时不会整块复制
+##   ……写 bv[i] / ba[i] ……
+##   buf.restore(bv, ba)
+##   buf.touch(...)         # 更新包围盒
+## 下面的绘制原语直接写自己的成员，可以放心调用（每个原语一次调用，内层循环已内联）。
+
+var w: int
+var h: int
+var v: PackedFloat32Array
+var a: PackedFloat32Array
+## 写入过的包围盒（含边界）；x1 < x0 表示还是空的
+var x0: int
+var y0: int
+var x1: int
+var y1: int
+
+
+func _init(width: int, height: int) -> void:
+	w = width
+	h = height
+	v.resize(w * h)
+	v.fill(0.0)
+	a.resize(w * h)
+	a.fill(0.0)
+	x0 = w
+	y0 = h
+	x1 = -1
+	y1 = -1
+
+
+func is_empty() -> bool:
+	return x1 < x0
+
+
+func release() -> void:
+	v = PackedFloat32Array()
+	a = PackedFloat32Array()
+
+
+func restore(nv: PackedFloat32Array, na: PackedFloat32Array) -> void:
+	v = nv
+	a = na
+
+
+func touch(xa: int, ya: int, xb: int, yb: int) -> void:
+	x0 = mini(x0, maxi(xa, 0))
+	y0 = mini(y0, maxi(ya, 0))
+	x1 = maxi(x1, mini(xb, w - 1))
+	y1 = maxi(y1, mini(yb, h - 1))
+
+
+## 单个像素
+func plot(x: int, y: int, val: float, alpha: float) -> void:
+	if x < 0 or y < 0 or x >= w or y >= h:
+		return
+	var i := y * w + x
+	if val > v[i]:
+		v[i] = val
+	if alpha > a[i]:
+		a[i] = alpha
+	touch(x, y, x, y)
+
+
+## 实心圆（亮度从中心 v_center 线性过渡到边缘 v_edge）
+func disc(cx: float, cy: float, r: float, v_center: float, v_edge: float, alpha: float) -> void:
+	if r <= 0.0:
+		return
+	var xa := maxi(floori(cx - r), 0)
+	var xb := mini(ceili(cx + r), w - 1)
+	var ya := maxi(floori(cy - r), 0)
+	var yb := mini(ceili(cy + r), h - 1)
+	if xa > xb or ya > yb:
+		return
+	var r2 := r * r
+	var inv_r := 1.0 / r
+	var dv := v_edge - v_center
+	var drew := false
+	for y in range(ya, yb + 1):
+		var dy := float(y) + 0.5 - cy
+		var dy2 := dy * dy
+		var row := y * w
+		for x in range(xa, xb + 1):
+			var dx := float(x) + 0.5 - cx
+			var d2 := dx * dx + dy2
+			if d2 > r2:
+				continue
+			var val := v_center + dv * sqrt(d2) * inv_r
+			var i := row + x
+			if val > v[i]:
+				v[i] = val
+			if alpha > a[i]:
+				a[i] = alpha
+			drew = true
+	if drew:
+		touch(xa, ya, xb, yb)
+
+
+## 粗细、亮度都可渐变的线段（胶囊）
+func capsule(ax: float, ay: float, bx: float, by: float, r0: float, r1: float, v0: float, v1: float, alpha: float) -> void:
+	var rm := maxf(r0, r1)
+	if rm <= 0.0:
+		return
+	var xa := maxi(floori(minf(ax, bx) - rm), 0)
+	var xb := mini(ceili(maxf(ax, bx) + rm), w - 1)
+	var ya := maxi(floori(minf(ay, by) - rm), 0)
+	var yb := mini(ceili(maxf(ay, by) + rm), h - 1)
+	if xa > xb or ya > yb:
+		return
+	var dx := bx - ax
+	var dy := by - ay
+	var len2 := dx * dx + dy * dy
+	var inv_len2 := 0.0 if len2 < 0.000001 else 1.0 / len2
+	var dr := r1 - r0
+	var dvv := v1 - v0
+	var drew := false
+	for y in range(ya, yb + 1):
+		var py := float(y) + 0.5 - ay
+		var row := y * w
+		for x in range(xa, xb + 1):
+			var px := float(x) + 0.5 - ax
+			var t := (px * dx + py * dy) * inv_len2
+			if t < 0.0:
+				t = 0.0
+			elif t > 1.0:
+				t = 1.0
+			var qx := px - dx * t
+			var qy := py - dy * t
+			var rr := r0 + dr * t
+			if qx * qx + qy * qy > rr * rr:
+				continue
+			var val := v0 + dvv * t
+			var i := row + x
+			if val > v[i]:
+				v[i] = val
+			if alpha > a[i]:
+				a[i] = alpha
+			drew = true
+	if drew:
+		touch(xa, ya, xb, yb)
+
+
+## 1 像素宽直线（Bresenham）
+func line_px(xa: int, ya: int, xb: int, yb: int, val: float, alpha: float) -> void:
+	var dx := absi(xb - xa)
+	var dy := -absi(yb - ya)
+	var sx := 1 if xa < xb else -1
+	var sy := 1 if ya < yb else -1
+	var err := dx + dy
+	var x := xa
+	var y := ya
+	while true:
+		if x >= 0 and y >= 0 and x < w and y < h:
+			var i := y * w + x
+			if val > v[i]:
+				v[i] = val
+			if alpha > a[i]:
+				a[i] = alpha
+		if x == xb and y == yb:
+			break
+		var e2 := 2 * err
+		if e2 >= dy:
+			err += dy
+			x += sx
+		if e2 <= dx:
+			err += dx
+			y += sy
+	touch(mini(xa, xb), mini(ya, yb), maxi(xa, xb), maxi(ya, yb))

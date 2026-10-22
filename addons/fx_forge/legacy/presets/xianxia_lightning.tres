@@ -1,0 +1,97 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://2ugobyxnl4cq"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "收紧落点预兆"
+kind = 1
+duration = 0.42
+secondary = true
+texture_name = "px_omen"
+atlas_frames = 8
+animation_fps = 18.0
+fade_in = 0.08
+fade_out = 0.06
+facing = 1
+offset = Vector3(0, 0.03, 0)
+size = 1.5
+end_size = 1.5
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "主雷与分支"
+kind = 1
+delay = 0.42
+duration = 0.27
+texture_name = "px_lightning_v3"
+atlas_frames = 8
+animation_fps = 30.0
+aspect = Vector2(0.62, 1)
+fade_in = 0.005
+fade_out = 0.06
+branch_count = 2
+offset = Vector3(0, 1.58, 0)
+size = 3.3
+end_size = 3.3
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "落点放射电痕"
+kind = 1
+delay = 0.43
+duration = 0.36
+secondary = true
+texture_name = "px_thunder_ground"
+atlas_frames = 10
+animation_fps = 28.0
+facing = 1
+offset = Vector3(0, 0.04, 0)
+size = 1.9
+end_size = 1.9
+
+[sub_resource type="Resource" id="Layer_3"]
+script = ExtResource("2")
+label = "落点爆闪"
+kind = 1
+delay = 0.42
+duration = 0.19
+sort_priority = 2
+texture_name = "px_flash"
+atlas_frames = 6
+animation_fps = 32.0
+offset = Vector3(0, 0.12, 0)
+size = 0.62
+end_size = 0.08
+
+[sub_resource type="Resource" id="Layer_4"]
+script = ExtResource("2")
+label = "残电细屑"
+decorative = true
+delay = 0.46
+texture_name = "px_mote"
+atlas_frames = 8
+offset = Vector3(0, 0.1, 0)
+size = 0.07
+end_size = 0.05
+count = 12
+lifetime = 0.45
+spread = 85.0
+velocity_min = 0.4
+velocity_max = 1.4
+gravity = Vector3(0, -2, 0)
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_lightning"
+title = "引雷落击"
+title_en = "Heavenly Thunder"
+category = "xianxia"
+description = "收紧的四角落点预兆、尖锐主雷与细分支；落点放射电痕，快速收尾。"
+tags = PackedStringArray("范围", "雷", "预警", "lightning_v3", "area")
+duration = 1.05
+preview_time = 0.49
+primary_color = Color(0.95294, 0.93725, 1, 1)
+secondary_color = Color(0.69412, 0.60784, 0.91765, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2"), SubResource("Layer_3"), SubResource("Layer_4")])

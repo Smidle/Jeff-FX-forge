@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://cmqq0k2dnh3r5"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "回旋卸力与散风"
+kind = 1
+duration = 0.727273
+palette_hue_shift = true
+palette_reference = Color(0.74902, 0.77647, 0.72549, 1)
+texture_name = "px_counter_v8"
+atlas_frames = 16
+animation_fps = 22.0
+fade_in = 0.025
+fade_out = 0.1
+offset = Vector3(0, 1, 0)
+size = 2.0
+end_size = 2.0
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "随风细尘"
+decorative = true
+delay = 0.2
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 20.0
+offset = Vector3(0.2, 1, 0)
+size = 0.02
+end_size = 0.05
+count = 5
+lifetime = 0.4
+direction = Vector3(0.8, 1, 0)
+spread = 25.0
+velocity_min = 0.25
+velocity_max = 0.6
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_counter"
+title = "回身卸劲"
+title_en = "Deflecting Breeze"
+category = "wuxia"
+description = "两股不对称薄风绕过中央，将来势带向上方，再拉成长缕散去；中央留空，适合卸力和反击前摇。"
+tags = PackedStringArray("近战", "防御", "卸劲", "melee", "defense", "counter")
+duration = 0.85
+preview_time = 0.24
+primary_color = Color(0.74902, 0.77647, 0.72549, 1)
+secondary_color = Color(0.88627, 0.8902, 0.81176, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

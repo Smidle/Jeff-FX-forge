@@ -73,6 +73,8 @@ static func normalized(preset: FxPreset) -> Dictionary:
 
 ## 把预设原地补齐成完整参数（编辑器打开预设时用，便于界面直接读写）
 static func fill_defaults(preset: FxPreset) -> void:
+	if preset.legacy_recipe != null:
+		return
 	var norm := normalized(preset)
 	preset.globals = norm["globals"]
 	preset.layers = norm["layers"]

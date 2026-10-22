@@ -1,0 +1,88 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dvl1jcw50myxp"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "流动焰体与焰心"
+kind = 1
+palette_hue_shift = true
+palette_reference = Color(0.98824, 0.53333, 0.20392, 1)
+texture_name = "px_fire_v5"
+atlas_frames = 16
+animation_fps = 16.0
+animation_loop = true
+fade_in = 0.16
+fade_out = 0.4
+offset = Vector3(0, 0.705, 0)
+size = 1.65
+end_size = 1.65
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "炭化木柴"
+kind = 1
+decorative = true
+use_palette_tint = false
+sort_priority = -1
+texture_name = "px_logs_v5"
+atlas_frames = 8
+animation_fps = 8.0
+animation_loop = true
+fade_out = 0.5
+offset = Vector3(0, 0.18, 0)
+size = 0.95
+end_size = 0.95
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "细小余烬"
+secondary = true
+texture_name = "px_cinder_v5"
+atlas_frames = 6
+animation_loop = true
+offset = Vector3(0, 0.65, 0)
+size = 0.08
+end_size = 0.1
+count = 9
+lifetime = 1.25
+continuous = true
+spread = 13.0
+velocity_min = 0.55
+velocity_max = 1.0
+gravity = Vector3(0.07, 0.08, 0)
+emission_box = Vector3(0.12, 0.02, 0.06)
+
+[sub_resource type="Resource" id="Layer_3"]
+script = ExtResource("2")
+label = "稀薄尾烟"
+decorative = true
+color = Color(0.49804, 0.48235, 0.5098, 1)
+use_palette_tint = false
+sort_priority = -2
+texture_name = "px_smoke"
+atlas_frames = 12
+animation_fps = 7.5
+offset = Vector3(0, 1.15, -0.03)
+size = 0.2
+end_size = 1.5
+opacity = 0.3
+count = 2
+lifetime = 1.6
+continuous = true
+velocity_min = 0.35
+velocity_max = 0.5
+
+[resource]
+script = ExtResource("1")
+id = "campfire"
+title = "篝火"
+title_en = "Living Campfire"
+description = "有体积的卷焰持续向上流动，明亮焰心与红橙外缘保留自然色阶；木柴和稀薄尾烟可独立关闭。"
+tags = PackedStringArray("环境", "火", "持续", "environment", "fire")
+looping = true
+duration = 1.4
+primary_color = Color(0.98824, 0.53333, 0.20392, 1)
+secondary_color = Color(1, 0.94118, 0.82745, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2"), SubResource("Layer_3")])

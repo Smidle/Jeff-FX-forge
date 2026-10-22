@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dawro57785sa5"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "上涌焰团、热焰心与余烬"
+kind = 3
+duration = 2.0
+texture_name = ""
+fade_in = 0.18
+fade_out = 0.35
+offset = Vector3(0, 0.8, 0)
+size = 2.0
+end_size = 2.0
+procedural_motion = 2
+pixel_resolution = 80
+flame_height = 0.95
+flame_width = 0.6
+flame_lean = 0.04
+flame_turbulence = 0.75
+flame_core = 0.65
+flame_embers = 3
+
+[resource]
+script = ExtResource("1")
+id = "procedural_flame"
+title = "程序·像素火焰"
+title_en = "Procedural Pixel Flame"
+description = "热量场实时生成火焰：焰团上涌、拉伸卷动，尖端分离后消散，亮焰心随热量流动。可调高度、宽度、风向、卷动和配色，无精灵图依赖。"
+tags = PackedStringArray("程序化", "环境", "持续", "火焰", "灵焰", "procedural", "fire", "flame")
+looping = true
+duration = 2.0
+preview_time = 0.6
+primary_color = Color(1, 0.72157, 0.36863, 1)
+secondary_color = Color(0.71765, 0.27843, 0.15686, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

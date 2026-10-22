@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://cbrutilo7wfx2"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "灵蝶回生"
+kind = 3
+duration = 1.6
+texture_name = ""
+fade_in = 0.05
+fade_out = 0.16
+offset = Vector3(0, 1.15, 0)
+size = 3.2
+end_size = 3.2
+procedural_motion = 6
+stroke_width = 2
+skill_count = 4
+skill_spread = 0.95
+skill_turns = 0.7
+skill_detail = 0.65
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_spiritbutterfly"
+title = "程序·灵蝶回生"
+title_en = "Spirit Butterflies"
+category = "xianxia"
+description = "灵蝶沿独立弯曲路径升起，前后翅不对称开合，伴随稀疏细光；用于治疗与净化提示。"
+tags = PackedStringArray("程序化", "战斗", "仙侠", "治疗", "净化", "爆发", "procedural")
+duration = 1.7000000000000002
+preview_time = 0.7
+primary_color = Color(0.90588, 0.90196, 0.66275, 1)
+secondary_color = Color(0.44314, 0.70196, 0.67843, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

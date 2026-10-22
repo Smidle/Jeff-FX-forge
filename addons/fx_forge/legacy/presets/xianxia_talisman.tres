@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://07fhqi5pungp"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "朱砂符纸与燃解"
+kind = 1
+duration = 0.889
+palette_hue_shift = true
+palette_reference = Color(0.90196, 0.78824, 0.57255, 1)
+texture_name = "px_talisman_v6"
+atlas_frames = 16
+animation_fps = 18.0
+fade_in = 0.045
+fade_out = 0.07
+offset = Vector3(0, 1, 0)
+size = 1.35
+end_size = 1.35
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "引爆瞬光"
+kind = 1
+delay = 0.39
+duration = 0.167
+sort_priority = 2
+texture_name = "px_flash"
+atlas_frames = 6
+animation_fps = 36.0
+offset = Vector3(0, 1, 0)
+size = 0.24
+end_size = 0.08
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "轻薄纸灰"
+delay = 0.52
+color = Color(0.56078, 0.5098, 0.45098, 1)
+use_palette_tint = false
+texture_name = "px_paper_ash"
+atlas_frames = 6
+offset = Vector3(0, 1, 0)
+size = 0.065
+end_size = 0.15
+count = 7
+lifetime = 0.65
+spread = 130.0
+velocity_min = 0.25
+velocity_max = 0.7
+gravity = Vector3(0.07, -0.5, 0)
+
+[sub_resource type="Resource" id="Layer_3"]
+script = ExtResource("2")
+label = "燃尽余烬"
+decorative = true
+delay = 0.4
+secondary = true
+texture_name = "px_cinder_v5"
+atlas_frames = 6
+animation_loop = true
+offset = Vector3(0, 1, 0)
+size = 0.035
+end_size = 0.05
+count = 6
+lifetime = 0.45
+spread = 100.0
+velocity_min = 0.25
+velocity_max = 0.65
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_talisman"
+title = "符箓引爆"
+title_en = "Burning Seal"
+category = "xianxia"
+description = "旧纸轻摆、朱砂符纹蓄亮，纸缘燃开后短促引爆，弯曲的残片化成纸灰与余烬。"
+tags = PackedStringArray("爆发", "符箓", "范围", "burst", "talisman")
+duration = 1.25
+preview_time = 0.42
+primary_color = Color(0.90196, 0.78824, 0.57255, 1)
+secondary_color = Color(0.97255, 0.54118, 0.19608, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2"), SubResource("Layer_3")])

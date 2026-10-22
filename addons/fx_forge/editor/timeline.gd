@@ -92,6 +92,7 @@ func _button(text: String, tip: String, cb: Callable) -> Button:
 
 ## 帧缩略图更新（帧数变化时重建按钮）
 func set_frames(textures: Array) -> void:
+	_strip_scroll.show()
 	var n := textures.size()
 	if _strip.get_child_count() != n:
 		_current = -1
@@ -134,3 +135,11 @@ func set_current(frame: int, count: int, playing: bool) -> void:
 		(_strip.get_child(frame) as Button).set_pressed_no_signal(true)
 	_current = frame
 	_play.icon = _icon_pause if playing else _icon_play
+
+
+## 3D playback uses time, not baked image thumbnails.
+func set_live_frames(count: int) -> void:
+	_strip_scroll.hide()
+	_syncing = true
+	_slider.max_value = maxi(0, count - 1)
+	_syncing = false

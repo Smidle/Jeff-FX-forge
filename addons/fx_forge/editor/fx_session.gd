@@ -15,6 +15,7 @@ const FxPresetUtil := preload("../core/fx_preset_util.gd")
 const USER_DIR := "res://fx_forge_presets/"
 
 var preset: FxPreset = null
+var classic_defaults: Resource
 ## 用户预设的文件路径；内置预设为空
 var source_path := ""
 ## 内置预设 id（新建的空白特效两者都为空）
@@ -30,6 +31,7 @@ var _generation := 0
 
 func load_preset(p: FxPreset, path: String = "", builtin: String = "") -> void:
 	preset = p.clone()
+	classic_defaults = p.legacy_recipe.copy() if p.legacy_recipe != null else null
 	FxPresetUtil.fill_defaults(preset)
 	source_path = path
 	builtin_id = builtin
@@ -52,6 +54,9 @@ func get_value(scope: String, layer: int, id: String) -> Variant:
 	if preset == null:
 		return null
 	match scope:
+		"classic_global", "classic_layer":
+			var resource := _classic_resource(scope, layer)
+			return resource.get_indexed(NodePath(id.replace(".", ":"))) if resource != null else null
 		"global":
 			return preset.globals.get(id)
 		"layer":
@@ -92,11 +97,15 @@ func set_values(scope: String, layer: int, values: Dictionary, merge: bool = fal
 func _apply(generation: int, scope: String, layer: int, values: Dictionary) -> void:
 	if generation != _generation or preset == null:
 		return
-	if scope != "global" and scope != "meta" and layer >= preset.layers.size():
+	if scope not in ["global", "meta", "classic_global", "classic_layer"] and layer >= preset.layers.size():
 		return
 	for id: String in values:
 		var v: Variant = _copy(values[id])
 		match scope:
+			"classic_global", "classic_layer":
+				var resource := _classic_resource(scope, layer)
+				if resource != null:
+					resource.set_indexed(NodePath(id.replace(".", ":")), v)
 			"global":
 				preset.globals[id] = v
 			"layer":
@@ -201,3 +210,13 @@ static func _same(a: Variant, b: Variant) -> bool:
 			return is_equal_approx(float(a), float(b))
 		return false
 	return typeof(a) == typeof(b) and a == b
+
+
+func _classic_resource(scope: String, layer: int) -> Resource:
+	if preset == null or preset.legacy_recipe == null:
+		return null
+	if scope == "classic_global":
+		return preset.legacy_recipe
+	if layer >= 0 and layer < preset.legacy_recipe.layers.size():
+		return preset.legacy_recipe.layers[layer]
+	return null

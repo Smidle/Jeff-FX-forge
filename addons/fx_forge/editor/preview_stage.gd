@@ -92,7 +92,7 @@ func _notification(what: int) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color(0.085, 0.085, 0.105))
+	draw_rect(Rect2(Vector2.ZERO, size), get_theme_color("preview_surround", "JeffFX"))
 	var r := canvas_rect()
 	match bg_mode:
 		Bg.CHECKER:

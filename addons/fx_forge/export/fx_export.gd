@@ -7,8 +7,8 @@ const FxRenderer := preload("../core/fx_renderer.gd")
 const FxPreset := preload("../core/fx_preset.gd")
 const FxGif := preload("fx_gif.gd")
 
-const VERSION := "1.0.0"
-const APP_NAME := "FX Forge 像素特效工坊"
+const VERSION := "1.2.0-local"
+const APP_NAME := "Jeff FX"
 
 ## 方向角 → 动画名
 const DIRECTION_NAMES := {
@@ -63,6 +63,9 @@ static func default_settings(preset: FxPreset) -> Dictionary:
 		"gif": false,
 		"gif_scale": 3,
 		"gif_bg": "transparent",
+		"capture_size": 256,
+		"capture_fps": 24,
+		"capture_seconds": (minf(10, maxf(.1, preset.legacy_recipe.duration if preset.legacy_recipe.looping else preset.legacy_recipe.total_duration()) / maxf(.1, preset.legacy_recipe.playback_speed)) if preset != null and preset.legacy_recipe != null else 2.0),
 	}
 
 
@@ -74,6 +77,9 @@ static func normalize_settings(s: Dictionary, preset: FxPreset) -> Dictionary:
 			continue
 		var v: Variant = s[k]
 		match typeof(d[k]):
+			TYPE_FLOAT:
+				if typeof(v) == TYPE_INT or typeof(v) == TYPE_FLOAT:
+					d[k] = float(v)
 			TYPE_INT:
 				if typeof(v) == TYPE_INT or typeof(v) == TYPE_FLOAT:
 					d[k] = int(v)
@@ -83,6 +89,9 @@ static func normalize_settings(s: Dictionary, preset: FxPreset) -> Dictionary:
 			TYPE_STRING:
 				if typeof(v) == TYPE_STRING or typeof(v) == TYPE_STRING_NAME:
 					d[k] = str(v)
+	d["capture_size"] = clampi(d["capture_size"], 64, 512)
+	d["capture_fps"] = clampi(d["capture_fps"], 6, 30)
+	d["capture_seconds"] = clampf(d["capture_seconds"], .1, 10.0) if is_finite(d["capture_seconds"]) else 2.0
 	d["columns"] = clampi(d["columns"], 1, 64)
 	d["padding"] = clampi(d["padding"], 0, 16)
 	d["margin"] = clampi(d["margin"], 0, 16)
@@ -148,10 +157,41 @@ static func render_animations(preset: FxPreset, s: Dictionary) -> Dictionary:
 				c.flip_x()
 				mirrored.append(c)
 			frames = mirrored
-		anims.append({"name": a["name"], "frames": frames})
+		anims.append({"name": a["name"], "frames": frames, "origin": Vector2(job.w - job.origin.x, job.origin.y) if a["mirror"] else job.origin})
 		info = {"fps": job.fps, "loop": job.loop, "origin": job.origin, "canvas": Vector2i(job.w, job.h), "durations": job.durations}
 	info["anims"] = anims
-	return info
+	return align_animation_origins(info)
+
+
+## SpriteFrames uses one scene offset for all animations. Pad each direction
+## to a shared anchor instead of letting a mirrored off-centre pivot jump.
+static func align_animation_origins(rendered: Dictionary) -> Dictionary:
+	var canvas: Vector2i = rendered.canvas
+	var original: Vector2 = rendered.origin
+	var same := true
+	var left := original.x
+	var right := canvas.x - original.x
+	for a: Dictionary in rendered.anims:
+		var pivot: Vector2 = a.get("origin", original)
+		same = same and pivot.is_equal_approx(original)
+		left = maxf(left, pivot.x)
+		right = maxf(right, canvas.x - pivot.x)
+	if same: return rendered
+	var common := Vector2(ceilf(left), original.y)
+	var width := ceili(left) + ceili(right)
+	for a: Dictionary in rendered.anims:
+		var pivot: Vector2 = a.get("origin", original)
+		var offset := Vector2i(roundi(common.x - pivot.x), 0)
+		var aligned: Array = []
+		for frame: Image in a.frames:
+			var img := Image.create_empty(width, canvas.y, false, Image.FORMAT_RGBA8)
+			img.blit_rect(frame, Rect2i(Vector2i.ZERO, canvas), offset)
+			aligned.append(img)
+		a.frames = aligned
+		a.origin = common
+	rendered.origin = common
+	rendered.canvas = Vector2i(width, canvas.y)
+	return rendered
 
 
 ## 排布：每个动画从新的一行开始。返回 {size: Vector2i, rects: Array[Rect2i]}

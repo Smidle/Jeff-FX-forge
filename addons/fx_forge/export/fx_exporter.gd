@@ -43,10 +43,15 @@ static func existing_files(s: Dictionary) -> PackedStringArray:
 
 ## 执行导出（协程，调用方要 await）。返回 {ok: bool, message: String, files: PackedStringArray, sheet_size: Vector2i}
 ## 目录对编辑器来说是新的时，update_file 不会登记新目录里的文件（4.7.1 实测），所以先等一次文件扫描。
-static func run(preset: FxPreset, settings: Dictionary) -> Dictionary:
+static func run(preset: FxPreset, settings: Dictionary, camera: Camera3D = null) -> Dictionary:
 	var efs := EditorInterface.get_resource_filesystem()
-	if efs.is_scanning() or efs.is_importing():
+	var watch_camera := is_instance_valid(camera)
+	# An earlier import can resume this coroutine from a completion callback.
+	# Leave that call stack before requesting another import.
+	if not await _settle_imports(efs):
 		return _fail("编辑器正在扫描或导入文件，请等几秒再导出。")
+	if watch_camera and not is_instance_valid(camera):
+		return _fail("导出已取消：工坊已关闭。")
 	var s := FxExport.normalize_settings(settings, preset)
 	var dir: String = s["out_dir"]
 	var base: String = s["base_name"]
@@ -54,7 +59,13 @@ static func run(preset: FxPreset, settings: Dictionary) -> Dictionary:
 	if not DirAccess.dir_exists_absolute(dir):
 		return _fail("无法创建导出目录：" + dir)
 
-	var rendered := FxExport.render_animations(preset, s)
+	var rendered: Dictionary
+	if preset.legacy_recipe != null:
+		rendered = await preload("../editor/classic_capture.gd").render(preset, s, camera)
+		if rendered.has("error"):
+			return _fail(rendered.error)
+	else:
+		rendered = FxExport.render_animations(preset, s)
 	var sheet := FxExport.build_sheet(rendered, s)
 	var files := PackedStringArray()
 
@@ -67,17 +78,15 @@ static func run(preset: FxPreset, settings: Dictionary) -> Dictionary:
 
 	# 2. 让编辑器导入 PNG，再生成 SpriteFrames 和场景
 	if s["sprite_frames"] or s["scene"]:
-		if efs.get_filesystem_path(dir) == null:
-			# 新目录：扫描会顺带导入里面的新图片
-			efs.scan()
-			var tree := Engine.get_main_loop() as SceneTree
-			var waited := 0
-			while (efs.is_scanning() or efs.is_importing() or not ResourceLoader.exists(png)) and waited < 1200:
-				await tree.process_frame
-				waited += 1
+		if efs.get_file_type(png).is_empty():
+			# A new filename in an existing directory is also unregistered.
+			# update_file() queues work; immediately reimporting it races discovery.
+			if not await _scan_and_wait(efs, png):
+				return _fail("精灵图已写出，但编辑器扫描未完成，请稍后重试。", files)
 		else:
-			efs.update_file(png)
 			efs.reimport_files(PackedStringArray([png]))
+		if not await _settle_imports(efs, png):
+			return _fail("精灵图已写出，但编辑器尚未完成登记，请稍后重试。", files)
 		var tex := ResourceLoader.load(png, "Texture2D", ResourceLoader.CACHE_MODE_REPLACE) as Texture2D
 		if tex == null:
 			return _fail("精灵图已写出，但编辑器没能导入它，可以稍后重新导出。", files)
@@ -154,7 +163,10 @@ static func run(preset: FxPreset, settings: Dictionary) -> Dictionary:
 		if err == OK:
 			files.append(copy_path)
 
-	efs.scan()
+	# Do not start the next export while this scan still owns a filesystem
+	# snapshot. Its busy flag can clear before import actions have finished.
+	if not await _scan_and_wait(efs):
+		return _fail("文件已写出，但编辑器刷新超时，请稍后重试。", files)
 	var size := (sheet["image"] as Image).get_size()
 	var anims: Array = rendered["anims"]
 	var per := (anims[0]["frames"] as Array).size()
@@ -164,6 +176,40 @@ static func run(preset: FxPreset, settings: Dictionary) -> Dictionary:
 		"files": files,
 		"sheet_size": size,
 	}
+
+
+static func _scan_and_wait(efs: EditorFileSystem, required_png: String = "") -> bool:
+	var tree := Engine.get_main_loop() as SceneTree
+	for attempt in 2:
+		var done := [false]
+		var completed := func(_changed: bool) -> void: done[0] = true
+		efs.sources_changed.connect(completed, CONNECT_ONE_SHOT)
+		efs.scan()
+		var deadline := Time.get_ticks_msec() + 30000
+		while not done[0] and Time.get_ticks_msec() < deadline:
+			await tree.process_frame
+		if efs.sources_changed.is_connected(completed): efs.sources_changed.disconnect(completed)
+		if not done[0]: return false
+		if required_png.is_empty() or not efs.get_file_type(required_png).is_empty():
+			return await _settle_imports(efs, required_png)
+		# scan() can decline a request while a previous scan thread is joining.
+		# Its completion signal is now delivered; retry the newly-written path.
+		await tree.process_frame
+	return false
+
+
+static func _settle_imports(efs: EditorFileSystem, required_png: String = "") -> bool:
+	var tree := Engine.get_main_loop() as SceneTree
+	var deadline := Time.get_ticks_msec() + 30000
+	var quiet_frames := 0
+	while Time.get_ticks_msec() < deadline:
+		await tree.process_frame
+		# scan() can be deferred before its busy flag becomes true. A new PNG
+		# must actually appear in the index and have an import remap as well.
+		var file_ready := required_png.is_empty() or (not efs.get_file_type(required_png).is_empty() and FileAccess.file_exists(required_png + ".import") and ResourceLoader.exists(required_png))
+		quiet_frames = 0 if efs.is_scanning() or efs.is_importing() or not file_ready else quiet_frames + 1
+		if quiet_frames >= 2: return true
+	return false
 
 
 static func _fail(message: String, files: PackedStringArray = PackedStringArray()) -> Dictionary:

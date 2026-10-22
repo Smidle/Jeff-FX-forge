@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://b1mk0yin1ayyh"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "收紧霜纹"
+kind = 1
+duration = 0.25
+secondary = true
+texture_name = "px_frostmark_v5"
+atlas_frames = 8
+animation_fps = 32.0
+fade_out = 0.06
+facing = 1
+offset = Vector3(0, 0.025, 0)
+size = 1.2
+end_size = 1.2
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "落晶与破碎余波"
+kind = 1
+delay = 0.24
+duration = 0.667
+palette_hue_shift = true
+palette_reference = Color(0.42745, 0.70588, 0.8, 1)
+texture_name = "px_ice_v5"
+atlas_frames = 16
+animation_fps = 24.0
+fade_in = 0.005
+fade_out = 0.07
+offset = Vector3(0, 1.068, 0)
+size = 2.5
+end_size = 2.5
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "独立冰屑"
+decorative = true
+delay = 0.38
+secondary = true
+texture_name = "px_ice_shard_v4"
+atlas_frames = 6
+animation_fps = 16.0
+animation_loop = true
+offset = Vector3(0, 0.12, 0)
+size = 0.075
+end_size = 0.1
+count = 8
+lifetime = 0.5
+spread = 65.0
+velocity_min = 0.6
+velocity_max = 1.2
+gravity = Vector3(0, -3, 0)
+
+[resource]
+script = ExtResource("1")
+id = "magic_icefall"
+title = "冰晶落击"
+title_en = "Shattering Icefall"
+category = "magic"
+description = "细霜标记收紧后，冰晶下落、接触爆闪并向外碎裂；带切面的碎片在空中逐步消失。"
+tags = PackedStringArray("范围", "命中", "冰", "预警", "ice", "impact")
+duration = 1.05
+preview_time = 0.46
+primary_color = Color(0.42745, 0.70588, 0.8, 1)
+secondary_color = Color(0.85098, 0.96471, 1, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2")])

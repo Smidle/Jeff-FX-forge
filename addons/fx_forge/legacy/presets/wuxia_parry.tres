@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://c2adpmi2iff5u"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "接触爆点与弧落火星"
+kind = 1
+palette_hue_shift = true
+palette_reference = Color(0.92941, 0.74118, 0.37647, 1)
+texture_name = "px_parry_v7"
+atlas_frames = 16
+animation_fps = 32.0
+fade_in = 0.005
+fade_out = 0.07
+offset = Vector3(0, 1, 0)
+size = 1.15
+end_size = 1.15
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "定向细火星"
+decorative = true
+delay = 0.03
+secondary = true
+texture_name = "px_cinder_v5"
+atlas_frames = 6
+animation_loop = true
+offset = Vector3(0, 1, 0)
+size = 0.045
+end_size = 0.08
+count = 12
+lifetime = 0.5
+direction = Vector3(1, 0.3, 0)
+spread = 55.0
+velocity_min = 1.2
+velocity_max = 2.4
+gravity = Vector3(0, -4, 0)
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_parry"
+title = "格挡火星"
+title_en = "Parry Sparks"
+category = "wuxia"
+description = "短促接触闪光裂成细火星，沿不等长弧线抛落并冷却；避免整团同时闪灭。"
+tags = PackedStringArray("近战", "命中", "防御", "弹反", "parry", "impact")
+duration = 0.65
+preview_time = 0.08
+primary_color = Color(0.92941, 0.74118, 0.37647, 1)
+secondary_color = Color(1, 0.94118, 0.7451, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

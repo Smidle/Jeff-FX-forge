@@ -1,0 +1,171 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://addons/fx_forge/legacy/assets/branding/explosion/logo_explosion_sheet.png" id="1_atlas"]
+
+[sub_resource type="AtlasTexture" id="Atlas_00"]
+atlas = ExtResource("1_atlas")
+region = Rect2(0, 0, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_01"]
+atlas = ExtResource("1_atlas")
+region = Rect2(64, 0, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_02"]
+atlas = ExtResource("1_atlas")
+region = Rect2(128, 0, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_03"]
+atlas = ExtResource("1_atlas")
+region = Rect2(192, 0, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_04"]
+atlas = ExtResource("1_atlas")
+region = Rect2(0, 64, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_05"]
+atlas = ExtResource("1_atlas")
+region = Rect2(64, 64, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_06"]
+atlas = ExtResource("1_atlas")
+region = Rect2(128, 64, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_07"]
+atlas = ExtResource("1_atlas")
+region = Rect2(192, 64, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_08"]
+atlas = ExtResource("1_atlas")
+region = Rect2(0, 128, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_09"]
+atlas = ExtResource("1_atlas")
+region = Rect2(64, 128, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_10"]
+atlas = ExtResource("1_atlas")
+region = Rect2(128, 128, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_11"]
+atlas = ExtResource("1_atlas")
+region = Rect2(192, 128, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_12"]
+atlas = ExtResource("1_atlas")
+region = Rect2(0, 192, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_13"]
+atlas = ExtResource("1_atlas")
+region = Rect2(64, 192, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_14"]
+atlas = ExtResource("1_atlas")
+region = Rect2(128, 192, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_15"]
+atlas = ExtResource("1_atlas")
+region = Rect2(192, 192, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_16"]
+atlas = ExtResource("1_atlas")
+region = Rect2(0, 256, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_17"]
+atlas = ExtResource("1_atlas")
+region = Rect2(64, 256, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_18"]
+atlas = ExtResource("1_atlas")
+region = Rect2(128, 256, 64, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_19"]
+atlas = ExtResource("1_atlas")
+region = Rect2(192, 256, 64, 64)
+filter_clip = true
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 0.9,
+"texture": SubResource("Atlas_00")
+}, {
+"duration": 0.7,
+"texture": SubResource("Atlas_01")
+}, {
+"duration": 0.4,
+"texture": SubResource("Atlas_02")
+}, {
+"duration": 0.4,
+"texture": SubResource("Atlas_03")
+}, {
+"duration": 0.6,
+"texture": SubResource("Atlas_04")
+}, {
+"duration": 0.6,
+"texture": SubResource("Atlas_05")
+}, {
+"duration": 0.7,
+"texture": SubResource("Atlas_06")
+}, {
+"duration": 0.8,
+"texture": SubResource("Atlas_07")
+}, {
+"duration": 0.9,
+"texture": SubResource("Atlas_08")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_09")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_11")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_12")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_13")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_14")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_15")
+}, {
+"duration": 0.8,
+"texture": SubResource("Atlas_16")
+}, {
+"duration": 0.8,
+"texture": SubResource("Atlas_17")
+}, {
+"duration": 0.7,
+"texture": SubResource("Atlas_18")
+}, {
+"duration": 0.7,
+"texture": SubResource("Atlas_19")
+}],
+"loop": 1,
+"name": &"explosion",
+"speed": 10.0
+}]

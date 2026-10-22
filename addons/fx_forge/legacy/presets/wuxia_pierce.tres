@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dya0nloexg6kt"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "锐刺与破甲碎屑"
+kind = 1
+duration = 0.445
+palette_hue_shift = true
+palette_reference = Color(0.76863, 0.81176, 0.81569, 1)
+texture_name = "px_pierce_v7"
+atlas_frames = 16
+animation_fps = 36.0
+fade_in = 0.005
+fade_out = 0.06
+offset = Vector3(-0.45, 1, 0)
+size = 1.8
+end_size = 1.8
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "接触细屑"
+decorative = true
+delay = 0.08
+secondary = true
+texture_name = "px_shard"
+offset = Vector3(0, 1, 0)
+size = 0.035
+end_size = 0.05
+count = 7
+lifetime = 0.32
+direction = Vector3(1, 0.2, 0)
+spread = 55.0
+velocity_max = 1.3
+gravity = Vector3(0, -1.2, 0)
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_pierce"
+title = "破甲穿刺"
+title_en = "Armor Pierce"
+category = "wuxia"
+description = "细直刺线聚于尖端，接触后迸出有切面的冷色甲屑，余线断裂消散。"
+tags = PackedStringArray("近战", "命中", "穿刺", "melee", "pierce")
+duration = 0.52
+preview_time = 0.12
+primary_color = Color(0.76863, 0.81176, 0.81569, 1)
+secondary_color = Color(0.96078, 0.89412, 0.71373, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

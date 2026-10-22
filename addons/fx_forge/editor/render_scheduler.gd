@@ -55,7 +55,7 @@ func _start() -> void:
 	var frame := _want_frame
 	_want_full = false
 	_want_frame = -1
-	if preset == null:
+	if preset == null or preset.legacy_recipe != null:
 		return
 	var opts := {}
 	if not full:

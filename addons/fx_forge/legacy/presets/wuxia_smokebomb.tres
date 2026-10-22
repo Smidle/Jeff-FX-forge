@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://btexrs4wxmxam"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "烟幕展开与卷散"
+kind = 1
+duration = 1.0
+palette_hue_shift = true
+palette_reference = Color(0.66275, 0.72157, 0.77647, 1)
+texture_name = "px_smokebomb_v9"
+atlas_frames = 16
+animation_fps = 16.0
+fade_in = 0.035
+fade_out = 0.18
+offset = Vector3(0, 1.1045, 0)
+size = 2.65
+end_size = 2.65
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "散开薄烟"
+decorative = true
+delay = 0.3
+secondary = true
+palette_hue_shift = true
+palette_reference = Color(0.58824, 0.60784, 0.64706, 1)
+texture_name = "px_smoke_v6"
+atlas_frames = 16
+animation_fps = 24.615385
+offset = Vector3(0, 0.35, 0)
+size = 0.22
+end_size = 1.2
+opacity = 0.4
+count = 3
+lifetime = 0.65
+spread = 55.0
+velocity_min = 0.25
+velocity_max = 0.45
+emission_box = Vector3(0.35, 0.04, 0.18)
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_smokebomb"
+title = "障眼烟幕"
+title_en = "Concealing Smoke"
+category = "wuxia"
+description = "低处烟团快速向两侧展开，中心聚成遮蔽烟幕，再从下方打开、向上卷散；用于脱身或隐匿的视觉。"
+tags = PackedStringArray("范围", "爆发", "隐匿", "脱身", "stealth", "smoke")
+duration = 1.15
+preview_time = 0.4
+primary_color = Color(0.66275, 0.72157, 0.77647, 1)
+secondary_color = Color(0.46275, 0.53333, 0.62353, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

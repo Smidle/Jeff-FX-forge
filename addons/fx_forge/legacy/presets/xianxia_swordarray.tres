@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dypbm3wgs0i0s"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "御剑环阵"
+kind = 3
+duration = 1.5
+texture_name = ""
+fade_in = 0.05
+fade_out = 0.16
+offset = Vector3(0, 1.2, 0)
+size = 3.2
+end_size = 3.2
+procedural_motion = 5
+stroke_width = 2
+skill_count = 6
+skill_spread = 0.9
+skill_turns = 0.65
+skill_detail = 0.65
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_swordarray"
+title = "程序·御剑环阵"
+title_en = "Orbiting Sword Array"
+category = "xianxia"
+description = "剑刃错峰升起，悬停成阵后齐射散开；剑身、护手、残影与碎光分层生成。"
+tags = PackedStringArray("程序化", "战斗", "仙侠", "远程", "范围", "回旋", "procedural")
+duration = 1.6
+preview_time = 0.65
+primary_color = Color(0.78824, 0.93333, 0.87843, 1)
+secondary_color = Color(0.31765, 0.55686, 0.61569, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

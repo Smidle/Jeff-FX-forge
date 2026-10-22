@@ -14,6 +14,8 @@ const CATEGORY_NAMES := {
 	"magic": "魔法与状态",
 	"env": "环境与通用",
 	"custom": "我的预设",
+	"classic_environment": "经典 · 环境", "classic_wuxia": "经典 · 武侠",
+	"classic_xianxia": "经典 · 仙侠", "classic_magic": "经典 · 魔法",
 }
 
 @export var format_version: int = FORMAT_VERSION
@@ -22,6 +24,9 @@ const CATEGORY_NAMES := {
 @export var category: String = "custom"
 @export_multiline var description: String = ""
 ## 全局参数（画布、时间、方向、外观、描边……），键见 fx_globals.gd
+@export var legacy_recipe: Resource
+@export var preview_png: PackedByteArray = PackedByteArray()
+
 @export var globals: Dictionary = {}
 ## 图层列表，每项是一个 Dictionary：module / name / enabled / params ……，见 fx_preset_util.gd
 @export var layers: Array = []
@@ -40,6 +45,8 @@ func clone() -> Resource:
 	copy.globals = globals.duplicate(true)
 	copy.layers = layers.duplicate(true)
 	copy.export_settings = export_settings.duplicate(true)
+	copy.preview_png = preview_png.duplicate()
+	copy.legacy_recipe = legacy_recipe.copy() if legacy_recipe != null else null
 	return copy
 
 

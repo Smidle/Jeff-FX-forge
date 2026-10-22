@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://cefk2eeq7d1nt"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "裂地劲波"
+kind = 3
+duration = 1.0
+texture_name = ""
+fade_in = 0.05
+fade_out = 0.16
+facing = 1
+offset = Vector3(0, 0.025, 0)
+size = 3.2
+end_size = 3.2
+procedural_motion = 4
+stroke_width = 2
+skill_count = 3
+skill_spread = 0.9
+skill_detail = 0.75
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_groundwave"
+title = "程序·裂地劲波"
+title_en = "Ground Pulse"
+category = "wuxia"
+description = "地面由近及远逐段崩开，碎石向两侧掀起，后接翻卷尘团并消散；用于线性地面冲击。"
+tags = PackedStringArray("程序化", "战斗", "武侠", "范围", "命中", "爆发", "procedural")
+duration = 1.1
+primary_color = Color(0.86275, 0.8, 0.65098, 1)
+secondary_color = Color(0.46667, 0.48235, 0.43922, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

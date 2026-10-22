@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://d1ccufvum3251"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "寒晶牢笼"
+kind = 3
+duration = 1.5
+texture_name = ""
+fade_in = 0.05
+fade_out = 0.16
+offset = Vector3(0, 0.96, 0)
+size = 3.0
+end_size = 3.0
+procedural_motion = 7
+stroke_width = 2
+skill_count = 7
+skill_spread = 0.9
+skill_detail = 0.7
+
+[resource]
+script = ExtResource("1")
+id = "magic_icecage"
+title = "程序·寒晶牢笼"
+title_en = "Frost Crystal Cage"
+category = "magic"
+description = "粗细错落的多面冰晶斜向结成牢笼，霜纹蔓延后逐簇碎裂；碎片分别旋转、坠散。"
+tags = PackedStringArray("程序化", "战斗", "魔法", "范围", "控制", "procedural")
+duration = 1.6
+preview_time = 0.65
+primary_color = Color(0.71373, 0.91373, 0.93725, 1)
+secondary_color = Color(0.32157, 0.42745, 0.60784, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

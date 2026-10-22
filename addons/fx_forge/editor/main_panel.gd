@@ -3,6 +3,12 @@ extends VBoxContainer
 ## 「特效工坊」主界面：预设库 | 预览舞台 + 时间轴 | 参数面板。
 ## 插件卸载前会调用 shutdown()，等后台渲染任务结束。
 
+signal place_requested(recipe: Resource)
+
+const WorkshopTheme := preload("workshop_theme.gd")
+const AnimatedLogo := preload("animated_logo.gd")
+const Classic := preload("../presets/classic_presets.gd")
+const ClassicStage := preload("classic_stage.gd")
 const I18n := preload("i18n.gd")
 const FxSession := preload("fx_session.gd")
 const RenderScheduler := preload("render_scheduler.gd")
@@ -33,6 +39,10 @@ const ZOOMS := [0, 1, 2, 3, 4, 6, 8, 12, 16]
 var session := FxSession.new()
 var _scheduler: RenderScheduler
 var _browser: PresetBrowser
+var _classic_stage: ClassicStage
+var _preview_bar: Control
+var _theme_id := "navy"
+var _classic_refresh_pending := false
 var _stage: PreviewStage
 var _timeline: Timeline
 var _params: ParamPanel
@@ -43,6 +53,8 @@ var _fit_button: Button
 var _zoom_option: OptionButton
 var _bg_color: ColorPickerButton
 var _ref_clear: Button
+var _reseed_button: Button
+var _place_button: Button
 var _export_button: Button
 var _discard_dialog: ConfirmationDialog
 var _save_dialog: ConfirmationDialog
@@ -104,9 +116,13 @@ func _ready() -> void:
 	var center := VBoxContainer.new()
 	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	split2.add_child(center)
-	center.add_child(_make_preview_bar())
+	_preview_bar = _make_preview_bar()
+	center.add_child(_preview_bar)
 	_stage = PreviewStage.new()
 	center.add_child(_stage)
+	_classic_stage = ClassicStage.new()
+	_classic_stage.visible = false
+	center.add_child(_classic_stage)
 	_timeline = Timeline.new()
 	center.add_child(_timeline)
 	center.add_child(_make_status_bar())
@@ -129,8 +145,10 @@ func _ready() -> void:
 	_browser.preset_action.connect(_on_preset_action)
 	_params.value_edited.connect(_on_value_edited)
 	_params.theme_chosen.connect(_on_theme_chosen)
+	_params.classic_solo_toggled.connect(func(on: bool) -> void: _classic_stage.set_solo(session.layer_index if on else -1))
 	_params.layer_selected.connect(func(i: int) -> void:
 		session.layer_index = i
+		if _params.classic_solo: _classic_stage.set_solo(i)
 		_params.build.call_deferred())
 	_params.action_requested.connect(_on_action)
 	_params.palette_edit_requested.connect(_open_palette_editor)
@@ -143,11 +161,13 @@ func _ready() -> void:
 	_timeline.loop_toggled.connect(func(on: bool) -> void: _loop_preview = on)
 	_stage.zoom_changed.connect(_on_stage_zoom)
 
+	_apply_ui_theme(str(_meta_get("ui_theme", "navy")))
 	_load_initial()
 
 
 func shutdown() -> void:
 	_scheduler.shutdown()
+	_classic_stage.clear_effect()
 
 
 func open_preset(res: Resource) -> void:
@@ -197,6 +217,13 @@ func _tool_button(icon: StringName, text: String, tip: String, cb: Callable) -> 
 
 func _make_toolbar() -> Control:
 	var bar := HBoxContainer.new()
+	var logo := AnimatedLogo.new()
+	bar.add_child(logo)
+	var brand := Label.new()
+	brand.text = "Jeff FX"
+	brand.add_theme_font_size_override("font_size", int(19 * EditorInterface.get_editor_scale()))
+	bar.add_child(brand)
+	bar.add_child(VSeparator.new())
 	_title = Label.new()
 	_title.add_theme_font_override("font", EditorInterface.get_editor_theme().get_font(&"bold", &"EditorFonts"))
 	_title.custom_minimum_size.x = 160 * EditorInterface.get_editor_scale()
@@ -209,7 +236,8 @@ func _make_toolbar() -> Control:
 	bar.add_child(_tool_button(&"UndoRedo", I18n.T("撤销"), I18n.T("撤销上一步修改（Ctrl+Z）"), _on_undo))
 	bar.add_child(_tool_button(&"Reload", I18n.T("重做"), I18n.T("重做（Ctrl+Shift+Z）"), _on_redo))
 	bar.add_child(VSeparator.new())
-	bar.add_child(_tool_button(&"RandomNumberGenerator", I18n.T("换种子"), I18n.T("随机换一个种子，看看同一特效的其他随机变化"), _on_reseed))
+	_reseed_button = _tool_button(&"RandomNumberGenerator", I18n.T("换种子"), I18n.T("随机换一个种子，看看同一特效的其他随机变化"), _on_reseed)
+	bar.add_child(_reseed_button)
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bar.add_child(spacer)
@@ -219,6 +247,11 @@ func _make_toolbar() -> Control:
 	_export_button.tooltip_text = I18n.T("导出精灵图、SpriteFrames 和即用场景")
 	_export_button.pressed.connect(_on_export)
 	bar.add_child(_export_button)
+	_place_button = Button.new()
+	_place_button.text = I18n.T("放置当前效果")
+	_place_button.tooltip_text = I18n.T("在场景中预览并选择位置；Esc 或右键取消")
+	_place_button.pressed.connect(func() -> void: place_requested.emit(session.preset.clone()))
+	bar.add_child(_place_button)
 	return bar
 
 
@@ -444,7 +477,9 @@ func _load_initial() -> void:
 			if res is FxPreset:
 				session.load_preset(res, path, "")
 				return
-	var p: FxPreset = Builtin.find(last.trim_prefix("builtin:"))
+	var p: FxPreset = Classic.find(last.trim_prefix("builtin:"))
+	if p == null:
+		p = Builtin.find(last.trim_prefix("builtin:"))
 	if p == null:
 		p = Builtin.find("slash_basic")
 	session.load_preset(p, "", p.preset_id)
@@ -568,6 +603,18 @@ func _on_discard_canceled() -> void:
 
 
 func _on_loaded() -> void:
+	_params.classic_solo = false
+	_classic_stage.set_solo(-1)
+	_scheduler.shutdown()
+	_classic_stage.clear_effect()
+	_classic_refresh_pending = false
+	_dragging = false
+	_stage.visible = not _is_classic()
+	_preview_bar.visible = not _is_classic()
+	_classic_stage.visible = _is_classic()
+	_refresh_seed_action()
+	_warning.hide()
+	_fit_button.hide()
 	_params.build()
 	_browser.select_key(_current_key())
 	_frame = 0
@@ -578,7 +625,13 @@ func _on_loaded() -> void:
 	_images.clear()
 	_stage.reset_view()
 	_zoom_option.select(0)
-	_scheduler.request_full()
+	if _is_classic():
+		_classic_stage.set_recipe(session.preset.legacy_recipe)
+		_timeline.set_live_frames(_classic_frames())
+		_timeline.set_current(0, _classic_frames(), _playing)
+		_classic_status()
+	else:
+		_scheduler.request_full()
 	_update_title()
 	var key := _current_key()
 	if not key.is_empty():
@@ -588,6 +641,11 @@ func _on_loaded() -> void:
 func _on_changed(scope: String) -> void:
 	_update_title()
 	if scope == "meta" or scope == "all":
+		return
+	if _is_classic():
+		_refresh_seed_action()
+		_classic_refresh_pending = true
+		_params.sync_values()
 		return
 	if scope == "structure":
 		_params.build()
@@ -599,6 +657,10 @@ func _on_changed(scope: String) -> void:
 
 
 func _on_value_edited(scope: String, layer: int, id: String, value: Variant, phase: int) -> void:
+	if _is_classic():
+		if phase != 3:
+			session.set_value(scope, layer, id, value, phase == 2)
+		return
 	if phase == 3:
 		_dragging = false
 		_scheduler.request_full()
@@ -670,6 +732,8 @@ func _update_title() -> void:
 # ---------------------------------------------------------------- 渲染结果与播放
 
 func _on_rendered(job: RefCounted, full: bool, ms: float) -> void:
+	if _is_classic():
+		return
 	var j := job as FxJob
 	if j == null:
 		return
@@ -720,6 +784,9 @@ func _process(delta: float) -> void:
 	if not is_visible_in_tree():
 		return
 	_browser.process_thumbnails()
+	if _is_classic():
+		_process_classic(delta)
+		return
 	if not _playing or _textures.is_empty():
 		return
 	if _dragging and _last_full_ms > DRAG_FULL_BUDGET_MS:
@@ -762,6 +829,11 @@ func _process(delta: float) -> void:
 
 
 func _show_frame(blank: bool = false) -> void:
+	if _is_classic():
+		_frame = clampi(_frame, 0, _classic_frames() - 1)
+		_classic_stage.effect.seek(float(_frame) / 30.0)
+		_timeline.set_current(_frame, _classic_frames(), _playing)
+		return
 	if _textures.is_empty():
 		_stage.set_frame(null)
 		return
@@ -771,6 +843,15 @@ func _show_frame(blank: bool = false) -> void:
 
 
 func _toggle_play() -> void:
+	if _is_classic():
+		_playing = not _playing
+		_gap = 0.0
+		_acc = 0.0
+		if _playing and _frame >= _classic_frames() - 1:
+			_frame = 0
+			_show_frame()
+		_timeline.set_current(_frame, _classic_frames(), _playing)
+		return
 	_playing = not _playing
 	_gap = 0.0
 	_acc = 0.0
@@ -780,6 +861,12 @@ func _toggle_play() -> void:
 
 
 func _step(d: int) -> void:
+	if _is_classic():
+		_playing = false
+		_gap = 0
+		_frame = posmod(_frame + d, _classic_frames())
+		_show_frame()
+		return
 	_playing = false
 	_gap = 0.0
 	if _textures.is_empty():
@@ -791,7 +878,7 @@ func _step(d: int) -> void:
 func _jump(to_end: bool) -> void:
 	_playing = false
 	_gap = 0.0
-	_frame = _textures.size() - 1 if to_end else 0
+	_frame = ((_classic_frames() if _is_classic() else _textures.size()) - 1) if to_end else 0
 	_show_frame()
 
 
@@ -866,6 +953,19 @@ func _on_save_as_confirmed() -> void:
 
 
 func _save_to(path: String) -> void:
+	var generation: int = session._generation
+	if _params.classic_solo:
+		_params.classic_solo = false
+		_classic_stage.set_solo(-1)
+		_params.build.call_deferred()
+		await get_tree().process_frame
+		if generation != session._generation: return
+		RenderingServer.force_draw(false)
+	if _is_classic() and _classic_stage.viewport.get_texture() != null:
+		var img := _classic_stage.viewport.get_texture().get_image()
+		if img != null and not img.is_empty():
+			img.resize(192, 144, Image.INTERPOLATE_NEAREST)
+			session.preset.preview_png = img.save_png_to_buffer()
 	var err := session.save_to(path)
 	if err != OK:
 		_status.text = I18n.T("保存失败（%s）：%s") % [error_string(err), path]
@@ -918,10 +1018,14 @@ func _on_redo() -> void:
 
 
 func _on_reseed() -> void:
-	session.set_value("global", -1, "seed", randi() % 100000)
+	session.set_value("classic_global" if _is_classic() else "global", -1, "seed", randi() % 100000)
 
 
 func _on_export() -> void:
+	if _params.classic_solo:
+		_params.classic_solo = false
+		_classic_stage.set_solo(-1)
+		_params.build.call_deferred()
 	var p := session.preset
 	var saved: Variant = _meta_get("export_" + p.preset_id, {})
 	var s := FxExport.normalize_settings(saved if saved is Dictionary else {}, p)
@@ -930,7 +1034,7 @@ func _on_export() -> void:
 		var m: FxModule = FxRegistry.get_module(l.get("module", ""))
 		if m != null and m.is_directional() and l.get("follow_dir", true):
 			directional = true
-	_export_dialog.open(s, int(session.get_value("global", -1, "frames")), directional)
+	_export_dialog.open(s, _classic_frames() if _is_classic() else int(session.get_value("global", -1, "frames")), directional, _is_classic())
 
 
 func _on_export_requested(settings: Dictionary) -> void:
@@ -952,7 +1056,10 @@ func _run_export(s: Dictionary) -> void:
 	_exporting = true
 	_export_button.disabled = true
 	_status.text = I18n.T("正在导出……")
-	var res: Dictionary = await FxExporter.run(session.preset, s)
+	var snapshot: Resource = session.preset.clone()
+	preload("../export/fx_export_task.gd").new().run(snapshot, s, _classic_stage.camera if snapshot.legacy_recipe != null else null, weakref(self))
+
+func export_completed(res: Dictionary, s: Dictionary) -> void:
 	_exporting = false
 	_export_button.disabled = false
 	_result_files = res["files"]
@@ -1022,3 +1129,71 @@ func _meta_get(key: String, default: Variant) -> Variant:
 
 func _meta_set(key: String, value: Variant) -> void:
 	EditorInterface.get_editor_settings().set_project_metadata(META, key, value)
+
+
+func _is_classic() -> bool:
+	return session.preset != null and session.preset.legacy_recipe != null
+
+func _classic_frames() -> int:
+	var recipe: Resource = session.preset.legacy_recipe
+	var seconds: float = maxf(3.0, recipe.duration) if recipe.looping else recipe.total_duration()
+	return maxi(2, ceili((minf(10.0, seconds) if recipe.looping else seconds) * 30.0) + 1)
+
+func _classic_status() -> void:
+	var recipe: Resource = session.preset.legacy_recipe
+	_status.text = I18n.T("3D 实时 · %d 个图层 · 粒子容量 %d · 右键旋转 / 滚轮缩放") % [recipe.layers.size(), recipe.particle_capacity()]
+
+func _process_classic(delta: float) -> void:
+	if _classic_refresh_pending:
+		_classic_refresh_pending = false
+		_frame = clampi(_frame, 0, _classic_frames() - 1)
+		var time := float(_frame) / 30.0
+		_classic_stage.set_recipe(session.preset.legacy_recipe)
+		_timeline.set_live_frames(_classic_frames())
+		_classic_stage.effect.seek(time)
+		_classic_status()
+	if not _playing:
+		return
+	if _gap > 0:
+		_gap -= delta
+		if _gap <= 0:
+			_frame = 0
+			_show_frame()
+		return
+	_acc += minf(delta, 0.1) * _speed * float(session.preset.legacy_recipe.playback_speed)
+	while _acc >= 1.0 / 30.0:
+		_acc -= 1.0 / 30.0
+		if _frame >= _classic_frames() - 1:
+			if _loop_preview:
+				_gap = LOOP_GAP
+			else:
+				_playing = false
+			_acc = 0
+			break
+		_classic_stage.effect.step(1.0 / 30.0)
+		_frame += 1
+	_timeline.set_current(_frame, _classic_frames(), _playing)
+
+func _apply_ui_theme(id: String) -> void:
+	_theme_id = id if WorkshopTheme.IDS.has(id) else "navy"
+	theme = WorkshopTheme.create(_theme_id, EditorInterface.get_editor_theme())
+	_meta_set("ui_theme", _theme_id)
+	queue_redraw()
+	if is_instance_valid(_stage):
+		_stage.queue_redraw()
+	if _is_classic():
+		_refresh_classic_theme.call_deferred()
+
+func _refresh_classic_theme() -> void:
+	if not _is_classic() or not is_instance_valid(_classic_stage.effect):
+		return
+	_classic_stage.effect.seek(float(_frame) / 30.0)
+
+func _draw() -> void:
+	draw_rect(Rect2(Vector2.ZERO, size), get_theme_color("background", "JeffFX"))
+
+func _refresh_seed_action() -> void:
+	_reseed_button.visible = not _is_classic()
+	if _is_classic():
+		for d: Dictionary in preload("classic_params.gd").defs(session.preset.legacy_recipe, true, true, session.preset.legacy_recipe):
+			if d.id == "seed": _reseed_button.visible = true

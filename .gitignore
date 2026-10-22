@@ -1,11 +1,16 @@
-# Godot 生成的缓存（每台机器各自生成，新机器先跑 --import）
+# Godot / operating system caches
 .godot/
-/android/
-
-# 测试与自检输出
-/tests/output/
-/fx_exports/_selftest/
-
-# 系统文件
 .DS_Store
 Thumbs.db
+# Personal projects, exports and development-only material
+/tests/
+/tools/
+/demo/
+/art/
+/fx_exports/
+/fx_forge_presets/
+/project.godot
+/export_presets.cfg
+*.log
+.env
+.env.*

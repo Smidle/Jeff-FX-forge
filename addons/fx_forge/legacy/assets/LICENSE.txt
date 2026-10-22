@@ -1,0 +1,18 @@
+Original Jeff Studio FX artwork — CC0 1.0 Universal
+
+To the extent possible under law, Jeff Studio has waived all copyright and
+related or neighboring rights to the original textures, thumbnails and branding
+artwork distributed in this assets directory. These assets may be copied,
+modified and used, including commercially, without attribution.
+
+Full legal text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+The assets include original programmatically drawn art, art authored directly
+in Aseprite, and original AI-generated key drawings finished and animated in
+Aseprite. The explosion logo concept was generated with an image-generation
+tool and the final pixel animation was authored in Aseprite.
+No extracted third-party game textures, character sprites or reference video
+frames are distributed here. Production sources and internal review files
+are not part of this plugin-only distribution.
+
+Runtime drawing code and shaders are software, covered by the MIT license.

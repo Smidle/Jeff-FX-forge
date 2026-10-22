@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dm6j37bn12sk3"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "银针与短促气痕"
+kind = 1
+palette_hue_shift = true
+palette_reference = Color(0.76863, 0.81176, 0.81569, 1)
+texture_name = "px_needle_v8"
+atlas_frames = 16
+animation_fps = 32.0
+fade_in = 0.01
+fade_out = 0.07
+align_to_motion = true
+offset = Vector3(0, 1, 0)
+size = 1.7
+end_size = 1.7
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "稀疏金属细光"
+decorative = true
+delay = 0.1
+secondary = true
+texture_name = "px_shard"
+offset = Vector3(0.4, 1, 0)
+size = 0.02
+end_size = 0.05
+count = 5
+lifetime = 0.3
+direction = Vector3(1, 0, 0)
+spread = 8.0
+velocity_min = 0.8
+velocity_max = 1.5
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_needle"
+title = "暗器破空"
+title_en = "Hidden Needle Volley"
+category = "wuxia"
+description = "三枚银色暗器沿错开的轨迹掠过，细短气痕随后卷曲、断开；适合远程起手或短促连射视觉。"
+tags = PackedStringArray("远程", "爆发", "暗器", "projectile", "needle")
+duration = 0.6
+preview_time = 0.13
+primary_color = Color(0.76863, 0.81176, 0.81569, 1)
+secondary_color = Color(0.96078, 0.89412, 0.71373, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

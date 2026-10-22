@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dxjjpnxb2mba"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "灵羽展开与飘散"
+kind = 1
+duration = 1.142857
+palette_hue_shift = true
+palette_reference = Color(0.56863, 0.74902, 0.64314, 1)
+texture_name = "px_feather_v8"
+atlas_frames = 16
+animation_fps = 14.0
+fade_in = 0.045
+fade_out = 0.14
+offset = Vector3(0, 1, 0)
+size = 2.1
+end_size = 2.1
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "羽尖暖色余光"
+decorative = true
+delay = 0.55
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+offset = Vector3(0, 1, 0)
+size = 0.03
+end_size = 0.05
+count = 7
+lifetime = 0.55
+spread = 30.0
+velocity_min = 0.2
+velocity_max = 0.45
+emission_box = Vector3(0.35, 0.15, 0.15)
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_feather"
+title = "灵羽飘散"
+title_en = "Spirit Feather Release"
+category = "xianxia"
+description = "浅玉灵羽从光核展开，各自翻转、舒展并由羽尖化为碎光；适合轻身、净化或增益的视觉提示。"
+tags = PackedStringArray("范围", "移动", "增益", "净化", "buff", "feather")
+duration = 1.3
+preview_time = 0.45
+primary_color = Color(0.56863, 0.74902, 0.64314, 1)
+secondary_color = Color(1, 0.9451, 0.76471, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

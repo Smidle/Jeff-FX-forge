@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://ctcg3o1jr81xb"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "地脉与上升灵流"
+kind = 1
+duration = 1.0
+palette_hue_shift = true
+palette_reference = Color(0.56863, 0.74902, 0.64314, 1)
+texture_name = "px_meridian_v8"
+atlas_frames = 16
+animation_fps = 16.0
+fade_in = 0.03
+fade_out = 0.12
+offset = Vector3(0, 1.042, 0)
+size = 2.5
+end_size = 2.5
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "升腾细光"
+decorative = true
+delay = 0.25
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+offset = Vector3(0, 0.25, 0)
+size = 0.03
+end_size = 0.05
+count = 8
+lifetime = 0.6
+spread = 12.0
+velocity_min = 0.4
+velocity_max = 0.8
+emission_box = Vector3(0.2, 0.02, 0.15)
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_meridian"
+title = "灵脉升腾"
+title_en = "Rising Spirit Veins"
+category = "xianxia"
+description = "地面细脉先亮起，两缕金玉灵流沿细分支向上舒展，底部断开后逐段逸散。"
+tags = PackedStringArray("范围", "爆发", "蓄力", "灵脉", "area", "cast")
+duration = 1.15
+preview_time = 0.4
+primary_color = Color(0.56863, 0.74902, 0.64314, 1)
+secondary_color = Color(1, 0.9451, 0.76471, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://ciwo0qwy7pjjg"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "薄翼与发光虫腹"
+kind = 2
+palette_hue_shift = true
+palette_reference = Color(1, 0.94118, 0.67843, 1)
+texture_name = "px_firefly_v6"
+atlas_frames = 8
+animation_fps = 32.0
+fade_in = 0.4
+fade_out = 0.7
+field_motion = 2
+motion_speed = 0.55
+flight_variation = 0.65
+blink_speed = 1.9
+offset = Vector3(0, 0.9, 0)
+size = 0.4
+count = 18
+emission_box = Vector3(1.6, 0.55, 1.6)
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "贴腹暖光"
+kind = 2
+decorative = true
+sort_priority = -1
+texture_name = "px_firefly_halo"
+field_motion = 3
+motion_source = 0
+size = 0.17
+additive = true
+opacity = 0.55
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "细小伴飞光点"
+kind = 2
+decorative = true
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+field_motion = 4
+motion_source = 0
+satellite_radius = 0.23
+satellite_speed = 0.85
+size = 0.065
+additive = true
+
+[resource]
+script = ExtResource("1")
+id = "fireflies"
+title = "萤火虫"
+title_en = "Lantern Fireflies"
+description = "细薄翅脉、暗色虫体与分节暖腹；不同节奏的游飞和短暂停留，伴飞碎光跟随各自虫体。"
+tags = PackedStringArray("环境", "生物", "夜晚", "insect", "fireflies")
+looping = true
+duration = 1.4
+preview_time = 2.0
+primary_color = Color(1, 0.94118, 0.67843, 1)
+secondary_color = Color(0.7098, 0.86275, 0.71765, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2")])

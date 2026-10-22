@@ -4,7 +4,6 @@ extends RefCounted
 ## 用法：界面上显示的文字一律写成 I18n.T("中文原文")——中文原文就是键（和 Godot 的 tr()、gettext 一样），
 ## 其他语言在 lang_xx.gd 的 TABLE 里补「中文原文 → 译文」，缺的条目自动显示中文。
 ## 参数说明表和模块自带英文名（label_en、get_display_name_en），用 label() / module_name() 取当前语言的名字。
-## 导出全部待翻译文字：godot --headless --path . --script res://tests/extract_ui_text.gd
 ## 单元测试会检查界面脚本里没有漏掉 I18n.T() 的中文文字。
 
 const LangEn := preload("lang_en.gd")

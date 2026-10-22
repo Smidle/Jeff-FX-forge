@@ -9,18 +9,20 @@ signal preset_chosen(preset: Resource, path: String, builtin_id: String)
 signal preset_action(action: String, preset: Resource, path: String, builtin_id: String)
 
 const I18n := preload("i18n.gd")
+const Classic := preload("../presets/classic_presets.gd")
 const Builtin := preload("../presets/builtin_presets.gd")
 const FxPreset := preload("../core/fx_preset.gd")
 const FxRenderer := preload("../core/fx_renderer.gd")
 const FxSession := preload("fx_session.gd")
 
-const CATEGORIES := [["", "全部"], ["combat", "战斗打击"], ["element", "爆炸与元素"], ["magic", "魔法与状态"], ["env", "环境与通用"], ["custom", "我的预设"]]
+const CATEGORIES := [["", "全部"], ["combat", "战斗打击"], ["element", "爆炸与元素"], ["magic", "魔法与状态"], ["env", "环境与通用"], ["classic_environment", "经典 · 环境"], ["classic_wuxia", "经典 · 武侠"], ["classic_xianxia", "经典 · 仙侠"], ["classic_magic", "经典 · 魔法"], ["custom", "我的预设"]]
 const THUMB := 56
 ## 缩略图在这几个时刻里挑不透明像素最多的一帧
 const THUMB_SAMPLES := [0.2, 0.35, 0.5, 0.65]
 const MENU_ACTIONS := ["open", "rename", "duplicate", "show", "delete"]
 
 var _search: LineEdit
+var _source: OptionButton
 var _category: OptionButton
 var _list: ItemList
 ## 每项 {preset, path, builtin, key}
@@ -54,6 +56,12 @@ func _ready() -> void:
 	_search.right_icon = theme.get_icon(&"Search", &"EditorIcons")
 	_search.text_changed.connect(func(_t: String) -> void: _rebuild())
 	add_child(_search)
+
+	_source = OptionButton.new()
+	for text: String in [I18n.T("全部效果 · 82 款"), I18n.T("像素工坊 · 38 款"), I18n.T("经典效果库 · 44 款")]:
+		_source.add_item(text)
+	_source.item_selected.connect(func(_i: int) -> void: _rebuild())
+	add_child(_source)
 
 	_category = OptionButton.new()
 	for c: Array in CATEGORIES:
@@ -91,7 +99,7 @@ func _ready() -> void:
 ## 重新扫描预设（保存 / 另存为之后调用）
 func refresh() -> void:
 	_entries.clear()
-	for p: FxPreset in Builtin.all():
+	for p: FxPreset in Builtin.all() + Classic.all():
 		_entries.append({"preset": p, "path": "", "builtin": p.preset_id, "key": "builtin:" + p.preset_id})
 	var dir := FxSession.USER_DIR
 	if DirAccess.dir_exists_absolute(dir):
@@ -106,6 +114,13 @@ func refresh() -> void:
 				var key := "user:" + path
 				_entries.append({"preset": res, "path": path, "builtin": "", "key": key})
 				_thumbs.erase(key)
+	var classic_count := 0
+	for entry: Dictionary in _entries:
+		if entry.preset.legacy_recipe != null:
+			classic_count += 1
+	_source.set_item_text(0, I18n.T("全部效果 · %d 款") % _entries.size())
+	_source.set_item_text(1, I18n.T("像素工坊 · %d 款") % (_entries.size() - classic_count))
+	_source.set_item_text(2, I18n.T("经典效果库 · %d 款") % classic_count)
 	_queue.clear()
 	for e: Dictionary in _entries:
 		if not _thumbs.has(e["key"]):
@@ -138,22 +153,33 @@ func process_thumbnails() -> void:
 
 func _rebuild() -> void:
 	_list.clear()
+	var priority: Array = []
 	var q := _search.text.strip_edges().to_lower()
 	var cat: String = CATEGORIES[maxi(_category.selected, 0)][0]
 	for i in _entries.size():
 		var e: Dictionary = _entries[i]
 		var p: FxPreset = e["preset"]
+		if (_source.selected == 1 and p.legacy_recipe != null) or (_source.selected == 2 and p.legacy_recipe == null):
+			continue
 		var category := "custom" if not str(e["path"]).is_empty() else p.category
 		if not cat.is_empty() and category != cat:
 			continue
 		if not q.is_empty() and not (p.display_name.to_lower().contains(q) or p.preset_id.to_lower().contains(q) or p.description.to_lower().contains(q)):
 			continue
+		if not _thumbs.has(e["key"]):
+			priority.append(e["key"])
 		var idx := _list.add_item(I18n.T(p.display_name), _thumbs.get(e["key"], _placeholder))
 		_list.set_item_metadata(idx, i)
 		var where := I18n.T("我的预设 · ") + str(e["path"]).get_file() if not str(e["path"]).is_empty() else I18n.T("内置 · ") + I18n.T(p.get_category_name())
 		_list.set_item_tooltip(idx, "%s\n%s\n%s" % [I18n.T(p.display_name), where, I18n.T(p.description)])
 		if e["key"] == _selected_key:
 			_list.select(idx)
+
+	for key: String in _queue:
+		if not priority.has(key):
+			priority.append(key)
+	_queue = priority
+	_list.ensure_current_is_visible.call_deferred()
 
 
 func _update_icon(key: String) -> void:
@@ -226,13 +252,15 @@ func _make_thumb(p: FxPreset) -> Texture2D:
 				n += 1
 	var dark := n > 0 and lum / n < 0.32
 	var out := Image.create_empty(_thumb_px, _thumb_px, false, Image.FORMAT_RGBA8)
-	out.fill(Color(0.9, 0.88, 0.82) if dark else Color(0.12, 0.12, 0.16))
+	out.fill(img.get_pixel(0, 0) if p.legacy_recipe != null else (Color(0.9, 0.88, 0.82) if dark else Color(0.12, 0.12, 0.16)))
 	out.blend_rect(big, Rect2i(0, 0, tw, th), Vector2i((_thumb_px - tw) / 2, (_thumb_px - th) / 2))
 	return ImageTexture.create_from_image(out)
 
 
 ## 预设最有代表性的一帧（不透明像素最多）
 static func representative_frame(p: FxPreset) -> Image:
+	if p.legacy_recipe != null:
+			return Classic.thumbnail(p)
 	var n := clampi(int(p.globals.get("frames", 12)), 1, 64)
 	var ids := PackedInt32Array()
 	for r: float in THUMB_SAMPLES:

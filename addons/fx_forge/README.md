@@ -1,10 +1,13 @@
-# FX Forge 像素特效工坊（插件本体）
+# Jeff FX 1.0.1
 
-把这个 `fx_forge` 文件夹复制到你项目的 `addons/` 下，在「项目 → 项目设置 → 插件」里启用，
-编辑器顶部就会多出「特效工坊」标签：挑预设、调参数、导出精灵图和即用场景。
+适用于 Godot 4.7 的像素特效插件，包含 38 款程序像素预设与 44 款经典三维效果。
 
-- 需要 Godot 4.7 或更新版本。
-- 你保存的预设在 `res://fx_forge_presets/`，导出文件默认在 `res://fx_exports/`（都在插件文件夹外，升级插件不会覆盖）。
-- 导出的 `.tscn` 不依赖本插件，删掉插件也能在游戏里正常播放。
+复制整个 `fx_forge` 文件夹到工程的 `addons/`，在“项目 → 项目设置 → 插件”中启用 **Jeff FX**，点击编辑器顶部 **Jeff FX**。
 
-完整说明见开发仓库根目录的 README.md 和中文使用手册 docs/manual.md。
+- 个人配方：`res://fx_forge_presets/`
+- 默认导出：`res://fx_exports/`
+- 两类效果均可导出透明精灵图和放置到场景。
+- 直接放置的效果与可编辑配方依赖插件；导出的二维即用场景连同 PNG / SpriteFrames 可独立使用。
+- 实测 Godot 4.7.2 / macOS / Compatibility；其他渲染器与设备尚未完成画面验收。
+
+[完整图文说明](../../docs/manual.md) · [已知限制](../../docs/compatibility.md) · [MIT 许可](LICENSE) · [素材说明](../../NOTICE.md)

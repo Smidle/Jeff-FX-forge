@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://diamtstdfloqt"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "单次劈落与地面炸裂"
+kind = 3
+duration = 0.8
+texture_name = ""
+fade_in = 0.01
+fade_out = 0.12
+end_size = 1.0
+procedural_motion = 1
+path_start = Vector3(0, 3, 0)
+path_end = Vector3(0, 0, 0)
+impact_radius = 0.95
+impact_sparks = 14
+path_segments = 20
+strand_count = 1
+curvature = 0.1
+redraw_fps = 30
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_arc"
+title = "程序·分叉电弧"
+title_en = "Procedural Arc"
+category = "xianxia"
+description = "一次分叉雷击落向指定终点，触地闪光后向地面炸开碎光与冲击环。劈落与炸裂共用时间、种子与落点。"
+tags = PackedStringArray("程序化", "命中", "雷电", "炸裂", "procedural", "lightning")
+duration = 0.9
+preview_time = 0.15
+primary_color = Color(0.8549, 0.92549, 0.90196, 1)
+secondary_color = Color(0.47059, 0.68235, 0.71765, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

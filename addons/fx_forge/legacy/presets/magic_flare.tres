@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dfw0ra5h8v7ao"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "聚火、喷发与燃尽"
+kind = 1
+duration = 0.728
+palette_hue_shift = true
+palette_reference = Color(0.98824, 0.53333, 0.20392, 1)
+texture_name = "px_flare_v5"
+atlas_frames = 16
+animation_fps = 22.0
+fade_in = 0.015
+fade_out = 0.07
+offset = Vector3(0, 1.11, 0)
+size = 2.6
+end_size = 2.6
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "喷出余烬"
+delay = 0.18
+secondary = true
+texture_name = "px_cinder_v5"
+atlas_frames = 6
+animation_loop = true
+offset = Vector3(0, 0.18, 0)
+size = 0.075
+end_size = 0.1
+count = 10
+lifetime = 0.65
+spread = 22.0
+velocity_min = 1.2
+velocity_max = 2.3
+gravity = Vector3(0, -1.2, 0)
+emission_box = Vector3(0.13, 0.02, 0.1)
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "少量暗灰"
+decorative = true
+delay = 0.45
+color = Color(0.55686, 0.4902, 0.50588, 1)
+use_palette_tint = false
+texture_name = "px_paper_ash"
+atlas_frames = 6
+offset = Vector3(0, 0.45, -0.02)
+size = 0.07
+end_size = 0.15
+count = 4
+lifetime = 0.5
+spread = 30.0
+velocity_min = 0.3
+velocity_max = 0.6
+
+[resource]
+script = ExtResource("1")
+id = "magic_flare"
+title = "烈焰喷发"
+title_en = "Rising Flame Burst"
+category = "magic"
+description = "低处聚火后突然向上喷发，火舌向外翻卷并从根部断开，余焰继续上升消散。"
+tags = PackedStringArray("范围", "爆发", "火", "fire", "eruption")
+duration = 1.05
+preview_time = 0.28
+primary_color = Color(0.98824, 0.53333, 0.20392, 1)
+secondary_color = Color(1, 0.94118, 0.82745, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2")])

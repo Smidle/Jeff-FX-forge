@@ -7,12 +7,14 @@ extends VBoxContainer
 signal value_edited(scope: String, layer: int, id: String, value: Variant, phase: int)
 signal theme_chosen(theme_id: String)
 signal layer_selected(index: int)
+signal classic_solo_toggled(enabled: bool)
 signal action_requested(action: String)
 ## 图层结构操作：add（arg = 模块 id）/ up / down / dup / del
 signal layer_action(action: String, index: int, arg: String)
 ## 请求打开色板编辑器（id = palette_main / palette_accent / palette_smoke）
 signal palette_edit_requested(id: String)
 
+const ClassicParams := preload("classic_params.gd")
 const I18n := preload("i18n.gd")
 const FxParams := preload("../core/fx_params.gd")
 const FxGlobals := preload("../core/fx_globals.gd")
@@ -24,13 +26,14 @@ const FxSession := preload("fx_session.gd")
 const Kind := FxParams.Kind
 const GLOBAL_GROUPS := ["canvas", "direction", "look", "outline", "cleanup"]
 const PARAM_GROUPS := ["shape", "motion", "detail"]
-const FOLDED_BY_DEFAULT := ["cleanup", "layer"]
+const FOLDED_BY_DEFAULT := ["cleanup", "layer", "classic_global_advanced", "classic_space"]
 ## 八方向快捷按钮：[角度, 文字]（-1 = 中间空位）
 const DIR_PAD := [[225, "↖"], [270, "↑"], [315, "↗"], [180, "←"], [-1, ""], [0, "→"], [135, "↙"], [90, "↓"], [45, "↘"]]
 const CUSTOM_PALETTE := "__custom__"
 
 var session: FxSession = null
 var show_advanced := false
+var classic_solo := false
 var _folded := {}
 ## key → {kind, control, scope, layer, id}
 var _controls := {}
@@ -55,6 +58,9 @@ func build() -> void:
 	_scale = EditorInterface.get_editor_scale()
 	_bold = EditorInterface.get_editor_theme().get_font(&"bold", &"EditorFonts")
 	_add_header()
+	if session.preset.legacy_recipe != null:
+		_build_classic()
+		return
 	var gdefs := FxGlobals.global_defs()
 	for group: String in GLOBAL_GROUPS:
 		var box := _section(group, I18n.T(FxGlobals.GROUP_NAMES[group]))
@@ -247,7 +253,7 @@ func _add_row(box: VBoxContainer, scope: String, layer: int, d: Dictionary) -> v
 				if options[i][0] == value:
 					ob.select(i)
 			ob.item_selected.connect(func(i: int) -> void:
-				var picked: String = ob.get_item_metadata(i)
+				var picked: Variant = ob.get_item_metadata(i)
 				if scope == "global" and id == "theme":
 					theme_chosen.emit(picked)
 				else:
@@ -346,7 +352,7 @@ func _make_palette_picker(scope: String, layer: int, id: String, value: Variant)
 		ob.set_item_metadata(opts.size(), CUSTOM_PALETTE)
 		ob.select(opts.size())
 	ob.item_selected.connect(func(i: int) -> void:
-		var picked: String = ob.get_item_metadata(i)
+		var picked: Variant = ob.get_item_metadata(i)
 		if picked != CUSTOM_PALETTE:
 			value_edited.emit(scope, layer, id, picked, 0))
 	return ob
@@ -533,3 +539,48 @@ func _add_layers() -> void:
 		var box := _section(group, "%s · %s" % [I18n.T(FxGlobals.GROUP_NAMES[group]), module_name])
 		for d: Dictionary in defs:
 			_add_row(box, "param", li, d)
+
+
+func _build_classic() -> void:
+	var recipe: Resource = session.preset.legacy_recipe
+	var basic := _section("classic_basic", I18n.T("整体与配色"))
+	var global_defs := ClassicParams.defs(recipe, true, true, recipe, session.classic_defaults)
+	for d: Dictionary in global_defs:
+		if ClassicParams.group(d.id) != "advanced": _add_row(basic, "classic_global", -1, d)
+	var layers := _section("classic_layers", I18n.T("图层模块"))
+	var selector := OptionButton.new()
+	for layer: Resource in recipe.layers:
+		selector.add_item(layer.label)
+	session.layer_index = clampi(session.layer_index, 0, maxi(0, recipe.layers.size() - 1))
+	selector.select(session.layer_index)
+	selector.item_selected.connect(func(i: int) -> void: layer_selected.emit(i))
+	layers.add_child(selector)
+	var solo := CheckBox.new()
+	solo.text = I18n.T("单独查看并放大此图层")
+	solo.tooltip_text = I18n.T("使用标准档单独预览，用来检查细小光点和辅色；不影响保存、场景或导出。")
+	solo.button_pressed = classic_solo
+	solo.toggled.connect(func(on: bool) -> void:
+		classic_solo = on
+		classic_solo_toggled.emit(on))
+	layers.add_child(solo)
+	if not recipe.layers.is_empty():
+		var layer: Resource = recipe.layers[session.layer_index]
+		var layer_defs := ClassicParams.defs(layer, true, false, recipe, session.classic_defaults.layers[session.layer_index])
+		for section: Array in [["main", I18n.T("外观与数量")], ["motion", I18n.T("节奏与运动")], ["space", I18n.T("位置与朝向")], ["advanced", I18n.T("高级设置")]]:
+			var rows: Array = layer_defs.filter(func(d: Dictionary) -> bool: return ClassicParams.group(d.id) == section[0])
+			if rows.is_empty(): continue
+			var key: String = "classic_" + section[0]
+			if section[0] == "advanced" and not _folded.has(key): _folded[key] = true
+			var box := _section(key, I18n.T(section[1]))
+			for d: Dictionary in rows: _add_row(box, "classic_layer", session.layer_index, d)
+		# A dependency change rebuilds visibility, including undo/redo.
+		for id: String in ["facing", "continuous", "repeat_count", "pulse", "use_palette_tint", "impact_enabled", "enabled", "secondary"]:
+			_deps["classic_layer|%d|%s" % [session.layer_index, id]] = layer.get(id)
+	var advanced := _section("classic_global_advanced", I18n.T("全局高级设置"))
+	for d: Dictionary in global_defs:
+		if ClassicParams.group(d.id) == "advanced": _add_row(advanced, "classic_global", -1, d)
+	_deps["classic_global|-1|looping"] = recipe.looping
+	var hint := Label.new()
+	hint.text = I18n.T("朝向镜头时仅支持平面内 Z 旋转；固定地面或空间后可调 X/Y。起终点流光按路径定向。联动图层的运动参数在主图层调整。")
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(hint)

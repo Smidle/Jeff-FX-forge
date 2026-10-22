@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://ciicq2vyjnxlw"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "上升光带与解体"
+kind = 1
+duration = 1.0
+palette_hue_shift = true
+palette_reference = Color(0.57255, 0.79216, 0.66667, 1)
+texture_name = "px_heal_v5"
+atlas_frames = 16
+animation_fps = 16.0
+fade_out = 0.08
+offset = Vector3(0, 0.833, 0)
+size = 1.95
+end_size = 1.95
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "柔和上升光点"
+decorative = true
+delay = 0.28
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+offset = Vector3(0, 0.45, 0)
+size = 0.055
+end_size = 0.1
+count = 7
+spread = 14.0
+velocity_min = 0.35
+velocity_max = 0.65
+emission_box = Vector3(0.25, 0.06, 0.15)
+
+[resource]
+script = ExtResource("1")
+id = "magic_heal"
+title = "治疗绽放"
+title_en = "Restorative Light"
+category = "magic"
+description = "薄荷色光带从脚边盘旋上升，人物中央保持通透，最后散成轻薄花瓣和暖色星光。"
+tags = PackedStringArray("范围", "治疗", "增益", "heal", "bloom")
+duration = 1.15
+preview_time = 0.4
+primary_color = Color(0.57255, 0.79216, 0.66667, 1)
+secondary_color = Color(1, 0.94118, 0.74902, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

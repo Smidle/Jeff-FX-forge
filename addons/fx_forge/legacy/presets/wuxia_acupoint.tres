@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://cwvksip0oogl4"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "接触点与封脉细线"
+kind = 1
+duration = 0.615385
+palette_hue_shift = true
+palette_reference = Color(0.92941, 0.74118, 0.37647, 1)
+texture_name = "px_acupoint_v9"
+atlas_frames = 16
+animation_fps = 26.0
+fade_in = 0.01
+fade_out = 0.09
+offset = Vector3(0, 1.1, 0)
+size = 1.15
+end_size = 1.15
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "接触余光"
+decorative = true
+delay = 0.09
+secondary = true
+texture_name = "px_shard"
+offset = Vector3(0, 1.1, 0)
+size = 0.018
+end_size = 0.05
+count = 4
+lifetime = 0.28
+spread = 100.0
+velocity_min = 0.15
+velocity_max = 0.35
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_acupoint"
+title = "点穴封脉"
+title_en = "Meridian Seal"
+category = "wuxia"
+description = "精准的小接触点沿三条细脉逐次点亮，朱金印点短促收紧，再收线、冷却；适合点穴和破招的视觉提示。"
+tags = PackedStringArray("近战", "命中", "控制", "点穴", "melee", "control")
+duration = 0.75
+preview_time = 0.27
+primary_color = Color(0.92941, 0.74118, 0.37647, 1)
+secondary_color = Color(0.9098, 0.48235, 0.28627, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

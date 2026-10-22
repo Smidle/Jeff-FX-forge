@@ -1,0 +1,4 @@
+Original Jeff Studio FX explosion logo — CC0 1.0.
+Concept created with an image-generation tool; final pixel animation authored
+and exported in Aseprite. This directory contains only the runtime logo assets.
+See ../../LICENSE.txt for the artwork dedication.

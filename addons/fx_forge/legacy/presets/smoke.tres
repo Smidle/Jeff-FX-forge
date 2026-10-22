@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://do1eoj4oh8470"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "翻卷主烟"
+palette_hue_shift = true
+palette_reference = Color(0.65098, 0.67059, 0.70196, 1)
+texture_name = "px_smoke_v6"
+atlas_frames = 16
+animation_fps = 5.0
+offset = Vector3(0, 0.46, 0)
+size = 1.05
+end_size = 1.15
+count = 9
+lifetime = 3.2
+continuous = true
+spread = 12.0
+velocity_min = 0.22
+velocity_max = 0.4
+gravity = Vector3(0.07, 0.02, 0)
+emission_box = Vector3(0.12, 0.02, 0.12)
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "稀疏背烟"
+decorative = true
+secondary = true
+palette_hue_shift = true
+palette_reference = Color(0.58824, 0.60784, 0.64706, 1)
+sort_priority = -1
+texture_name = "px_smoke_v6"
+atlas_frames = 16
+animation_fps = 5.714286
+offset = Vector3(0, 0.36, -0.08)
+size = 0.8
+end_size = 1.1
+opacity = 0.65
+count = 4
+lifetime = 2.8
+continuous = true
+spread = 18.0
+velocity_min = 0.2
+velocity_max = 0.32
+gravity = Vector3(0.09, 0.015, 0)
+
+[resource]
+script = ExtResource("1")
+id = "smoke"
+title = "烟雾"
+title_en = "Curling Smoke"
+description = "细腻灰烟从低处升起，卷出层次与空隙，再分裂成薄缕消散；风向、密度与生命周期可调。"
+tags = PackedStringArray("环境", "烟雾", "风", "environment", "smoke")
+looping = true
+duration = 1.4
+preview_time = 2.0
+primary_color = Color(0.65098, 0.67059, 0.70196, 1)
+secondary_color = Color(0.58824, 0.60784, 0.64706, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

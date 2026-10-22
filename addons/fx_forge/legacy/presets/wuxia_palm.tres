@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://bwnh6wtwcbbaf"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "层叠前推气流"
+kind = 1
+duration = 0.572
+palette_hue_shift = true
+palette_reference = Color(0.74902, 0.77647, 0.72549, 1)
+texture_name = "px_palm_v7"
+atlas_frames = 16
+animation_fps = 28.0
+fade_in = 0.01
+fade_out = 0.08
+offset = Vector3(0, 1, 0)
+size = 2.0
+end_size = 2.0
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "前推细尘"
+decorative = true
+delay = 0.08
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+offset = Vector3(0.5, 1, 0)
+size = 0.025
+end_size = 0.05
+count = 6
+lifetime = 0.4
+direction = Vector3(1, 0.1, 0)
+spread = 18.0
+velocity_min = 0.35
+velocity_max = 0.8
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_palm"
+title = "掌风冲击"
+title_en = "Palm Pressure"
+category = "wuxia"
+description = "薄气流层层向前挤压，前缘展开后撕成弯曲细缕，保持通透的掌击轮廓。"
+tags = PackedStringArray("近战", "命中", "掌风", "melee", "impact")
+duration = 0.65
+preview_time = 0.16
+primary_color = Color(0.74902, 0.77647, 0.72549, 1)
+secondary_color = Color(0.88627, 0.8902, 0.81176, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

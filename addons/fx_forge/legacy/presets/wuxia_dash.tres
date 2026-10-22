@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dxi7gkl4kpdl6"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "残风、浅尘与卷叶"
+kind = 1
+duration = 0.667
+palette_hue_shift = true
+palette_reference = Color(0.82353, 0.83922, 0.77255, 1)
+texture_name = "px_dash_v7"
+atlas_frames = 16
+animation_fps = 24.0
+fade_in = 0.01
+fade_out = 0.1
+offset = Vector3(0, 0.771, 0)
+size = 1.85
+end_size = 1.85
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "脚边细砂"
+decorative = true
+delay = 0.06
+secondary = true
+texture_name = "px_shard"
+offset = Vector3(0.25, 0.06, 0)
+size = 0.025
+end_size = 0.05
+count = 5
+lifetime = 0.4
+direction = Vector3(-1, 0.2, 0)
+spread = 25.0
+velocity_min = 0.25
+velocity_max = 0.65
+gravity = Vector3(0, -1.1, 0)
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_dash"
+title = "疾步残风"
+title_en = "Swiftstep Wake"
+category = "wuxia"
+description = "疾步掀起向后拖曳的低风与浅尘，几片碎叶翻转后回落；适合短距离闪避和起步。"
+tags = PackedStringArray("移动", "轻功", "闪避", "movement", "dash")
+duration = 0.75
+preview_time = 0.21
+primary_color = Color(0.82353, 0.83922, 0.77255, 1)
+secondary_color = Color(0.68235, 0.63137, 0.54118, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

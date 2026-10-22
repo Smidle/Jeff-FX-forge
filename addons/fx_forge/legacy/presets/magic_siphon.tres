@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://b0t7f24y7cvrq"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "定向虹流与回收"
+kind = 1
+duration = 0.888889
+palette_hue_shift = true
+palette_reference = Color(0.62353, 0.4902, 0.78431, 1)
+texture_name = "px_siphon_v9"
+atlas_frames = 16
+animation_fps = 18.0
+fade_out = 0.14
+offset = Vector3(0, 1, 0)
+size = 2.55
+end_size = 2.55
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "沿流回收光点"
+decorative = true
+delay = 0.2
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+offset = Vector3(0.2, 1, 0)
+size = 0.025
+end_size = 0.05
+count = 8
+lifetime = 0.5
+direction = Vector3(-1, 0, 0)
+spread = 7.0
+velocity_min = 0.65
+velocity_max = 1.1
+emission_box = Vector3(0.55, 0.015, 0.02)
+
+[resource]
+script = ExtResource("1")
+id = "magic_siphon"
+title = "汲能虹流"
+title_en = "Arcane Siphon"
+category = "magic"
+description = "紫青细流从右侧牵入左侧，亮滴沿流线归入接收端，末端断开后余流继续回收；用于吸取或引导技能视觉。"
+tags = PackedStringArray("远程", "引导", "吸取", "siphon", "channel")
+duration = 1.0
+preview_time = 0.4
+primary_color = Color(0.62353, 0.4902, 0.78431, 1)
+secondary_color = Color(0.7098, 0.88235, 0.87451, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

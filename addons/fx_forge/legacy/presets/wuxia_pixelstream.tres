@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://5fevc41v34nr"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "随机曲线汇聚流光"
+kind = 3
+duration = 0.85
+texture_name = ""
+fade_in = 0.015
+fade_out = 0.1
+end_size = 1.0
+path_start = Vector3(-1.4, 1, 0)
+path_end = Vector3(1.4, 1, 0)
+path_segments = 28
+strand_count = 5
+trail_length = 0.42
+curvature = 0.25
+path_jitter = 0.32
+redraw_fps = 30
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_pixelstream"
+title = "程序·渐细流光"
+title_en = "Procedural Streaks"
+category = "wuxia"
+description = "所有流光从指定起点沿不同随机曲线飞向同一终点。可调三维端点、随机幅度、尾长与数量；换一组路径后可固定重播。"
+tags = PackedStringArray("程序化", "远程", "移动", "流光", "汇聚", "procedural", "streak")
+duration = 0.95
+preview_time = 0.3
+primary_color = Color(0.90196, 0.8902, 0.79608, 1)
+secondary_color = Color(0.46667, 0.68235, 0.71373, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

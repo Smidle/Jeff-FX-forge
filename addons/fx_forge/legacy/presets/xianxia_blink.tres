@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://tan2xo8m2122"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "离位收光"
+kind = 1
+duration = 0.8
+palette_hue_shift = true
+palette_reference = Color(0.56863, 0.74902, 0.64314, 1)
+texture_name = "px_blink_v9"
+atlas_frames = 16
+animation_fps = 20.0
+fade_in = 0.015
+fade_out = 0.1
+offset = Vector3(-0.85, 0.792, 0)
+size = 1.9
+end_size = 1.9
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "落位展开"
+kind = 1
+delay = 0.3
+duration = 0.8
+secondary = true
+palette_hue_shift = true
+palette_reference = Color(0.56863, 0.74902, 0.64314, 1)
+texture_name = "px_blink_arrive_v9"
+atlas_frames = 16
+animation_fps = 20.0
+fade_in = 0.035
+fade_out = 0.16
+offset = Vector3(0.85, 0.792, 0)
+size = 1.9
+end_size = 1.9
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "落位细碎灵光"
+decorative = true
+delay = 0.65
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+offset = Vector3(0.85, 0.5, 0)
+size = 0.03
+end_size = 0.05
+count = 7
+lifetime = 0.45
+spread = 30.0
+velocity_min = 0.2
+velocity_max = 0.45
+emission_box = Vector3(0.15, 0.15, 0.08)
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_blink"
+title = "遁光移形"
+title_en = "Jade Light Shift"
+category = "xianxia"
+description = "离位光丝向内收紧，落位光种随后展开并自下而上消散；两端位置和延迟分层可调，角色位移由游戏控制。"
+tags = PackedStringArray("移动", "位移", "遁术", "teleport", "movement")
+duration = 1.2
+preview_time = 0.48
+primary_color = Color(0.56863, 0.74902, 0.64314, 1)
+secondary_color = Color(0.56863, 0.74902, 0.64314, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2")])

@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://bqg1rkraow4hd"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "彗核与流动尾带"
+kind = 1
+palette_hue_shift = true
+palette_reference = Color(0.61176, 0.46275, 0.78431, 1)
+texture_name = "px_missile_v5"
+atlas_frames = 16
+animation_fps = 16.0
+animation_loop = true
+fade_out = 0.28
+align_to_motion = true
+offset = Vector3(0, 0.9, 0)
+size = 1.75
+end_size = 1.75
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "世界空间碎光"
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+animation_loop = true
+offset = Vector3(-0.3, 0.9, 0)
+size = 0.045
+end_size = 0.05
+count = 14
+lifetime = 0.4
+continuous = true
+direction = Vector3(-1, 0, 0)
+spread = 12.0
+velocity_min = 0.05
+velocity_max = 0.12
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "末端细光"
+decorative = true
+secondary = true
+texture_name = "px_shard"
+offset = Vector3(-0.4, 0.9, 0)
+size = 0.025
+end_size = 0.05
+count = 4
+lifetime = 0.25
+continuous = true
+spread = 120.0
+velocity_min = 0.04
+velocity_max = 0.08
+
+[resource]
+script = ExtResource("1")
+id = "magic_missile"
+title = "奥术飞弹"
+title_en = "Flowing Arcane Comet"
+category = "magic"
+description = "明亮彗核牵引有体积的紫色尾流，尾带向后翻卷、分离；转向跟随运动，散落碎光留在世界中。"
+tags = PackedStringArray("远程", "持续", "尾迹", "奥术", "projectile", "arcane")
+looping = true
+duration = 1.4
+preview_time = 0.24
+primary_color = Color(0.61176, 0.46275, 0.78431, 1)
+secondary_color = Color(0.90196, 0.76863, 0.96471, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2")])

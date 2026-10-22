@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://cabpe625df1ej"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "碎石抛落与低尘"
+kind = 1
+duration = 0.728
+palette_hue_shift = true
+palette_reference = Color(0.60784, 0.64314, 0.64314, 1)
+texture_name = "px_crush_v7"
+atlas_frames = 16
+animation_fps = 22.0
+fade_in = 0.01
+fade_out = 0.08
+offset = Vector3(0, 0.938, 0)
+size = 2.25
+end_size = 2.25
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "稀薄散尘"
+decorative = true
+delay = 0.13
+secondary = true
+texture_name = "px_smoke_v6"
+atlas_frames = 16
+animation_fps = 26.666667
+offset = Vector3(0, 0.16, 0)
+size = 0.24
+end_size = 1.1
+opacity = 0.45
+count = 4
+lifetime = 0.6
+velocity_min = 0.2
+velocity_max = 0.4
+emission_box = Vector3(0.25, 0.02, 0.2)
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_crush"
+title = "震地碎石"
+title_en = "Shattering Ground"
+category = "wuxia"
+description = "接触处震起有重量的碎石，石块翻转抛落，低尘从中心向外裂开消散。"
+tags = PackedStringArray("近战", "范围", "命中", "震地", "melee", "ground", "impact")
+duration = 0.85
+preview_time = 0.27
+primary_color = Color(0.60784, 0.64314, 0.64314, 1)
+secondary_color = Color(0.80784, 0.73725, 0.61961, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

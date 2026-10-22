@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://cnkpupq2ubmj0"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "藤条生长、收缚与枯解"
+kind = 1
+duration = 1.142857
+palette_hue_shift = true
+palette_reference = Color(0.51373, 0.6, 0.31765, 1)
+texture_name = "px_briar_v9"
+atlas_frames = 16
+animation_fps = 14.0
+fade_in = 0.05
+fade_out = 0.25
+offset = Vector3(0, 1.042, 0)
+size = 2.5
+end_size = 2.5
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "翻转落叶"
+decorative = true
+delay = 0.65
+use_palette_tint = false
+texture_name = "px_leaf_v9"
+atlas_frames = 6
+animation_loop = true
+offset = Vector3(0, 0.85, 0)
+size = 0.075
+end_size = 0.5
+spin = 40.0
+count = 8
+lifetime = 0.6
+spread = 70.0
+velocity_min = 0.15
+velocity_max = 0.45
+gravity = Vector3(0.08, -0.9, 0)
+emission_box = Vector3(0.35, 0.15, 0.12)
+
+[resource]
+script = ExtResource("1")
+id = "magic_briar"
+title = "荆棘缠绕"
+title_en = "Binding Briars"
+category = "magic"
+description = "三股细藤生长、弯曲并收拢成透空藤笼，叶尖转枯后枝条逐段松解；适合束缚与区域控制视觉。"
+tags = PackedStringArray("范围", "控制", "自然", "束缚", "nature", "control")
+duration = 1.35
+preview_time = 0.58
+primary_color = Color(0.51373, 0.6, 0.31765, 1)
+secondary_color = Color(0.70588, 0.55294, 0.3451, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

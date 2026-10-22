@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://c544xcqd50hbp"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "护体成形、承击与碎解"
+kind = 1
+duration = 1.333333
+palette_hue_shift = true
+palette_reference = Color(0.92941, 0.74118, 0.37647, 1)
+texture_name = "px_bell_v9"
+atlas_frames = 16
+fade_in = 0.05
+fade_out = 0.15
+offset = Vector3(0, 1.084, 0)
+size = 2.6
+end_size = 2.6
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "侧面承击瞬光"
+kind = 1
+decorative = true
+delay = 0.69
+duration = 0.166667
+secondary = true
+sort_priority = 2
+texture_name = "px_flash"
+atlas_frames = 6
+animation_fps = 36.0
+fade_in = 0.005
+fade_out = 0.06
+offset = Vector3(-0.7, 0.9, 0)
+size = 0.23
+end_size = 0.06
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "碎解余金"
+decorative = true
+delay = 0.9
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+offset = Vector3(0, 0.65, 0)
+size = 0.03
+end_size = 0.05
+count = 8
+lifetime = 0.4
+spread = 65.0
+velocity_min = 0.2
+velocity_max = 0.55
+emission_box = Vector3(0.45, 0.15, 0.1)
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_bell"
+title = "金钟护体"
+title_en = "Golden Bell Guard"
+category = "xianxia"
+description = "金色细弧从脚边升起，形成透空钟形护体轮廓；侧面受击后裂成轻薄弧片，中央保留角色可见空间。"
+tags = PackedStringArray("防御", "范围", "护体", "defense", "guard")
+duration = 1.45
+preview_time = 0.6
+primary_color = Color(0.92941, 0.74118, 0.37647, 1)
+secondary_color = Color(1, 0.94118, 0.7451, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2")])

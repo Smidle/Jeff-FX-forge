@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dvbanf5t6g15i"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "银刃与古金剑格"
+kind = 1
+palette_hue_shift = true
+palette_reference = Color(0.84706, 0.87451, 0.80392, 1)
+texture_name = "px_sword_v6"
+atlas_frames = 16
+animation_fps = 16.0
+animation_loop = true
+align_to_motion = true
+offset = Vector3(0, 1, 0)
+size = 2.1
+end_size = 2.1
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "流动青色剑气"
+kind = 1
+secondary = true
+palette_hue_shift = true
+palette_reference = Color(0.4902, 0.78039, 0.67843, 1)
+sort_priority = -1
+texture_name = "px_sword_qi_v6"
+atlas_frames = 16
+animation_fps = 16.0
+animation_loop = true
+align_to_motion = true
+offset = Vector3(0, 1, 0)
+size = 2.1
+end_size = 2.1
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "世界空间细碎残光"
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+animation_loop = true
+offset = Vector3(-0.3, 1, 0)
+size = 0.035
+end_size = 0.05
+count = 14
+lifetime = 0.45
+continuous = true
+direction = Vector3(-1, 0, 0)
+spread = 12.0
+velocity_min = 0.06
+velocity_max = 0.14
+
+[sub_resource type="Resource" id="Layer_3"]
+script = ExtResource("2")
+label = "剑尖细光"
+decorative = true
+texture_name = "px_shard"
+offset = Vector3(0.7, 1, 0)
+size = 0.02
+end_size = 0.05
+count = 4
+lifetime = 0.3
+continuous = true
+spread = 100.0
+velocity_min = 0.04
+velocity_max = 0.08
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_sword"
+title = "飞剑剑气"
+title_en = "Jade Spirit Sword"
+category = "xianxia"
+description = "稳定银刃与古金剑格，独立青色剑气翻卷后逸散；剑身和剑气同步转向，细碎残光留在世界中。"
+tags = PackedStringArray("远程", "飞剑", "尾迹", "projectile", "trail")
+looping = true
+duration = 1.4
+preview_time = 0.75
+primary_color = Color(0.84706, 0.87451, 0.80392, 1)
+secondary_color = Color(0.4902, 0.78039, 0.67843, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2"), SubResource("Layer_3")])

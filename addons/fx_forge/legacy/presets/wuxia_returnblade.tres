@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dvjb04qlaecs1"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "飞刃回旋"
+kind = 3
+duration = 1.3
+texture_name = ""
+fade_in = 0.05
+fade_out = 0.16
+offset = Vector3(0, 1.1, 0)
+size = 3.0
+end_size = 3.0
+procedural_motion = 3
+stroke_width = 2
+skill_count = 2
+skill_spread = 0.9
+skill_turns = 2.5
+
+[resource]
+script = ExtResource("1")
+id = "wuxia_returnblade"
+title = "程序·飞刃回旋"
+title_en = "Returning Blades"
+category = "wuxia"
+description = "带钩刃锋急速掠出，在远端转向后回收；宽窄变化的气流尾迹与零星碎光随刃而行。飞刃数量、回旋范围、旋转和碎光可调。"
+tags = PackedStringArray("程序化", "战斗", "武侠", "远程", "范围", "回旋", "procedural")
+duration = 1.4
+preview_time = 0.4
+primary_color = Color(0.93333, 0.87843, 0.72549, 1)
+secondary_color = Color(0.42353, 0.66667, 0.64706, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

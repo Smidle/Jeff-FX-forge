@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://bhupnvs1fe7sr"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "雨滴与落点"
+kind = 2
+texture_name = "px_rain"
+aspect = Vector2(0.55, 1)
+motion_speed = 5.0
+wind = Vector3(0.25, 0, 0)
+size = 0.48
+count = 120
+emission_box = Vector3(2.3, 0, 2.3)
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "地面涟漪"
+kind = 2
+secondary = true
+texture_name = "px_ripple"
+atlas_frames = 10
+field_motion = 1
+motion_source = 0
+facing = 1
+offset = Vector3(0, 0.025, 0)
+size = 0.85
+
+[resource]
+script = ExtResource("1")
+id = "rain"
+title = "降雨"
+title_en = "Rain & Ripples"
+description = "雨滴到达放置高度后生成像素涟漪，共用落点；作用于单一水平面。"
+tags = PackedStringArray("环境", "天气", "涟漪", "rain", "weather")
+looping = true
+duration = 1.4
+preview_time = 1.8
+primary_color = Color(0.67059, 0.80392, 0.86667, 1)
+secondary_color = Color(0.83137, 0.94902, 0.98039, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

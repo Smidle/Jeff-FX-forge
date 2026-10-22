@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://dlvde0ymst6a7"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "岩晶生长、断裂与落尘"
+kind = 1
+duration = 0.888889
+palette_hue_shift = true
+palette_reference = Color(0.81176, 0.63529, 0.37255, 1)
+texture_name = "px_earth_v8"
+atlas_frames = 16
+animation_fps = 18.0
+fade_in = 0.035
+fade_out = 0.18
+offset = Vector3(0, 1.084, 0)
+size = 2.6
+end_size = 2.6
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "独立坠落碎石"
+decorative = true
+delay = 0.48
+secondary = true
+texture_name = "px_shard"
+offset = Vector3(0, 0.5, 0)
+size = 0.055
+end_size = 0.1
+count = 8
+lifetime = 0.5
+spread = 55.0
+velocity_min = 0.6
+velocity_max = 1.0
+gravity = Vector3(0, -3.5, 0)
+emission_box = Vector3(0.3, 0.1, 0.15)
+
+[sub_resource type="Resource" id="Layer_2"]
+script = ExtResource("2")
+label = "低处散尘"
+decorative = true
+delay = 0.6
+secondary = true
+texture_name = "px_smoke_v6"
+atlas_frames = 16
+animation_fps = 32.0
+offset = Vector3(0, 0.12, 0)
+size = 0.22
+end_size = 1.1
+opacity = 0.35
+count = 3
+lifetime = 0.5
+spread = 60.0
+velocity_min = 0.12
+velocity_max = 0.25
+emission_box = Vector3(0.3, 0.02, 0.15)
+
+[resource]
+script = ExtResource("1")
+id = "magic_earth"
+title = "岩晶突刺"
+title_en = "Crystal Spire Eruption"
+category = "magic"
+description = "地面先隆起，三根高低不同的岩晶破土而出；切面断裂后坠成碎石，低尘缓慢收尾。"
+tags = PackedStringArray("范围", "命中", "土", "岩晶", "earth", "area", "impact")
+duration = 1.15
+preview_time = 0.34
+primary_color = Color(0.81176, 0.63529, 0.37255, 1)
+secondary_color = Color(0.80784, 0.73725, 0.61961, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1"), SubResource("Layer_2")])

@@ -32,6 +32,13 @@ var _gif_scale: OptionButton
 var _gif_bg: OptionButton
 var _summary: Label
 var _frames := 1
+var _capture_row: HBoxContainer
+var _capture_label: Label
+var _capture_size: SpinBox
+var _capture_fps: SpinBox
+var _capture_seconds: SpinBox
+var _classic := false
+var _scroll: ScrollContainer
 
 
 func _init() -> void:
@@ -43,9 +50,12 @@ func _init() -> void:
 
 func _ready() -> void:
 	var s := EditorInterface.get_editor_scale()
+	_scroll = ScrollContainer.new()
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	add_child(_scroll)
 	var root := VBoxContainer.new()
-	root.custom_minimum_size.x = 460 * s
-	add_child(root)
+	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_scroll.add_child(root)
 	var grid := GridContainer.new()
 	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", int(10 * s))
@@ -105,6 +115,7 @@ func _ready() -> void:
 	_dirs_hint = Label.new()
 	_dirs_hint.modulate = Color(1, 1, 1, 0.6)
 	_dirs_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_dirs_hint.custom_minimum_size.x = 360 * s
 	dirs_box.add_child(_dirs_hint)
 	_add_row(grid, I18n.T("方向批量"), dirs_box)
 
@@ -112,6 +123,23 @@ func _ready() -> void:
 	_variants.tooltip_text = I18n.T("用不同的随机种子各导出一份，游戏里随机挑一个播放更自然")
 	_variants.value_changed.connect(func(_v: float) -> void: _refresh())
 	_add_row(grid, I18n.T("随机变体"), _variants)
+
+	_capture_row = HBoxContainer.new()
+	_capture_size = _spin(64, 512)
+	_capture_size.suffix = "px"
+	_capture_fps = _spin(6, 30)
+	_capture_fps.suffix = "fps"
+	_capture_seconds = _spin(.1, 10)
+	_capture_seconds.step = .05
+	_capture_seconds.suffix = "s"
+	for spin: SpinBox in [_capture_size, _capture_fps, _capture_seconds]:
+		_capture_row.add_child(spin)
+		spin.value_changed.connect(func(_v: float) -> void: _refresh())
+	_capture_label = Label.new()
+	_capture_label.text = I18n.T("三维录制")
+	grid.add_child(_capture_label)
+	grid.add_child(_capture_row)
+	_capture_row.tooltip_text = I18n.T("正方形透明画布，使用当前预览镜头；不包含地面格线。持续效果录制指定时长，不保证无缝循环。")
 
 	var outs := VBoxContainer.new()
 	var png := CheckBox.new()
@@ -163,7 +191,13 @@ func _ready() -> void:
 
 
 ## frames：每个动画的帧数；directional：特效里有没有受方向影响的图层
-func open(settings: Dictionary, frames: int, directional: bool) -> void:
+func open(settings: Dictionary, frames: int, directional: bool, classic: bool = false) -> void:
+	_classic = classic
+	_capture_row.visible = classic
+	_capture_label.visible = classic
+	_capture_size.value = settings.capture_size
+	_capture_fps.value = settings.capture_fps
+	_capture_seconds.value = settings.capture_seconds
 	_frames = frames
 	_base.text = settings["base_name"]
 	_dir.text = settings["out_dir"]
@@ -185,14 +219,23 @@ func open(settings: Dictionary, frames: int, directional: bool) -> void:
 	_gif.button_pressed = settings["gif"]
 	_select(_gif_scale, settings["gif_scale"])
 	_select(_gif_bg, settings["gif_bg"])
-	_dirs_hint.text = "" if directional else I18n.T("这个特效不受方向影响，各方向会完全一样。")
+	_dirs_hint.text = I18n.T("经典效果按当前镜头录制；方向批量绕原点转动镜头。请先在预览中调整构图。") if classic else "" if directional else I18n.T("这个特效不受方向影响，各方向会完全一样。")
 	_refresh()
+	var scale := EditorInterface.get_editor_scale()
+	var available := EditorInterface.get_base_control().size.y - 160 * scale
+	_scroll.custom_minimum_size = Vector2(620 * scale, clampf(available, 360 * scale, 700 * scale))
+	# A wrapped label can briefly report a very tall minimum before layout settles.
+	# The scroll area bounds the window and keeps its action buttons accessible.
+	size = Vector2i.ZERO
 	popup_centered()
 	_base.grab_focus()
 
 
 func collect() -> Dictionary:
 	return {
+		"capture_size": int(_capture_size.value),
+		"capture_fps": int(_capture_fps.value),
+		"capture_seconds": _capture_seconds.value,
 		"base_name": _base.text,
 		"out_dir": _dir.text,
 		"layout": _layout.get_selected_metadata(),
@@ -216,6 +259,8 @@ func collect() -> Dictionary:
 
 
 func _refresh() -> void:
+	if _classic:
+		_frames = maxi(2, ceili(_capture_fps.value * _capture_seconds.value))
 	var grid_mode: bool = _layout.get_selected_metadata() == "grid"
 	_columns.visible = grid_mode
 	_columns_label.visible = grid_mode
@@ -250,7 +295,7 @@ func _select(ob: OptionButton, value: Variant) -> void:
 	ob.select(0)
 
 
-func _spin(lo: int, hi: int) -> SpinBox:
+func _spin(lo: float, hi: float) -> SpinBox:
 	var sb := SpinBox.new()
 	sb.min_value = lo
 	sb.max_value = hi

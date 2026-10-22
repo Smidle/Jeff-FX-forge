@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3 uid="uid://bkd4b2ercryud"]
+
+[ext_resource type="Script" uid="uid://d0ca566o481mx" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" uid="uid://ty400oh360vb" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+label = "符纹成形与收锁"
+kind = 1
+duration = 0.889
+palette_hue_shift = true
+palette_reference = Color(0.64706, 0.5451, 0.75294, 1)
+texture_name = "px_seal_v7"
+atlas_frames = 16
+animation_fps = 18.0
+fade_out = 0.1
+offset = Vector3(0, 1, 0)
+size = 2.1
+end_size = 2.1
+
+[sub_resource type="Resource" id="Layer_1"]
+script = ExtResource("2")
+label = "解体符光"
+decorative = true
+delay = 0.55
+secondary = true
+texture_name = "px_mote"
+atlas_frames = 8
+animation_fps = 16.0
+offset = Vector3(0, 1, 0)
+size = 0.03
+end_size = 0.05
+count = 8
+lifetime = 0.45
+spread = 55.0
+velocity_min = 0.2
+velocity_max = 0.5
+emission_box = Vector3(0.4, 0.3, 0.1)
+
+[resource]
+script = ExtResource("1")
+id = "xianxia_seal"
+title = "镇灵封印"
+title_en = "Spirit Binding"
+category = "xianxia"
+description = "四角金色符纹逐渐成形，紫色灵丝收拢锁定，短闪后裂成细小符屑；仅提供控制技能视觉。"
+tags = PackedStringArray("范围", "爆发", "封印", "控制", "area", "control", "seal")
+duration = 1.1
+preview_time = 0.4
+primary_color = Color(0.64706, 0.5451, 0.75294, 1)
+secondary_color = Color(0.97255, 0.89412, 0.69412, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer_0"), SubResource("Layer_1")])

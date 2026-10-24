@@ -1,10 +1,10 @@
-# Jeff FX · 1.0
+# Jeff FX · 1.0.1
 
 **Godot 像素特效工坊：选择效果、调整参数、放入场景，也可以导出透明精灵图。**
 
 免费、离线使用，藏青色界面。包含 **82 款内置效果：38 款程序像素预设 + 44 款经典三维效果**，以及一个可直接运行的纯 2D 武侠庭院测试工程。
 
-[下载插件 ZIP](https://github.com/Smidle/Jeff-FX-forge/releases/download/v1.0/Jeff-FX-1.0-plugin.zip) · [图文用户说明书](docs/manual.md) · [庭院测试说明](docs/test-scene.md) · [版本记录](CHANGELOG.md) · [已知限制](docs/compatibility.md)
+[下载插件 ZIP](https://github.com/Smidle/Jeff-FX-forge/releases/download/v1.0.1/Jeff-FX-1.0.1-plugin.zip) · [图文用户说明书](docs/manual.md) · [庭院测试说明](docs/test-scene.md) · [版本记录](CHANGELOG.md) · [已知限制](docs/compatibility.md)
 
 ![Jeff FX 传送法阵预览](docs/images/07-classic.png)
 
@@ -12,12 +12,12 @@
 
 | 你的目的 | 下载内容 | 使用方法 |
 |---|---|---|
-| 给自己的 Godot 工程安装插件 | Release 中的 **Jeff-FX-1.0-plugin.zip** | 解压，把 `addons/fx_forge` 复制到自己的工程 |
+| 给自己的 Godot 工程安装插件 | Release 中的 **Jeff-FX-1.0.1-plugin.zip** | 解压，把 `addons/fx_forge` 复制到自己的工程 |
 | 体验庭院、查看技能绑定示例 | 本仓库 **Code → Download ZIP** 或 `git clone` | 导入根目录 `project.godot`，等待资源导入后按 **F5** |
 
 **专用插件 ZIP 不包含测试场景、角色、字体、游戏脚本或开发产物。** GitHub 自动提供的 “Source code (zip/tar.gz)” 是整个仓库源码，因此包含测试工程；只安装插件时请选择上表中的专用附件。
 
-本次按维护者要求把版本编号统一为 **1.0**。历史 `v1.0.1` 保留，当前版本以本页及 `v1.0` Release 为准。
+**1.0.1 修复了首次导出后按钮一直变灰、无法继续导出的问题。** 已使用旧版的用户，请保存工作后停用插件，替换插件目录，再启用以清除旧的导出状态。
 
 ## 五分钟开始制作
 
@@ -81,4 +81,15 @@ docs/                  图文说明、截图与验证摘要
 
 代码与文档采用 **MIT**；插件原创美术采用 **CC0 1.0**。庭院包含经维护者确认获得公开再分发授权的第三方角色/头像，以及按 OFL 1.1 提供的 GNU Unifont，**它们不属于插件的 MIT／CC0 素材许可**。详见 [NOTICE](NOTICE.md)。
 
-**English:** Jeff FX 1.0 is a free, offline Godot 4.7 VFX editor with 38 procedural pixel presets and 44 classic 3D effects. The repository includes a runnable 2D courtyard demo; the dedicated Release ZIP contains only `addons/fx_forge`. Enable the plugin under Project Settings → Plugins, or import the repository's `project.godot` and press F5 to try the demo. See the illustrated Chinese manual and asset-specific notices before reusing demo content.
+**English:** Jeff FX 1.0.1 is a free, offline Godot 4.7 VFX editor with 38 procedural pixel presets and 44 classic 3D effects. The repository includes a runnable 2D courtyard demo; the dedicated Release ZIP contains only `addons/fx_forge`. Enable the plugin under Project Settings → Plugins, or import the repository's `project.godot` and press F5 to try the demo. See the illustrated Chinese manual and asset-specific notices before reusing demo content.
+
+## 交流与反馈
+
+欢迎交流使用方法、分享特效作品和反馈问题。点击图片可查看原图。
+
+| 微信群 · Jeff Studio 内测群 | QQ 群 · Jeff Studio 插件 |
+|---|---|
+| 使用微信扫描下方二维码入群。 | 在 QQ 中搜索群号 **482858198**，或扫描下方二维码入群。 |
+| <a href="docs/community/wechat-group.png"><img src="docs/community/wechat-group.png" alt="Jeff Studio 内测微信群二维码，2026 年 10 月 31 日前有效" width="280"></a> | <a href="docs/community/qq-group.png"><img src="docs/community/qq-group.png" alt="Jeff Studio 插件 QQ 群二维码，群号 482858198" width="280"></a> |
+
+微信图片标注二维码在 **2026 年 10 月 31 日前有效**；若扫码失效，可先通过 QQ 群联系获取新的入群方式。

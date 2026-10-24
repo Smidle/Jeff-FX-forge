@@ -1057,7 +1057,7 @@ func _run_export(s: Dictionary) -> void:
 	_export_button.disabled = true
 	_status.text = I18n.T("正在导出……")
 	var snapshot: Resource = session.preset.clone()
-	preload("../export/fx_export_task.gd").new().run(snapshot, s, _classic_stage.camera if snapshot.legacy_recipe != null else null, weakref(self))
+	preload("../export/fx_export_task.gd").run(snapshot, s, _classic_stage.camera if snapshot.legacy_recipe != null else null, weakref(self))
 
 func export_completed(res: Dictionary, s: Dictionary) -> void:
 	_exporting = false

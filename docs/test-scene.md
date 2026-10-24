@@ -1,4 +1,4 @@
-# Jeff FX 1.0 · 庭院测试与技能接入说明
+# Jeff FX 1.0.1 · 庭院测试与技能接入说明
 
 [返回 README](../README.md) · [插件图文手册](manual.md) · [素材许可](../NOTICE.md)
 

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/moon_temple/skill.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "thunder"
+title = "引雷符"
+cooldown = 0.5
+damage = 34.0
+effect_id = "classic_xianxia_lightning"
+target_mode = "ground"
+radius = 86.0
+
+animation = "talisman"
+effect_scale = 2.0
+
+impact_frame = 11

@@ -1,0 +1,13 @@
+{
+  "portrait_source": "Wandering_Sword_Art_Extracted/美术素材_分类/03_角色头像与立绘/01_标准版/JH/Characters/Image/T_Hero_HeadImage.png",
+  "portrait_usage": "Copyright remains with the original rights holder. Repository maintainer confirmed public redistribution permission on 2026-10-23; not covered by MIT or CC0. See NOTICE.md.",
+  "icons_and_rock": "Rock: original image-generated art normalized in Aseprite. Icons: simple original symbols drawn in Aseprite.",
+  "skill_1": "Void vortex, not sword. Minus unbound.",
+  "model_version": "The built-in tool does not expose a model selector/version; image 2.5 cannot be verified.",
+  "prompt_manifest": "art/courtyard/ui/generated/manifest.json",
+  "generated_originals": "art/courtyard/ui/generated/",
+  "asset_processor": "tools/courtyard/import_generated_ui.lua",
+  "runtime_sizes": "Skills 1-4: 40x40 native pixels in 70x70 buttons; skills 5-0: 28x28 in 54x54 buttons. Rock unchanged, 64x48.",
+  "current_icon_style": "2026-10-23 calm revision: one symbol, up to three muted colors, transparent background; no runes, motes, bloom or decorative bands.",
+  "current_icon_processor": "tools/courtyard/simplify_skill_icons.lua"
+}

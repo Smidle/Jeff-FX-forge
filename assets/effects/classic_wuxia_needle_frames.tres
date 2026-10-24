@@ -1,0 +1,89 @@
+[gd_resource type="SpriteFrames" load_steps=23 format=3]
+[ext_resource type="Texture2D" path="res://assets/effects/classic_wuxia_needle.png" id="1"]
+[sub_resource type="AtlasTexture" id="Frame_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_1"]
+atlas = ExtResource("1")
+region = Rect2(62, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_2"]
+atlas = ExtResource("1")
+region = Rect2(124, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_3"]
+atlas = ExtResource("1")
+region = Rect2(186, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_4"]
+atlas = ExtResource("1")
+region = Rect2(248, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_5"]
+atlas = ExtResource("1")
+region = Rect2(310, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_6"]
+atlas = ExtResource("1")
+region = Rect2(372, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_7"]
+atlas = ExtResource("1")
+region = Rect2(434, 0, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_8"]
+atlas = ExtResource("1")
+region = Rect2(0, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_9"]
+atlas = ExtResource("1")
+region = Rect2(62, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_10"]
+atlas = ExtResource("1")
+region = Rect2(124, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_11"]
+atlas = ExtResource("1")
+region = Rect2(186, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_12"]
+atlas = ExtResource("1")
+region = Rect2(248, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_13"]
+atlas = ExtResource("1")
+region = Rect2(310, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_14"]
+atlas = ExtResource("1")
+region = Rect2(372, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_15"]
+atlas = ExtResource("1")
+region = Rect2(434, 30, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_16"]
+atlas = ExtResource("1")
+region = Rect2(0, 60, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_17"]
+atlas = ExtResource("1")
+region = Rect2(62, 60, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_18"]
+atlas = ExtResource("1")
+region = Rect2(124, 60, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_19"]
+atlas = ExtResource("1")
+region = Rect2(186, 60, 62, 30)
+[sub_resource type="AtlasTexture" id="Frame_20"]
+atlas = ExtResource("1")
+region = Rect2(248, 60, 62, 30)
+[resource]
+animations = [{"name": &"default", "speed": 24.000000, "loop_mode": 0, "frames": [
+{"duration": 1.000000, "texture": SubResource("Frame_0")},
+{"duration": 1.000000, "texture": SubResource("Frame_1")},
+{"duration": 1.000000, "texture": SubResource("Frame_2")},
+{"duration": 1.000000, "texture": SubResource("Frame_3")},
+{"duration": 1.000000, "texture": SubResource("Frame_4")},
+{"duration": 1.000000, "texture": SubResource("Frame_5")},
+{"duration": 1.000000, "texture": SubResource("Frame_6")},
+{"duration": 1.000000, "texture": SubResource("Frame_7")},
+{"duration": 1.000000, "texture": SubResource("Frame_8")},
+{"duration": 1.000000, "texture": SubResource("Frame_9")},
+{"duration": 1.000000, "texture": SubResource("Frame_10")},
+{"duration": 1.000000, "texture": SubResource("Frame_11")},
+{"duration": 1.000000, "texture": SubResource("Frame_12")},
+{"duration": 1.000000, "texture": SubResource("Frame_13")},
+{"duration": 1.000000, "texture": SubResource("Frame_14")},
+{"duration": 1.000000, "texture": SubResource("Frame_15")},
+{"duration": 1.000000, "texture": SubResource("Frame_16")},
+{"duration": 1.000000, "texture": SubResource("Frame_17")},
+{"duration": 1.000000, "texture": SubResource("Frame_18")},
+{"duration": 1.000000, "texture": SubResource("Frame_19")},
+{"duration": 1.000000, "texture": SubResource("Frame_20")},
+]}]

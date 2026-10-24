@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/moon_temple/skill.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "heal"
+title = "回春诀"
+cooldown = 0.5
+damage = 0.0
+effect_id = "classic_magic_heal"
+target_mode = "self"
+
+animation = "heal_cast"
+effect_scale = 1.8

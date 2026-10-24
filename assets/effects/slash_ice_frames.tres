@@ -1,0 +1,41 @@
+[gd_resource type="SpriteFrames" load_steps=11 format=3]
+[ext_resource type="Texture2D" path="res://assets/effects/slash_ice.png" id="1"]
+[sub_resource type="AtlasTexture" id="Frame_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_1"]
+atlas = ExtResource("1")
+region = Rect2(27, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_2"]
+atlas = ExtResource("1")
+region = Rect2(54, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_3"]
+atlas = ExtResource("1")
+region = Rect2(81, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_4"]
+atlas = ExtResource("1")
+region = Rect2(108, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_5"]
+atlas = ExtResource("1")
+region = Rect2(135, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_6"]
+atlas = ExtResource("1")
+region = Rect2(162, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_7"]
+atlas = ExtResource("1")
+region = Rect2(189, 0, 27, 54)
+[sub_resource type="AtlasTexture" id="Frame_8"]
+atlas = ExtResource("1")
+region = Rect2(0, 54, 27, 54)
+[resource]
+animations = [{"name": &"default", "speed": 20.000000, "loop_mode": 0, "frames": [
+{"duration": 1.000000, "texture": SubResource("Frame_0")},
+{"duration": 1.000000, "texture": SubResource("Frame_1")},
+{"duration": 1.000000, "texture": SubResource("Frame_2")},
+{"duration": 1.000000, "texture": SubResource("Frame_3")},
+{"duration": 1.000000, "texture": SubResource("Frame_4")},
+{"duration": 1.000000, "texture": SubResource("Frame_5")},
+{"duration": 1.000000, "texture": SubResource("Frame_6")},
+{"duration": 1.000000, "texture": SubResource("Frame_7")},
+{"duration": 1.000000, "texture": SubResource("Frame_8")},
+]}]

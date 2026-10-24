@@ -1,0 +1,106 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/core/fx_preset.gd" id="1_c8rna"]
+
+[resource]
+script = ExtResource("1_c8rna")
+preset_id = "courtyard_hit_crit"
+display_name = "庭院实例 · 暴击"
+category = "combat"
+description = "红白配色的暴击：白色星芒 + 长短交替的红色射线 + 旋转的分段环。第 1 帧打击停顿 3 倍时长。"
+preview_png = PackedByteArray()
+globals = {
+"alpha_levels": 1,
+"canvas_h": 88,
+"canvas_w": 88,
+"cleanup": true,
+"fps": 24,
+"frames": 9,
+"hold_frame": 1,
+"hold_mult": 1.5,
+"min_cluster": 1,
+"outline": "selective",
+"outline_width": 1,
+"palette_accent": "spark",
+"palette_main": "blood",
+"palette_smoke": "smoke",
+"size_scale": 0.85,
+"soft": 0.0,
+"theme": "blood"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "ring",
+"name": "暴击环",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"easing": "out_cubic",
+"fill": 0.0,
+"gap": 0.65,
+"radius": 20.0,
+"segments": 4,
+"spin": 0.25,
+"start": 0.3,
+"thin": 0.5,
+"width": 2.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "burst",
+"name": "暴击射线",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"alternate": 0.75,
+"detach": 0.65,
+"flash": "none",
+"inner": 0.2,
+"length": 23.0,
+"length_random": 0.3,
+"ray_time": 0.9,
+"rays": 8,
+"width": 3.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 45.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "burst",
+"name": "白色星芒",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "accent",
+"params": {
+"alternate": 0.0,
+"angle_random": 0.0,
+"detach": 0.3,
+"flash": "star",
+"flash_size": 7.0,
+"flash_time": 0.22,
+"inner": 0.0,
+"length": 10.0,
+"length_random": 0.0,
+"ray_time": 0.6,
+"rays": 4,
+"width": 2.0
+},
+"t_end": 0.6,
+"t_start": 0.0
+}]

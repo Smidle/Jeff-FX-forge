@@ -1,0 +1,19 @@
+{
+  "font": "GNU Unifont 18.0.01 / 16px",
+  "source": "https://unifoundry.com/unifont/index.html",
+  "download": [
+    [
+      "https://unifoundry.com/LICENSE.txt",
+      "LICENSE.txt"
+    ],
+    [
+      "https://unifoundry.com/OFL-1.1.txt",
+      "OFL-1.1.txt"
+    ],
+    [
+      "https://unifoundry.com/pub/unifont/unifont-18.0.01/font-builds/unifont-18.0.01.otf",
+      "Unifont16.otf"
+    ]
+  ],
+  "usage": "Bundled with the test game, original unmodified font; distributed under the OFL 1.1 option."
+}

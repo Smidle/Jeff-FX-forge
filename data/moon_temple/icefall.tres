@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/moon_temple/skill.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "icefall"
+title = "冰晶落击"
+cooldown = 0.5
+damage = 30.0
+effect_id = "classic_magic_icefall"
+target_mode = "ground"
+animation = "talisman"
+radius = 80.0
+duration = 1.4
+effect_scale = 2

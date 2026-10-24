@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/moon_temple/skill.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "earth"
+title = "岩晶突刺"
+cooldown = 0.5
+damage = 28.0
+effect_id = "classic_magic_earth"
+target_mode = "ground"
+animation = "talisman"
+radius = 85.0
+duration = 1.5
+effect_scale = 1.4

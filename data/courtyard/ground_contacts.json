@@ -1,0 +1,1820 @@
+{
+  "description": "Runtime contact metadata only; original atlases unchanged. Offset and feet use source pixels.",
+  "profiles": {
+    "hero": {
+      "idle_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            3.5
+          ]
+        }
+      ],
+      "idle_down": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        }
+      ],
+      "idle_up": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            3.0
+          ]
+        }
+      ],
+      "idle_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            4.0
+          ]
+        }
+      ],
+      "run_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            4.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -9.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -6.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -1.5
+          ]
+        }
+      ],
+      "run_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            9.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            6.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            8.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            1.5
+          ]
+        }
+      ],
+      "run_down": [
+        {
+          "offset_y": 1,
+          "feet": [
+            2.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            3.0
+          ]
+        }
+      ],
+      "run_up": [
+        {
+          "offset_y": 0,
+          "feet": [
+            2.0
+          ]
+        },
+        {
+          "offset_y": 3,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 2,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 3,
+          "feet": [
+            2.0
+          ]
+        },
+        {
+          "offset_y": 2,
+          "feet": [
+            2.0
+          ]
+        }
+      ],
+      "battle_idle_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        }
+      ],
+      "attack1_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -11.5,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -11.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -9.5,
+            5.5
+          ]
+        }
+      ],
+      "attack2_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            7.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            1.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -14.0,
+            0.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -14.0,
+            0.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -14.0,
+            0.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            1.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        }
+      ],
+      "sword_cast_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -12.5,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -12.5,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -12.5,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        }
+      ],
+      "talisman_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            8.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        }
+      ],
+      "heal_cast_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        }
+      ],
+      "shield_cast_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.0
+          ]
+        }
+      ],
+      "dash_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            8.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.5,
+            10.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            1.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            1.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            1.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            1.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            8.0
+          ]
+        }
+      ],
+      "block_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            3.5
+          ]
+        }
+      ],
+      "hurt_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.5,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.5,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.5,
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.5,
+            3.0
+          ]
+        }
+      ],
+      "dead_left": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.5,
+            5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            5.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -2.5,
+            14.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            8.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0,
+            9.5
+          ]
+        }
+      ],
+      "battle_idle_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        }
+      ],
+      "attack1_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            8.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            11.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            11.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.5,
+            9.5
+          ]
+        }
+      ],
+      "attack2_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -1.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            0.0,
+            14.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            0.0,
+            14.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            0.0,
+            14.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -1.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        }
+      ],
+      "sword_cast_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            8.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            12.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            12.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            12.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            8.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        }
+      ],
+      "talisman_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.0,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.5,
+            6.5
+          ]
+        }
+      ],
+      "heal_cast_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        }
+      ],
+      "shield_cast_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.5
+          ]
+        }
+      ],
+      "dash_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.0,
+            3.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -10.0,
+            4.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -1.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -1.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -1.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -1.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -6.0,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.5,
+            6.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.0,
+            6.5
+          ]
+        }
+      ],
+      "block_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5,
+            4.0
+          ]
+        }
+      ],
+      "hurt_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            5.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            5.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            5.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0,
+            5.5
+          ]
+        }
+      ],
+      "dead_right": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0,
+            4.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -14.5,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -8.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -9.5,
+            7.0
+          ]
+        }
+      ],
+      "dash_down": [
+        {
+          "offset_y": 1,
+          "feet": [
+            2.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            3.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            3.0
+          ]
+        }
+      ],
+      "dash_up": [
+        {
+          "offset_y": 0,
+          "feet": [
+            2.0
+          ]
+        },
+        {
+          "offset_y": 3,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 2,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.0
+          ]
+        },
+        {
+          "offset_y": 3,
+          "feet": [
+            2.0
+          ]
+        },
+        {
+          "offset_y": 2,
+          "feet": [
+            2.0
+          ]
+        }
+      ]
+    },
+    "bandit1": {
+      "idle_down": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        }
+      ],
+      "run_down": [
+        {
+          "offset_y": 0,
+          "feet": [
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            0.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -1.5
+          ]
+        }
+      ],
+      "idle_up": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        }
+      ],
+      "run_up": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            3.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            0.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            1.5
+          ]
+        }
+      ],
+      "attack_down": [
+        {
+          "offset_y": 1,
+          "feet": [
+            -8.5,
+            5.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -8.5,
+            5.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -7.5,
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -14.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -14.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -14.5,
+            3.5
+          ]
+        }
+      ],
+      "attack_up": [
+        {
+          "offset_y": 1,
+          "feet": [
+            -5.0,
+            8.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -5.0,
+            8.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -7.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            15.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            15.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -3.5,
+            15.0
+          ]
+        }
+      ]
+    },
+    "bandit2": {
+      "idle_down": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            2.5
+          ]
+        }
+      ],
+      "run_down": [
+        {
+          "offset_y": 0,
+          "feet": [
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -3.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            0.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -1.5
+          ]
+        }
+      ],
+      "idle_up": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -2.5,
+            4.0
+          ]
+        }
+      ],
+      "run_up": [
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            3.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            0.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            5.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            1.5
+          ]
+        }
+      ],
+      "attack_down": [
+        {
+          "offset_y": 1,
+          "feet": [
+            -8.5,
+            5.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -8.5,
+            5.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -7.5,
+            7.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -14.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -14.5,
+            4.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -14.5,
+            3.5
+          ]
+        }
+      ],
+      "attack_up": [
+        {
+          "offset_y": 1,
+          "feet": [
+            -5.0,
+            8.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -5.0,
+            8.5
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -7.0,
+            7.5
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            15.0
+          ]
+        },
+        {
+          "offset_y": 0,
+          "feet": [
+            -4.0,
+            15.0
+          ]
+        },
+        {
+          "offset_y": 1,
+          "feet": [
+            -3.5,
+            15.0
+          ]
+        }
+      ]
+    }
+  },
+  "sources": {
+    "assets/courtyard/hero.png": "df25c54b3e12e73622cddd57303856a00996e462bcbb8c0e50c8007b3342824d",
+    "assets/moon_temple/bandit1.png": "0b409b1835592fb9e6987a381ecb7522a63e0371226b1716f04ff7738274fd9b",
+    "assets/moon_temple/bandit2.png": "dcf6a81f2caf6992ace4556617423624e9cf3c7f83812f828834ea69da985040"
+  }
+}

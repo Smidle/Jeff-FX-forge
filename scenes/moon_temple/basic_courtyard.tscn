@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/moon_temple/level.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/courtyard/ground.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/courtyard/hero.png" id="3"]
+
+[ext_resource type="Script" path="res://scripts/moon_temple/practice_rock.gd" id="4"]
+[ext_resource type="Texture2D" path="res://assets/courtyard/ui/practice_rock.png" id="5"]
+[sub_resource type="CircleShape2D" id="RockShape"]
+radius = 34.0
+
+[node name="BasicCourtyard" type="Node2D"]
+script = ExtResource("1")
+area_name = "月下庭院"
+objective = "固定靶技能测试"
+checkpoint = Vector2(520, 650)
+next_area = ""
+
+[node name="Ground" type="Sprite2D" parent="."]
+texture_filter = 1
+z_index = -10
+texture = ExtResource("2")
+centered = false
+
+[node name="WalkBoundary" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+[node name="Perimeter" type="CollisionPolygon2D" parent="WalkBoundary"]
+build_mode = 1
+polygon = PackedVector2Array(175, 360, 325, 310, 730, 310, 760, 275, 920, 275, 950, 310, 1350, 310, 1495, 370, 1530, 800, 1450, 860, 225, 860, 145, 800)
+
+[node name="Surfaces" type="Node2D" parent="."]
+[node name="Stone" type="Polygon2D" parent="Surfaces"]
+color = Color(0.2, 0.6, 0.8, 0.12)
+polygon = PackedVector2Array(735, 265, 935, 265, 935, 350, 735, 350)
+[node name="Dirt" type="Polygon2D" parent="Surfaces"]
+color = Color(0.7, 0.5, 0.3, 0.1)
+polygon = PackedVector2Array(0, 0, 1672, 0, 1672, 940, 0, 940)
+
+[node name="Points" type="Node2D" parent="."]
+[node name="Checkpoint" type="Marker2D" parent="Points"]
+position = Vector2(520, 650)
+[node name="GateExit" type="Marker2D" parent="Points"]
+position = Vector2(835, 305)
+
+[node name="Enemies" type="Node2D" parent="."]
+[node name="Guard" type="Marker2D" parent="Enemies"]
+position = Vector2(1020, 585)
+metadata/kind = "melee"
+[node name="Lookout" type="Marker2D" parent="Enemies"]
+position = Vector2(1190, 405)
+metadata/kind = "ranged"
+
+[node name="Ambient" type="Node2D" parent="."]
+[node name="BambooFireflies" type="Marker2D" parent="Ambient"]
+position = Vector2(265, 375)
+metadata/effect = "classic_fireflies"
+metadata/scale = 0.24
+[node name="LanternLeft" type="Marker2D" parent="Ambient"]
+position = Vector2(674, 196)
+metadata/effect = "torch"
+metadata/scale = 0.11
+[node name="LanternRight" type="Marker2D" parent="Ambient"]
+position = Vector2(1002, 198)
+metadata/effect = "torch"
+metadata/scale = 0.11
+
+[node name="EditorReference" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(520, 650)
+z_index = 650
+texture = ExtResource("3")
+scale = Vector2(3, 3)
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 160, 64)
+offset = Vector2(-80, -60)
+
+[node name="PracticeRock" type="StaticBody2D" parent="."]
+position = Vector2(805, 690)
+z_index = 690
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4")
+[node name="Sprite" type="Sprite2D" parent="PracticeRock"]
+texture_filter = 1
+texture = ExtResource("5")
+scale = Vector2(2, 2)
+offset = Vector2(0, -18)
+[node name="Collision" type="CollisionShape2D" parent="PracticeRock"]
+shape = SubResource("RockShape")

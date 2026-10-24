@@ -1,0 +1,4 @@
+[gd_resource type="FontVariation" load_steps=2 format=3]
+[ext_resource type="FontFile" path="res://assets/courtyard/fonts/Unifont16.otf" id="1"]
+[resource]
+base_font = ExtResource("1")

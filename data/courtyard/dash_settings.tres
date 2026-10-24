@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/moon_temple/dash_settings.gd" id="1"]
+[resource]
+script = ExtResource("1")
+travel_effect = "classic_wuxia_dash"
+landing_effect = "classic_wuxia_dust"
+foot_offset = Vector2(0, 5)
+travel_scale = 1.25
+landing_scale = 1.05
+ground_depth = 0.6
+travel_speed = 2.0
+landing_speed = 1.7
+travel_opacity = 0.78
+landing_opacity = 0.82
+behind_feet = 12.0
+mark_distance = 46.0
+max_travel_marks = 2

@@ -7,7 +7,7 @@ const FxRenderer := preload("../core/fx_renderer.gd")
 const FxPreset := preload("../core/fx_preset.gd")
 const FxGif := preload("fx_gif.gd")
 
-const VERSION := "1.2.0-local"
+const VERSION := "1.0"
 const APP_NAME := "Jeff FX"
 
 ## 方向角 → 动画名

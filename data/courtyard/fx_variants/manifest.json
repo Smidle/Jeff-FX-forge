@@ -1,0 +1,234 @@
+{
+	"hit_basic": {
+		"duration": 0.291666666666667,
+		"durations": [
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0
+		],
+		"fps": 24,
+		"id": "hit_basic",
+		"library": "native",
+		"loop": false,
+		"name": "庭院实例 · 普通打击",
+		"pivot": [
+			10.0,
+			13.0
+		],
+		"rects": [
+			[
+				0,
+				0,
+				18,
+				21
+			],
+			[
+				18,
+				0,
+				18,
+				21
+			],
+			[
+				36,
+				0,
+				18,
+				21
+			],
+			[
+				54,
+				0,
+				18,
+				21
+			],
+			[
+				72,
+				0,
+				18,
+				21
+			],
+			[
+				90,
+				0,
+				18,
+				21
+			],
+			[
+				108,
+				0,
+				18,
+				21
+			]
+		],
+		"scale": 2.0,
+		"source_recipe": "res://data/courtyard/fx_variants/hit_basic.tres",
+		"texture_path": "res://assets/courtyard/fx_variants/hit_basic.png"
+	},
+	"hit_crit": {
+		"duration": 0.395833333333333,
+		"durations": [
+			1.5,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0
+		],
+		"fps": 24,
+		"id": "hit_crit",
+		"library": "native",
+		"loop": false,
+		"name": "庭院实例 · 暴击",
+		"pivot": [
+			20.0,
+			20.0
+		],
+		"rects": [
+			[
+				0,
+				0,
+				39,
+				39
+			],
+			[
+				39,
+				0,
+				39,
+				39
+			],
+			[
+				78,
+				0,
+				39,
+				39
+			],
+			[
+				117,
+				0,
+				39,
+				39
+			],
+			[
+				156,
+				0,
+				39,
+				39
+			],
+			[
+				195,
+				0,
+				39,
+				39
+			],
+			[
+				234,
+				0,
+				39,
+				39
+			],
+			[
+				273,
+				0,
+				39,
+				39
+			],
+			[
+				0,
+				39,
+				39,
+				39
+			]
+		],
+		"scale": 2.0,
+		"source_recipe": "res://data/courtyard/fx_variants/hit_crit.tres",
+		"texture_path": "res://assets/courtyard/fx_variants/hit_crit.png"
+	},
+	"hit_heavy": {
+		"duration": 0.395833333333333,
+		"durations": [
+			1.5,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0,
+			1.0
+		],
+		"fps": 24,
+		"id": "hit_heavy",
+		"library": "native",
+		"loop": false,
+		"name": "庭院实例 · 重击",
+		"pivot": [
+			17.0,
+			12.0
+		],
+		"rects": [
+			[
+				0,
+				0,
+				31,
+				25
+			],
+			[
+				31,
+				0,
+				31,
+				25
+			],
+			[
+				62,
+				0,
+				31,
+				25
+			],
+			[
+				93,
+				0,
+				31,
+				25
+			],
+			[
+				124,
+				0,
+				31,
+				25
+			],
+			[
+				155,
+				0,
+				31,
+				25
+			],
+			[
+				186,
+				0,
+				31,
+				25
+			],
+			[
+				217,
+				0,
+				31,
+				25
+			],
+			[
+				0,
+				25,
+				31,
+				25
+			]
+		],
+		"scale": 2.0,
+		"source_recipe": "res://data/courtyard/fx_variants/hit_heavy.tres",
+		"texture_path": "res://assets/courtyard/fx_variants/hit_heavy.png"
+	}
+}

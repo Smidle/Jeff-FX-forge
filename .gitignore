@@ -1,16 +1,10 @@
-# Godot / operating system caches
 .godot/
 .DS_Store
 Thumbs.db
-# Personal projects, exports and development-only material
-/tests/
-/tools/
-/demo/
-/art/
+/android/
 /fx_exports/
 /fx_forge_presets/
-/project.godot
-/export_presets.cfg
+/tests/
+/tools/
 *.log
-.env
-.env.*
+*.zip

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/moon_temple/skill.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "poison"
+title = "毒气爆炸"
+cooldown = 0.5
+damage = 22.0
+effect_id = "explosion_poison"
+target_mode = "ground"
+animation = "talisman"
+radius = 86.0
+duration = 1
+effect_scale = 2.1
+
+display_offset = Vector2(0, -48)

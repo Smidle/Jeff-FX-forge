@@ -1,0 +1,106 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/core/fx_preset.gd" id="1_jqr5s"]
+
+[resource]
+script = ExtResource("1_jqr5s")
+preset_id = "courtyard_hit_heavy"
+display_name = "庭院实例 · 重击"
+category = "combat"
+description = "势大力沉的重击：冲击环 + 大火花 + 往下掉的碎屑。第 1 帧（命中闪光）打击停顿 3 倍时长。"
+preview_png = PackedByteArray()
+globals = {
+"alpha_levels": 1,
+"canvas_h": 104,
+"canvas_w": 88,
+"cleanup": true,
+"fps": 24,
+"frames": 9,
+"hold_frame": 1,
+"hold_mult": 1.5,
+"min_cluster": 1,
+"origin_x": 0.5,
+"origin_y": 0.42,
+"outline": "selective",
+"outline_width": 1,
+"palette_accent": "steel",
+"palette_main": "spark",
+"palette_smoke": "dust",
+"size_scale": 0.85,
+"soft": 0.0,
+"theme": "custom"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": false,
+"follow_dir": true,
+"module": "ring",
+"name": "冲击环",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "accent",
+"params": {
+"easing": "out_expo",
+"fill": 1.0,
+"radius": 34.0,
+"start": 0.2,
+"thin": 0.85,
+"width": 7.0
+},
+"t_end": 0.95,
+"t_start": 0.0
+}, {
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "burst",
+"name": "重击火花",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"alternate": 0.5,
+"detach": 0.7,
+"flash": "star",
+"flash_size": 7.0,
+"flash_time": 0.18,
+"inner": 0.25,
+"length": 20.0,
+"length_random": 0.4,
+"ray_time": 0.85,
+"rays": 7,
+"width": 4.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}, {
+"angle_offset": 270.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": false,
+"module": "particles",
+"name": "碎屑",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "smoke",
+"params": {
+"cool": 0.3,
+"count": 8,
+"drag": 1.6,
+"gravity": 90.0,
+"life": 0.8,
+"shape": "square",
+"size": 1.5,
+"size_end": 0.8,
+"speed": 65.0,
+"speed_random": 0.6,
+"spread": 240.0
+},
+"t_end": 1.0,
+"t_start": 0.05
+}]

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/moon_temple/combat_settings.gd" id="1"]
+[resource]
+script = ExtResource("1")
+slash_reach = 108.0
+thrust_reach = 130.0
+slash_half_width = 55.0
+thrust_half_width = 38.0
+target_radius = 18.0

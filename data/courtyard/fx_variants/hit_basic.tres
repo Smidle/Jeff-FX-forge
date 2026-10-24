@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="FxForgePreset" format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/core/fx_preset.gd" id="1_vkav3"]
+
+[resource]
+script = ExtResource("1_vkav3")
+preset_id = "courtyard_hit_basic"
+display_name = "庭院实例 · 普通打击"
+category = "combat"
+description = "白黄色的打击火花：中心星形闪光 + 一圈飞散的尖刺，适合普通命中。"
+preview_png = PackedByteArray()
+globals = {
+"alpha_levels": 1,
+"canvas_h": 48,
+"canvas_w": 48,
+"cleanup": true,
+"fps": 24,
+"frames": 7,
+"hold_mult": 1.5,
+"min_cluster": 1,
+"outline": "selective",
+"outline_width": 1,
+"palette_accent": "steel",
+"palette_main": "spark",
+"palette_smoke": "smoke",
+"size_scale": 1.0,
+"soft": 0.0,
+"theme": "custom"
+}
+layers = [{
+"angle_offset": 0.0,
+"dissolve": "global",
+"enabled": true,
+"follow_dir": true,
+"module": "burst",
+"name": "打击火花",
+"offset_x": 0.0,
+"offset_y": 0.0,
+"outline": true,
+"palette_slot": "main",
+"params": {
+"alternate": 0.5,
+"angle_random": 0.4,
+"detach": 0.7,
+"flash": "star",
+"flash_size": 6.0,
+"flash_time": 0.18,
+"inner": 0.2,
+"length": 13.0,
+"length_random": 0.5,
+"ray_time": 0.8,
+"rays": 5,
+"width": 3.0
+},
+"t_end": 1.0,
+"t_start": 0.0
+}]

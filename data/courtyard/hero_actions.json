@@ -1,0 +1,1099 @@
+{
+  "actor": "TongYong/Hero",
+  "canvas": [
+    160,
+    64
+  ],
+  "pivot": [
+    80,
+    60
+  ],
+  "scale": 3,
+  "direction_policy": "Four-way travel; original left/right combat. Vertical casts keep last horizontal side. No fabricated rear attack frames.",
+  "animations": [
+    {
+      "name": "idle_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/role01.png",
+      "grid": [
+        26,
+        38
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        13,
+        37
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "idle_down",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/role01.png",
+      "grid": [
+        26,
+        38
+      ],
+      "row": 2,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        13,
+        37
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "idle_up",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/role01.png",
+      "grid": [
+        26,
+        38
+      ],
+      "row": 4,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        13,
+        37
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "idle_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/role01.png",
+      "grid": [
+        26,
+        38
+      ],
+      "row": 6,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        13,
+        37
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "run_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/run.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 10,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "run_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/run.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 10,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "run_down",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/run.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 2,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 10,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "run_up",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/run.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 3,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 10,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "battle_idle_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/atk.png",
+      "grid": [
+        142,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0
+      ],
+      "pivot": [
+        71,
+        49
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "attack1_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/huikan.png",
+      "grid": [
+        100,
+        45
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "pivot": [
+        50,
+        44
+      ],
+      "fps": 14,
+      "loop": false,
+      "release_frame": 4,
+      "durations": [
+        1.2,
+        1,
+        1.1,
+        1.3,
+        0.7,
+        0.8,
+        1.4
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "attack2_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/atk.png",
+      "grid": [
+        142,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        2,
+        1,
+        0
+      ],
+      "pivot": [
+        71,
+        49
+      ],
+      "fps": 17,
+      "loop": false,
+      "release_frame": 3,
+      "durations": [
+        1,
+        1,
+        1.2,
+        0.7,
+        0.8,
+        0.9,
+        0.7,
+        0.7,
+        1
+      ],
+      "note": "Original thrust, then reverse preparation to withdraw blade"
+    },
+    {
+      "name": "sword_cast_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/huijian.png",
+      "grid": [
+        100,
+        45
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pivot": [
+        50,
+        44
+      ],
+      "fps": 18,
+      "loop": false,
+      "release_frame": 5,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.8,
+        0.8,
+        0.8,
+        1,
+        1.2
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "talisman_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/HiddenWeapone/att.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 15,
+      "loop": false,
+      "release_frame": 4,
+      "durations": [
+        1,
+        1,
+        1,
+        1.4,
+        0.8,
+        0.8,
+        1,
+        1.1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "heal_cast_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Fist/baoqi.png",
+      "grid": [
+        100,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "pivot": [
+        50,
+        49
+      ],
+      "fps": 13,
+      "loop": false,
+      "release_frame": 3,
+      "durations": [
+        1,
+        1,
+        1.8,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "shield_cast_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Fist/baoqi.png",
+      "grid": [
+        100,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "pivot": [
+        50,
+        49
+      ],
+      "fps": 15,
+      "loop": false,
+      "release_frame": 3,
+      "durations": [
+        1,
+        1,
+        1.4,
+        0.8,
+        0.8,
+        1,
+        1,
+        1.2
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "dash_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/jump.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 24,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "block_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/zudang.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "hurt_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/qingshang.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 0,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 16,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "dead_left",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/Hero_Char.png",
+      "grid": [
+        120,
+        50
+      ],
+      "row": 2,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        60,
+        49
+      ],
+      "fps": 10,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence",
+      "extra_cells": [
+        {
+          "row": 3,
+          "column": 0,
+          "duration": 8
+        }
+      ]
+    },
+    {
+      "name": "battle_idle_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/atk.png",
+      "grid": [
+        142,
+        50
+      ],
+      "row": 6,
+      "columns": [
+        0
+      ],
+      "pivot": [
+        71,
+        49
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "attack1_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/huikan.png",
+      "grid": [
+        100,
+        45
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "pivot": [
+        50,
+        44
+      ],
+      "fps": 14,
+      "loop": false,
+      "release_frame": 4,
+      "durations": [
+        1.2,
+        1,
+        1.1,
+        1.3,
+        0.7,
+        0.8,
+        1.4
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "attack2_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/atk.png",
+      "grid": [
+        142,
+        50
+      ],
+      "row": 7,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        2,
+        1,
+        0
+      ],
+      "pivot": [
+        71,
+        49
+      ],
+      "fps": 17,
+      "loop": false,
+      "release_frame": 3,
+      "durations": [
+        1,
+        1,
+        1.2,
+        0.7,
+        0.8,
+        0.9,
+        0.7,
+        0.7,
+        1
+      ],
+      "note": "Original thrust, then reverse preparation to withdraw blade"
+    },
+    {
+      "name": "sword_cast_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/huijian.png",
+      "grid": [
+        100,
+        45
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pivot": [
+        50,
+        44
+      ],
+      "fps": 18,
+      "loop": false,
+      "release_frame": 5,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.8,
+        0.8,
+        0.8,
+        1,
+        1.2
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "talisman_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/HiddenWeapone/att.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 15,
+      "loop": false,
+      "release_frame": 4,
+      "durations": [
+        1,
+        1,
+        1,
+        1.4,
+        0.8,
+        0.8,
+        1,
+        1.1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "heal_cast_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Fist/baoqi.png",
+      "grid": [
+        100,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "pivot": [
+        50,
+        49
+      ],
+      "fps": 13,
+      "loop": false,
+      "release_frame": 3,
+      "durations": [
+        1,
+        1,
+        1.8,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "shield_cast_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Fist/baoqi.png",
+      "grid": [
+        100,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "pivot": [
+        50,
+        49
+      ],
+      "fps": 15,
+      "loop": false,
+      "release_frame": 3,
+      "durations": [
+        1,
+        1,
+        1.4,
+        0.8,
+        0.8,
+        1,
+        1,
+        1.2
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "dash_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/jump.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 24,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "block_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/zudang.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 6,
+      "loop": true,
+      "release_frame": -1,
+      "durations": [
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "hurt_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/qingshang.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 1,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 16,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence"
+    },
+    {
+      "name": "dead_right",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/Hero_Char.png",
+      "grid": [
+        120,
+        50
+      ],
+      "row": 8,
+      "columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pivot": [
+        60,
+        49
+      ],
+      "fps": 10,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Original contiguous sequence",
+      "extra_cells": [
+        {
+          "row": 9,
+          "column": 0,
+          "duration": 8
+        }
+      ]
+    },
+    {
+      "name": "dash_down",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/run.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 2,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 14.4,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Native vertical run frames + runtime jump height, not a fabricated attack direction"
+    },
+    {
+      "name": "dash_up",
+      "source": "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/run.png",
+      "grid": [
+        50,
+        50
+      ],
+      "row": 3,
+      "columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pivot": [
+        25,
+        49
+      ],
+      "fps": 14.4,
+      "loop": false,
+      "release_frame": -1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "note": "Native vertical run frames + runtime jump height, not a fabricated attack direction"
+    }
+  ],
+  "source_hashes": {
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/role01.png": "ede44ab931eaa56cb1e1f7801ac6e4f61ad94c4007fe31f143a69dce00bafc94",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/run.png": "b3bf4897f1aee05fd9502be92f3e1f58e644617af2d7000f7fc48a23e6c9a56b",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/atk.png": "517cec5a6f408732bea258d3e20ed816b99c13f4b8ee72160545e79d24993a13",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/huikan.png": "76855bdfb2bda601a0c6d9c361c69907f7d75da96154af1c05cafe44b953e3d4",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sword/huijian.png": "41c028cc917d6708cd0718ffab74dba1de1c0ebba3c78edc9ab18292672adc3a",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/HiddenWeapone/att.png": "c5118c97f57ed1d59a82241654d3fd33e8431106ab5370959b541bb750256ccc",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Fist/baoqi.png": "8765d83f466e4ed01483e617126d8876e0034deaa2b38e5215fc224602c0c91b",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Sprite/jump.png": "8059aedb96fa1d4e267e0868de57afb35363d8588098a5d34ea04c42673e6512",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/zudang.png": "0b63ae0cbe48aa66c47b06336fca63ca3712c94cef53c01a19ce388d0e778013",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/qingshang.png": "75c8f8a55a4fb3ae3e56dcfd4efdcc250f529372aeb931df9874ac01b462e83f",
+    "Wandering_Sword_Art_Extracted/美术素材_分类/01_角色精灵图集/通用角色/JH/Characters/TongYong/Hero/Char/Hero_Char.png": "7b85917a19847695123a51a29a504631b0b0e5d8ff1e277b902c82240250ca88"
+  },
+  "local_test_only": true
+}

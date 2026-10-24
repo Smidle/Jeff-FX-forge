@@ -6,7 +6,7 @@
 
 [下载插件 ZIP](https://github.com/Smidle/Jeff-FX-forge/releases/download/v1.0/Jeff-FX-1.0-plugin.zip) · [图文用户说明书](docs/manual.md) · [庭院测试说明](docs/test-scene.md) · [版本记录](CHANGELOG.md) · [已知限制](docs/compatibility.md)
 
-![Jeff FX 实际工坊界面](docs/images/01-workshop.png)
+![Jeff FX 传送法阵预览](docs/images/07-classic.png)
 
 ## 选择下载内容
 

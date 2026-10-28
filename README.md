@@ -90,6 +90,6 @@ docs/                  图文说明、截图与验证摘要
 | 微信群 · Jeff Studio 内测群 | QQ 群 · Jeff Studio 插件 |
 |---|---|
 | 使用微信扫描下方二维码入群。 | 在 QQ 中搜索群号 **482858198**，或扫描下方二维码入群。 |
-| <a href="docs/community/wechat-group.png"><img src="docs/community/wechat-group.png" alt="Jeff Studio 内测微信群二维码，2026 年 10 月 31 日前有效" width="280"></a> | <a href="docs/community/qq-group.png"><img src="docs/community/qq-group.png" alt="Jeff Studio 插件 QQ 群二维码，群号 482858198" width="280"></a> |
+| <a href="docs/community/wechat-group.png"><img src="docs/community/wechat-group.png" alt="Jeff Studio 内测微信群二维码，2026 年 11 月 4 日前有效" width="280"></a> | <a href="docs/community/qq-group.png"><img src="docs/community/qq-group.png" alt="Jeff Studio 插件 QQ 群二维码，群号 482858198" width="280"></a> |
 
-微信图片标注二维码在 **2026 年 10 月 31 日前有效**；若扫码失效，可先通过 QQ 群联系获取新的入群方式。
+微信图片标注二维码在 **2026 年 11 月 4 日前有效**；若扫码失效，可先通过 QQ 群联系获取新的入群方式。

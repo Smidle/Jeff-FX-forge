@@ -5,8 +5,10 @@ extends Resource
 enum PathMode { STRAIGHT, ARC, S_CURVE, HELIX, RANDOM_ARC, CUSTOM }
 enum Progress { LINEAR, EASE_IN, EASE_OUT, SMOOTH }
 enum Head { SWORD, FIREBALL, ICE_ARROW, SHADOW_ARROW }
-enum Trail { RIBBON, THREAD, MOTES, FLAME, FROST, SHADOW }
-enum Impact { SPARK, WAVE, STAR, FLAME, ICE, SHADOW }
+## 6～8 是后加的：焰旋（旋转火焰螺旋）、流光（细亮光带）、冰雾（点阵寒气 + 断续霜线）
+enum Trail { RIBBON, THREAD, MOTES, FLAME, FROST, SHADOW, SPIRAL, STREAK, MIST }
+## 6～9 是像素命中（fx_missile_impact.gd）：用像素引擎画的「飞弹命中系」，有白闪、冷却、烟和飞散的碎屑
+enum Impact { SPARK, WAVE, STAR, FLAME, ICE, SHADOW, PIXEL_FIRE, PIXEL_ICE, PIXEL_SHADOW, PIXEL_SWORD }
 @export var start: Vector3 = Vector3(-2,1,0)
 @export var end: Vector3 = Vector3(2,1,0)
 @export_range(1,16,1) var projectile_count: int = 1
@@ -29,6 +31,8 @@ enum Impact { SPARK, WAVE, STAR, FLAME, ICE, SHADOW }
 @export_range(0,2,.05) var saturation: float = 1
 @export_range(0,1,.05) var halo: float = .12
 @export_range(16,128,8) var pixel_density: int = 64
+## 弹头的光（一团叠加光，随飞行闪动）的亮度倍数。0 = 不加光，旧配方不变
+@export_range(0,2,.05) var head_glow: float = 0
 ## Optional procedural orbit ribbons and glyphs. Legacy recipes remain undecorated.
 @export_range(0,1,.05) var magic_ornament: float = 0
 @export_range(0,3,.05) var orbit_speed: float = 1
@@ -41,6 +45,11 @@ enum Impact { SPARK, WAVE, STAR, FLAME, ICE, SHADOW }
 @export_range(0,1,.05) var trail_color_mix: float = .7
 @export_range(0,.5,.01) var turbulence: float = .025
 @export_range(0,24,1) var motes: int = 8
+## 沿飞行路线留在世界里的粒子，样子跟随弹头造型（剑光、火星和烟团、冰晶、暗影絮）。0 = 旧配方不变
+@export_range(0,48,1) var trail_particles: int = 0
+@export_range(.1,2,.05) var particle_life: float = .6
+## 沿飞过的路线留下的弹头残影，越远越淡。0 = 旧配方不变
+@export_range(0,6,1) var afterimages: int = 0
 ## Tail drains toward contact; the joined spine lasts at least head_dissolve.
 @export_range(.05,2,.05) var trail_fade: float = .35
 @export var impact_enabled: bool = true
@@ -62,7 +71,9 @@ func flight_seconds() -> float:
 	return clampf(flight_time,.1,10)
 
 func tail_seconds() -> float:
-	return maxf(maxf(clampf(trail_fade,.05,2),clampf(head_dissolve,0,.4)),clampf(impact_duration,.05,2) if impact_enabled else 0)
+	# 到达时刚发出的粒子还要存留 particle_life，收尾不能比它短
+	var particles: float=clampf(particle_life,.1,2) if trail_particles>0 else 0.0
+	return maxf(maxf(maxf(clampf(trail_fade,.05,2),clampf(head_dissolve,0,.4)),clampf(impact_duration,.05,2) if impact_enabled else 0),particles)
 
 func total_seconds() -> float:
 	return flight_seconds()+clampf(launch_interval,0,1)*(clampi(projectile_count,1,16)-1)+tail_seconds()

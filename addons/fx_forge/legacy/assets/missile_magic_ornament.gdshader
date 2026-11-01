@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_never;
+#include "res://addons/fx_forge/legacy/assets/missile_view.gdshaderinc"
 uniform vec4 dark_color : source_color;
 uniform vec4 mid_color : source_color;
 uniform vec4 light_color : source_color;
@@ -17,12 +18,18 @@ uniform float brightness=1.;
 uniform float opacity=1.;
 uniform bool reduced=false;
 void vertex() {
- vec3 x=normalize(direction);
+ // 与弹头相同的镜头补偿：节点位置和尺寸都和弹头一致
+ vec3 origin=MODEL_MATRIX[3].xyz;
+ vec3 tip=origin+normalize(direction)*size*TIP_ANCHOR;
+ vec3 axis=missile_view_axis(direction,origin,INV_VIEW_MATRIX,PROJECTION_MATRIX,CAMERA_POSITION_WORLD);
+ origin=tip-axis*size*TIP_ANCHOR;
+ float length_scale=length(axis);
+ vec3 x=axis/length_scale;
  vec3 z=INV_VIEW_MATRIX[2].xyz;
  vec3 y=cross(z,x);
  if(length(y)<.001){y=INV_VIEW_MATRIX[1].xyz;}
  y=normalize(y); z=normalize(cross(x,y));
- MODELVIEW_MATRIX=VIEW_MATRIX*mat4(vec4(x*size*1.45,0.),vec4(y*size*1.45/aspect,0.),vec4(z,0.),MODEL_MATRIX[3]);
+ MODELVIEW_MATRIX=VIEW_MATRIX*mat4(vec4(x*size*1.45*length_scale,0.),vec4(y*size*1.45/aspect,0.),vec4(z,0.),vec4(origin,1.));
 }
 float segment(vec2 p,vec2 a,vec2 b){vec2 v=b-a;return length(p-a-v*clamp(dot(p-a,v)/max(.00001,dot(v,v)),0.,1.));}
 void fragment() {

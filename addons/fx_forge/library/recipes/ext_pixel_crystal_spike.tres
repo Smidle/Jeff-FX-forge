@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "晶脊突起 · 程序造型"
+size = 2.5
+end_size = 2.5
+duration = 1.6
+fade_in = 0.035
+fade_out = 0.300
+offset = Vector3(0, 0.73, 0)
+aspect = Vector2(1.25, 1.0)
+material_mode = 1
+pattern = 7
+hard_edge = true
+pixel_resolution = 96
+pattern_count = 7
+pattern_detail = 0.68
+pattern_width = 0.68
+pattern_variation = 0.7
+
+[resource]
+script = ExtResource("1")
+id = "ext_pixel_crystal_spike"
+title = "晶脊突起"
+title_en = "pixel_crystal_spike"
+category = "magic"
+description = "一列晶脊依次从地面刺出，底部尘点强调接触位置。"
+primary_color = Color(0.509804, 0.843137, 0.925490, 1)
+secondary_color = Color(0.145098, 0.270588, 0.372549, 1)
+duration = 1.6
+preview_time = 0.48
+looping = false
+seed = 42
+tags = PackedStringArray("area", "ground_spike", "fine_pixel", "procedural", "earth")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

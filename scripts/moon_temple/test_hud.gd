@@ -1,7 +1,9 @@
 extends CanvasLayer
 signal skill_pressed(index)
 signal reset_requested
+signal scene_requested(path)
 const Slot = preload("skill_slot.gd")
+const Scenes = preload("res://scripts/test_scenes.gd")
 const KEYS := ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 var root: Control
 var slots: Array[Button] = []
@@ -11,6 +13,7 @@ var states: Label
 var menu: Control
 var menu_home: VBoxContainer
 var bindings_page: VBoxContainer
+var scenes_page: VBoxContainer
 var first_button: Button
 var bindings_text: RichTextLabel
 var notice: Label
@@ -137,6 +140,7 @@ func _build_menu(skills: Array[Resource]) -> void:
 	content.add_child(menu_home)
 	menu_home.add_child(label("月下庭院 · 测试暂停", 32))
 	first_button = _button("按键绑定查询", menu_home, show_bindings)
+	_button("切换测试场景", menu_home, show_scenes)
 	_button("重置关卡", menu_home, func(): close_menu(); reset_requested.emit())
 	_button("继续测试", menu_home, close_menu)
 	bindings_page = VBoxContainer.new()
@@ -147,10 +151,22 @@ func _build_menu(skills: Array[Resource]) -> void:
 	bindings_text.bbcode_enabled = true
 	bindings_text.text = "[color=#e4cc92]移动与动作[/color]\nWASD / 方向键　四向移动，后按方向优先\nJ　挥剑；第一段中再按 J 接第二段突刺\n空格　轻功闪避，落地扬尘\n按住 K　原地蓄力（不减伤）；松开停止\nTab　轮换附近可见的固定靶\nE　恢复生命\n\n[color=#e4cc92]技能 · 冷却均为 0.5 秒[/color]\n"
 	for i in range(skills.size()): bindings_text.text += "%s　%s%s\n" % [KEYS[i], skills[i].title, "（自身）" if skills[i].target_mode == "self" else "（目标 / 前方）"]
-	bindings_text.text += "\nEsc　暂停 / 返回 / 继续\nF9　82 款特效调试（与实际技能计数分开）\n鼠标点击技能图标也可释放；指向图标查看说明。\n\n两名固定靶不移动、不攻击、不死亡。\n左靶：重击反馈；右靶：暴击反馈。石头：格挡火花。\n攻击动作未收招时不能开始新技能；0.5 秒是冷却。"
+	bindings_text.text += "\nEsc　暂停 / 返回 / 继续；菜单里可以切换测试场景\n走进大门前石阶上的传送阵：进入下一个测试场景\nF9　82 款特效调试（与实际技能计数分开）\n鼠标点击技能图标也可释放；指向图标查看说明。\n\n两名固定靶不移动、不攻击、不死亡。\n左靶：重击反馈；右靶：暴击反馈。石头：格挡火花。\n攻击动作未收招时不能开始新技能；0.5 秒是冷却。"
 	bindings_page.add_child(bindings_text)
-	_button("返回菜单", bindings_page, func(): bindings_page.hide(); menu_home.show(); first_button.grab_focus())
+	_button("返回菜单", bindings_page, _back_home)
 	bindings_page.hide()
+	scenes_page = VBoxContainer.new()
+	scenes_page.add_theme_constant_override("separation", 12)
+	content.add_child(scenes_page)
+	scenes_page.add_child(label("切换测试场景", 32))
+	var current := Scenes.current_path(get_tree())
+	for scene: Dictionary in Scenes.LIST:
+		var here: bool = scene["path"] == current
+		var b := _button("%s%s" % [scene["name"], "（当前）" if here else ""], scenes_page, func(): scene_requested.emit(scene["path"]))
+		b.tooltip_text = scene["desc"]
+		b.disabled = here
+	_button("返回菜单", scenes_page, _back_home)
+	scenes_page.hide()
 	menu.hide()
 
 func show_bindings() -> void:
@@ -158,14 +174,24 @@ func show_bindings() -> void:
 	bindings_page.show()
 	bindings_page.get_child(bindings_page.get_child_count() - 1).grab_focus()
 
+func show_scenes() -> void:
+	menu_home.hide()
+	scenes_page.show()
+	for child in scenes_page.get_children():
+		if child is Button and not child.disabled:
+			child.grab_focus()
+			break
+
+func _back_home() -> void:
+	bindings_page.hide(); scenes_page.hide(); menu_home.show(); first_button.grab_focus()
+
 func escape() -> void:
 	if menu.visible:
-		if bindings_page.visible:
-			bindings_page.hide(); menu_home.show(); first_button.grab_focus()
+		if bindings_page.visible or scenes_page.visible: _back_home()
 		else: close_menu()
 	else:
 		get_tree().paused = true
-		menu.show(); menu_home.show(); bindings_page.hide(); first_button.grab_focus()
+		menu.show(); menu_home.show(); bindings_page.hide(); scenes_page.hide(); first_button.grab_focus()
 
 func close_menu() -> void:
 	menu.hide()

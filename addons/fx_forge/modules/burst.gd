@@ -47,6 +47,8 @@ func get_param_defs() -> Array:
 		P.choice("flash", "中心闪光", "Flash", FLASH_OPTIONS, "star", {group = "detail"}),
 		P.num("flash_size", "闪光大小", "Flash Size", 0.0, 80.0, 9.0, {group = "detail", unit = "px", scale = true, step = 0.5, hide_if = ["flash", "none"]}),
 		P.num("flash_time", "闪光时长", "Flash Time", 0.05, 1.0, 0.35, {group = "detail", hide_if = ["flash", "none"]}),
+		P.num("light", "闪光照明", "Flash Light", 0.0, 1.0, 0.0, {group = "detail", tip = "闪光同时向四周打出一圈叠加光，随闪光一起迅速熄灭"}),
+		P.num("light_size", "照明半径", "Light Radius", 2.0, 160.0, 24.0, {group = "detail", unit = "px", scale = true, step = 0.5, hide_if = ["light", 0.0]}),
 	]
 
 
@@ -107,4 +109,8 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 					buf.disc(ox, oy, r, 1.0, 0.85, 1.0)
 				"diamond":
 					buf.diamond(ox, oy, r, 1.0, 0.85, 1.0)
+	var light: float = p["light"]
+	if light > 0.0 and u < flash_time:
+		var lk := 1.0 - u / flash_time
+		buf.glow(ox, oy, float(p["light_size"]), light * lk * lk, 0.85)
 	return 1.0 - 0.85 * smoothstep(0.6, 1.0, u)

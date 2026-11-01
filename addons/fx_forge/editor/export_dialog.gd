@@ -219,7 +219,7 @@ func open(settings: Dictionary, frames: int, directional: bool, classic: bool = 
 	_gif.button_pressed = settings["gif"]
 	_select(_gif_scale, settings["gif_scale"])
 	_select(_gif_bg, settings["gif_bg"])
-	_dirs_hint.text = I18n.T("经典效果按当前镜头录制；方向批量绕原点转动镜头。请先在预览中调整构图。") if classic else "" if directional else I18n.T("这个特效不受方向影响，各方向会完全一样。")
+	_dirs_hint.text = I18n.T("3D 效果按当前镜头录制；方向批量绕原点转动镜头。请先在预览中调整构图。") if classic else "" if directional else I18n.T("这个特效不受方向影响，各方向会完全一样。")
 	_refresh()
 	var scale := EditorInterface.get_editor_scale()
 	var available := EditorInterface.get_base_control().size.y - 160 * scale

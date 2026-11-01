@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "原创逐帧主体"
+size = 2.6
+end_size = 2.6
+duration = 0.7083333333333334
+fade_in = 0.005
+fade_out = 0.055
+offset = Vector3(0, 0.92, 0)
+texture_name = "res://addons/fx_forge/library/textures/natural_water_splash.png"
+material_mode = 2
+atlas_columns = 4
+atlas_rows = 5
+atlas_frames = 17
+animation_fps = 24
+hard_edge = false
+palette_hue_shift = true
+palette_reference = Color(0.705882, 0.831373, 0.87451, 1)
+
+[resource]
+script = ExtResource("1")
+id = "ext_natural_water_splash"
+title = "清泉水花"
+title_en = "natural_water_splash"
+category = "magic"
+description = "水冠从接触面撑起，大小水珠分离落回水面。"
+primary_color = Color(0.705882, 0.831373, 0.87451, 1)
+secondary_color = Color(0.913725, 0.972549, 1.0, 1)
+duration = 0.7683333333333333
+preview_time = 0.20833333333333334
+looping = false
+seed = 42
+tags = PackedStringArray("environment", "natural_realistic", "drawn", "water")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

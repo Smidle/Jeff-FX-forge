@@ -119,9 +119,15 @@ func sync_values() -> void:
 						break
 			Kind.COLOR:
 				(c as ColorPickerButton).color = v
+			Kind.TEXT:
+				# 正在输入时不打断
+				var line := c as LineEdit
+				if not line.has_focus() and line.text != str(v):
+					line.text = str(v)
 
 
-## 是否显示这个参数：高级参数要勾选「显示高级参数」；show_if = [参数 id, 值] 满足才显示；hide_if 满足就隐藏
+## 是否显示这个参数：高级参数要勾选「显示高级参数」；show_if = [参数 id, 值] 满足才显示；hide_if 满足就隐藏。
+## 值也可以是数组：等于其中任何一个就算满足
 func _is_shown(d: Dictionary, scope: String, layer: int) -> bool:
 	if d.get("advanced", false) and not show_advanced:
 		return false
@@ -131,7 +137,7 @@ func _is_shown(d: Dictionary, scope: String, layer: int) -> bool:
 		var cond: Array = d[rule]
 		var current: Variant = session.get_value(scope, layer, cond[0])
 		_deps["%s|%d|%s" % [scope, layer, cond[0]]] = current
-		var hit: bool = current == cond[1]
+		var hit: bool = current in cond[1] if cond[1] is Array else current == cond[1]
 		if (rule == "show_if" and not hit) or (rule == "hide_if" and hit):
 			return false
 	return true
@@ -270,6 +276,17 @@ func _add_row(box: VBoxContainer, scope: String, layer: int, d: Dictionary) -> v
 				_emit(key, scope, layer, id, c))
 			cp.popup_closed.connect(func() -> void: _end_drag(key, scope, layer, id, cp.color))
 			ctrl = cp
+		Kind.TEXT:
+			var line := LineEdit.new()
+			line.text = str(value)
+			line.max_length = int(d.get("max_length", 24))
+			# 按回车或离开输入框时才算改完（打字途中不逐字重渲染）
+			var commit := func() -> void:
+				if line.text != str(session.get_value(scope, layer, id)):
+					value_edited.emit(scope, layer, id, line.text, 0)
+			line.text_submitted.connect(func(_t: String) -> void: commit.call())
+			line.focus_exited.connect(commit)
+			ctrl = line
 		Kind.PALETTE:
 			var ob := _make_palette_picker(scope, layer, id, value)
 			ob.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -546,7 +563,7 @@ func _build_classic() -> void:
 	var basic := _section("classic_basic", I18n.T("整体与配色"))
 	var global_defs := ClassicParams.defs(recipe, true, true, recipe, session.classic_defaults)
 	for d: Dictionary in global_defs:
-		if ClassicParams.group(d.id) != "advanced": _add_row(basic, "classic_global", -1, d)
+		if str(d.get("group", ClassicParams.group(d.id))) != "advanced": _add_row(basic, "classic_global", -1, d)
 	var layers := _section("classic_layers", I18n.T("图层模块"))
 	var selector := OptionButton.new()
 	for layer: Resource in recipe.layers:
@@ -567,18 +584,21 @@ func _build_classic() -> void:
 		var layer: Resource = recipe.layers[session.layer_index]
 		var layer_defs := ClassicParams.defs(layer, true, false, recipe, session.classic_defaults.layers[session.layer_index])
 		for section: Array in [["main", I18n.T("外观与数量")], ["motion", I18n.T("节奏与运动")], ["space", I18n.T("位置与朝向")], ["advanced", I18n.T("高级设置")]]:
-			var rows: Array = layer_defs.filter(func(d: Dictionary) -> bool: return ClassicParams.group(d.id) == section[0])
+			var rows: Array = layer_defs.filter(func(d: Dictionary) -> bool: return str(d.get("group", ClassicParams.group(d.id))) == section[0])
 			if rows.is_empty(): continue
 			var key: String = "classic_" + section[0]
 			if section[0] == "advanced" and not _folded.has(key): _folded[key] = true
 			var box := _section(key, I18n.T(section[1]))
 			for d: Dictionary in rows: _add_row(box, "classic_layer", session.layer_index, d)
 		# A dependency change rebuilds visibility, including undo/redo.
-		for id: String in ["facing", "continuous", "repeat_count", "pulse", "use_palette_tint", "impact_enabled", "enabled", "secondary"]:
+		for id: String in ["facing", "continuous", "repeat_count", "pulse", "use_palette_tint", "impact_enabled", "enabled", "secondary", "material_mode", "pattern_detail"]:
 			_deps["classic_layer|%d|%s" % [session.layer_index, id]] = layer.get(id)
+		if layer.kind == 4 and layer.missile != null:
+			for id: String in ["path_mode", "head_style", "trail_style", "trail_length", "projectile_count", "impact_enabled", "magic_ornament", "trail_particles"]:
+				_deps["classic_layer|%d|missile.%s" % [session.layer_index, id]] = layer.missile.get(id)
 	var advanced := _section("classic_global_advanced", I18n.T("全局高级设置"))
 	for d: Dictionary in global_defs:
-		if ClassicParams.group(d.id) == "advanced": _add_row(advanced, "classic_global", -1, d)
+		if str(d.get("group", ClassicParams.group(d.id))) == "advanced": _add_row(advanced, "classic_global", -1, d)
 	_deps["classic_global|-1|looping"] = recipe.looping
 	var hint := Label.new()
 	hint.text = I18n.T("朝向镜头时仅支持平面内 Z 旋转；固定地面或空间后可调 X/Y。起终点流光按路径定向。联动图层的运动参数在主图层调整。")

@@ -12,7 +12,7 @@ const FxPresetUtil := preload("fx_preset_util.gd")
 const FxModule := preload("../modules/fx_module.gd")
 const FxMath := preload("fx_math.gd")
 
-const _DISSOLVE_IDS := ["dither", "shrink", "darken", "fade"]
+const _DISSOLVE_IDS := ["dither", "shrink", "darken", "fade", "translucent"]
 const _OUTLINE_IDS := ["none", "outer", "inner", "selective"]
 
 ## 画布边长上限（防止误操作卡死编辑器）
@@ -110,6 +110,7 @@ static func make_job(preset: FxPreset, opts: Dictionary = {}) -> FxJob:
 		"outline_rgb": outline_rgb,
 		"soft": g["soft"],
 		"glow_rgb": main_cols[maxi(main_cols.size() - 2, 0)],
+		"light": float(g["light"]),
 		"flip_h": g["flip_h"],
 		"flip_v": g["flip_v"],
 	}

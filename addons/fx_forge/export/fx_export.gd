@@ -194,6 +194,10 @@ static func align_animation_origins(rendered: Dictionary) -> Dictionary:
 	return rendered
 
 
+## 自动排布时精灵图最宽多少像素：显卡纹理边长的常见上限，超出时动画在行内换行
+const MAX_SHEET_WIDTH := 16384
+
+
 ## 排布：每个动画从新的一行开始。返回 {size: Vector2i, rects: Array[Rect2i]}
 static func layout(counts: Array, fw: int, fh: int, mode: String, columns: int, padding: int, margin: int) -> Dictionary:
 	var total := 0
@@ -206,6 +210,9 @@ static func layout(counts: Array, fw: int, fh: int, mode: String, columns: int, 
 		cols = clampi(columns, 1, longest)
 	elif mode == "auto" and counts.size() == 1 and total > 16:
 		cols = ceili(sqrt(float(total)))
+	if mode == "auto":
+		# 帧多、画布宽的长动画（例如 128 帧的文字烟花）一行放不下：按宽度上限换行
+		cols = clampi(cols, 1, maxi(1, (MAX_SHEET_WIDTH - margin * 2 + padding) / (fw + padding)))
 	var rects: Array = []
 	var row := 0
 	for c: int in counts:

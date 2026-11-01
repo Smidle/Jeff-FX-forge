@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_missile_config.gd" id="3"]
+
+[sub_resource type="Resource" id="Missile"]
+script = ExtResource("3")
+head_glow = 1.0
+magic_ornament = 0.8
+orbit_speed = 1.15
+head_style = 1
+trail_style = 6
+impact_style = 6
+head_size = 0.76
+head_aspect = 1.1
+deformation = 0.8
+halo = 0.25
+path_mode = 1
+arc_height = 0.22
+flight_time = 0.85
+trail_length = 1.1
+trail_width = 0.18
+trail_fade = 0.38
+turbulence = 0.035
+head_dissolve = 0.20
+motes = 0
+trail_particles = 34
+particle_life = 0.7
+impact_size = 1.25
+impact_duration = 1.0
+impact_fragments = 12
+
+[sub_resource type="Resource" id="Layer"]
+script = ExtResource("2")
+label = "火球术 · 程序飞弹"
+kind = 4
+missile = SubResource("Missile")
+texture_name = ""
+
+[resource]
+script = ExtResource("1")
+id = "missile_fireball"
+title = "火球术"
+title_en = "Fireball"
+category = "magic"
+description = "翻卷的火核外面一团闪动的火光，拖着两股被气流撕扯的焰旋；身后掉出一团团火团，边飘边冷却成半透明的烟，火星往上飘。命中「火球爆燃」：白闪和冲击环，火球胀开冷却，火星飞散，烟慢慢升起。程序生成，支持三维追踪和自定义路径。"
+tags = PackedStringArray("飞弹", "远程", "程序化")
+duration = 0.0
+preview_time = 0.4
+primary_color = Color(1, 0.61, 0.18, 1)
+secondary_color = Color(0.72, 0.16, 0.055, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer")])

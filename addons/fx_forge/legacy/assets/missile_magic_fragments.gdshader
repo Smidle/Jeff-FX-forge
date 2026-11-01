@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_never;
+#include "res://addons/fx_forge/legacy/assets/missile_view.gdshaderinc"
 uniform vec4 dark_color : source_color;
 uniform vec4 mid_color : source_color;
 uniform vec4 light_color : source_color;
@@ -22,12 +23,14 @@ void vertex(){
  float birth=impact_mode ? duration*u*.07 : dissolve_duration*(element==2 ? 1.-u : u)*.6;
  phase=clamp((age-birth)/max(.001,duration-birth),0.,1.);
  alive=step(birth,age)*(1.-step(duration,age));
- vec3 forward=normalize(direction);vec3 view=INV_VIEW_MATRIX[2].xyz;
+ // 与弹头相同的镜头补偿轴：碎片沿画出来的弹身分布，爆散平面也更朝向镜头
+ vec3 axis=missile_view_axis(direction,MODEL_MATRIX[3].xyz,INV_VIEW_MATRIX,PROJECTION_MATRIX,CAMERA_POSITION_WORLD);
+ vec3 forward=normalize(axis);vec3 view=INV_VIEW_MATRIX[2].xyz;
  vec3 side=cross(view,forward);if(length(side)<.001){side=INV_VIEW_MATRIX[1].xyz;}side=normalize(side);
  vec3 origin=MODEL_MATRIX[3].xyz;
  float side_sign=INSTANCE_CUSTOM.z>.5 ? 1. : -1.;
  float theta=u*6.283185+noise*.7;
- if(!impact_mode){origin-=forward*body_length*(1.-u)*size;}
+ if(!impact_mode){origin-=axis*body_length*(1.-u)*size;}
  vec3 travel;
  if(element==1){
   travel=(forward*cos(theta)+side*sin(theta))*(.12+noise*.28)*size*sqrt(phase);

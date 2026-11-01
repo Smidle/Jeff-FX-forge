@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "原创造型 · Aseprite 清理与锚点整理"
+size = 1.4
+end_size = 1.4
+duration = 3
+fade_in = 0.12
+fade_out = 0.28
+offset = Vector3(0, 0.035, 0)
+facing = 1
+texture_name = "res://addons/fx_forge/library/textures/pixel_target_petals.png"
+material_mode = 1
+atlas_columns = 1
+atlas_rows = 1
+atlas_frames = 1
+animation_fps = 16
+animation_loop = true
+hard_edge = true
+palette_hue_shift = true
+palette_reference = Color(0.376471, 0.631373, 0.545098, 1)
+spin = 20.0
+pulse = 0.025
+pulse_speed = 2.094395
+pixel_resolution = 128
+
+[resource]
+script = ExtResource("1")
+id = "ext_pixel_target_petals"
+title = "花瓣锁定"
+title_en = "pixel_target_petals"
+category = "magic"
+description = "四段像素花瓣围住目标脚底，中央保持完全通透。"
+primary_color = Color(0.376471, 0.631373, 0.545098, 1)
+secondary_color = Color(1.0, 0.882353, 0.603922, 1)
+duration = 3
+preview_time = 0.7
+looping = true
+seed = 42
+tags = PackedStringArray("telegraph", "fine_pixel", "hybrid", "light")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

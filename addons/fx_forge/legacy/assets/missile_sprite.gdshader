@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_never;
+#include "res://addons/fx_forge/legacy/assets/missile_view.gdshaderinc"
 uniform sampler2D pixels : source_color, filter_nearest, repeat_disable;
 uniform vec3 direction = vec3(1.,0.,0.);
 uniform float size = 1.;
@@ -24,16 +25,23 @@ void vertex() {
   x=normalize(x); y=normalize(cross(z,x));
  }
  float a=rotation;
+ vec3 origin=MODEL_MATRIX[3].xyz;
+ float length_scale=1.;
  if (facing == 3) {
   // The blade has real world length along its flight axis. A billboard rotation
   // alone overhangs the contact point when the camera sees a steep trajectory.
-  x=normalize(direction); y=cross(z,x);
+  // 飞行接近视线时补足屏幕长度，并把弹尖放回真实接触点（missile_view.gdshaderinc）。
+  vec3 tip=origin+normalize(direction)*size*TIP_ANCHOR;
+  vec3 axis=missile_view_axis(direction,origin,INV_VIEW_MATRIX,PROJECTION_MATRIX,CAMERA_POSITION_WORLD);
+  origin=tip-axis*size*TIP_ANCHOR;
+  length_scale=length(axis);
+  x=axis/length_scale; y=cross(z,x);
   if (length(y)<.001) { y=INV_VIEW_MATRIX[1].xyz; }
   y=normalize(y); z=normalize(cross(x,y));
  }
  vec3 rx=x*cos(a)+y*sin(a);
  vec3 ry=y*cos(a)-x*sin(a);
- MODELVIEW_MATRIX=VIEW_MATRIX*mat4(vec4(rx*size,0.),vec4(ry*size/aspect,0.),vec4(z*size,0.),MODEL_MATRIX[3]);
+ MODELVIEW_MATRIX=VIEW_MATRIX*mat4(vec4(rx*size*length_scale,0.),vec4(ry*size/aspect,0.),vec4(z*size,0.),vec4(origin,1.));
 }
 void fragment() {
  vec2 sample_uv=UV;

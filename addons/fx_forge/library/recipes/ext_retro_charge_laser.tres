@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "程序造型与自然消散"
+size = 1.3
+end_size = 1.3
+duration = 1.2
+fade_in = 0.035
+fade_out = 0.25
+offset = Vector3(0, 1.05, 0)
+material_mode = 1
+pattern = 2
+hard_edge = true
+pixel_resolution = 64
+pattern_count = 5
+pattern_width = 0.4
+aspect = Vector2(3.0, 1)
+
+[resource]
+script = ExtResource("1")
+id = "ext_retro_charge_laser"
+title = "复古蓄能光束"
+title_en = "retro_charge_laser"
+category = "magic"
+description = "分段亮格汇聚后发射清楚的直线光束，末段逐格回收。"
+primary_color = Color(0.337255, 0.87451, 0.921569, 1)
+secondary_color = Color(0.988235, 0.945098, 0.701961, 1)
+duration = 1.2
+preview_time = 0.55
+looping = false
+seed = 42
+tags = PackedStringArray("combat", "retro_pixel", "procedural", "arcane")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

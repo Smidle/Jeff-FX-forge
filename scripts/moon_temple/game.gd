@@ -4,6 +4,9 @@ const Service = preload("fx_service.gd")
 const Skill = preload("skill.gd")
 const Hud = preload("test_hud.gd")
 const TargetMarker = preload("target_marker.gd")
+const TestScenes = preload("res://scripts/test_scenes.gd")
+## 大门前石阶上的传送阵：主角脚下进入这个椭圆就切换到下一个测试场景
+const PORTAL_RADIUS := Vector2(62, 26)
 var combat_settings: Resource = preload("res://data/courtyard/combat_settings.tres")
 var dash_settings: Resource = preload("res://data/courtyard/dash_settings.tres")
 var dash_ground_state: Dictionary = {}
@@ -36,6 +39,8 @@ var shield_visual: Node2D
 var charge_visual: Node2D
 var buff_visual: Node2D
 var buff_time := 0.0
+var portal_point := Vector2.ZERO
+var portal_entering := false
 
 func _ready() -> void:
 	if has_node("EditorPreview"): $EditorPreview.free()
@@ -116,6 +121,7 @@ func _transition(area: String, reset: bool) -> void:
 	level.get_node("PracticeRock").struck.connect(func(where): fx.play("block_sparks", where, {"scale": 1.8}))
 	for point in level.get_node("Ambient").get_children():
 		fx.play(point.get_meta("effect"), point.position, {"loop": true, "scale": point.get_meta("scale", 0.4), "ground": point.get_meta("ground", false)})
+	_build_portal()
 	target = null
 	pending_skill.clear()
 	combo_queued = false
@@ -166,6 +172,7 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(target) or target.hp <= 0 or target.position.distance_to(player.position) > 650: target = null
 	_update_status_effects(delta)
 	_update_dash_ground()
+	_check_portal()
 	hud.refresh(player, cooldowns, buff_time)
 	target_ring.visible = is_instance_valid(target)
 	if is_instance_valid(target): target_ring.position = target.position.round()
@@ -379,6 +386,64 @@ func _ground_skill(index: int, where: Vector2, token: int) -> void:
 	for rock in get_tree().get_nodes_in_group("moon_rock"):
 		if rock.position.distance_to(where) < skill.radius: rock.receive_damage(1, where)
 
+## 传送阵（常驻的传送法阵）铺在大门前的石阶上，下面写着去哪里
+func _build_portal() -> void:
+	portal_entering = false
+	portal_point = level.get_node("Points/GateExit").position
+	fx.play("classic_portal", portal_point, {"loop": true, "ground": true, "scale": 1.5})
+	var next: Dictionary = TestScenes.next_of(TestScenes.current_path(get_tree()))
+	var plate := Node2D.new()
+	plate.name = "PortalSign"
+	plate.position = portal_point + Vector2(0, 47)
+	# 写在地面上：和目标标记一样画在角色下面，角色走过会挡住字
+	plate.z_index = -1
+	level.add_child(plate)
+	var font = preload("res://assets/courtyard/fonts/pixel_font.tres")
+	var lines := [["进入下一个测试场景", 16, Color("e4ddc6")], ["→ " + str(next.name), 16, Color("9cc4cf")]]
+	for i in lines.size():
+		var text := Label.new()
+		text.text = lines[i][0]
+		text.add_theme_font_override("font", font)
+		text.add_theme_font_size_override("font_size", lines[i][1])
+		text.add_theme_color_override("font_color", lines[i][2])
+		text.add_theme_constant_override("outline_size", 4)
+		text.add_theme_color_override("font_outline_color", Color("111c29"))
+		text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		text.size = Vector2(260, 20)
+		text.position = Vector2(-130, i * 20)
+		text.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		plate.add_child(text)
+	# 字轻轻明暗呼吸，提示这里可以走进去
+	var pulse := plate.create_tween().set_loops()
+	pulse.tween_property(plate, "modulate:a", 0.6, 0.9).set_trans(Tween.TRANS_SINE)
+	pulse.tween_property(plate, "modulate:a", 1.0, 0.9).set_trans(Tween.TRANS_SINE)
+
+func _check_portal() -> void:
+	if portal_entering or player.hp <= 0: return
+	if ((player.position - portal_point) / PORTAL_RADIUS).length_squared() <= 1.0: _enter_portal()
+
+## 走进传送阵：主角定住，一道传送光柱，主角淡出，然后切换到下一个测试场景
+func _enter_portal() -> void:
+	portal_entering = true
+	var token := generation
+	var next: Dictionary = TestScenes.next_of(TestScenes.current_path(get_tree()))
+	player.enabled = false
+	player.velocity = Vector2.ZERO
+	pending_skill.clear()
+	combo_queued = false
+	show_message("传送阵启动 · 前往「%s」" % next.name, 2)
+	fx.play("teleport_beam", player.position, {"scale": 1.5})
+	var vanish := player.create_tween()
+	vanish.tween_interval(0.2)
+	vanish.tween_property(player, "modulate:a", 0.0, 0.3)
+	await get_tree().create_timer(0.7, false).timeout
+	if token != generation or not is_instance_valid(level): return
+	_go_to_scene(next.path)
+
+func _go_to_scene(path: String) -> void:
+	transitioning = true
+	TestScenes.change(get_tree(), path)
+
 func interact() -> void:
 	player.hp = player.max_hp
 	show_message("气血已恢复；技能也可在满血时测试表现")
@@ -422,6 +487,7 @@ func _build_hud() -> void:
 	hud.build(skills)
 	hud.skill_pressed.connect(cast)
 	hud.reset_requested.connect(func(): request_area("gate", true))
+	hud.scene_requested.connect(_go_to_scene)
 	var root: Control = hud.root
 	debug_panel = _panel()
 	debug_panel.position = Vector2(390, 160)

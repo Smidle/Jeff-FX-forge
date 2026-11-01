@@ -47,6 +47,8 @@ func get_param_defs() -> Array:
 		P.num("rim", "亮边", "Rim Light", 0.0, 1.0, 0.6, {group = "detail", tip = "外缘比内侧亮多少"}),
 		P.num("edge_noise", "边缘毛糙", "Edge Roughness", 0.0, 1.0, 0.15, {group = "detail", tip = "内缘的参差感"}),
 		P.integer("ghosts", "残影数", "Afterimages", 0, 3, 0, {group = "detail", tip = "刀光后面留下几道淡残影"}),
+		P.num("cool", "收刀冷却", "Cooling", 0.0, 1.0, 0.0, {group = "detail", tip = "刀锋扫完后刀光逐渐变暗：从白热的亮边冷却到色板的深色，越靠刀尾越暗"}),
+		P.num("glow", "刀光照明", "Light", 0.0, 1.0, 0.0, {group = "detail", tip = "刀锋带着一团叠加光扫过，刀光沿途也微微发光，挥砍结束后熄灭"}),
 	]
 
 
@@ -74,6 +76,7 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 	var rim_pow := 1.0 - float(p["rim"]) * 0.75
 	var rough: float = p["edge_noise"]
 	var ghosts: int = p["ghosts"]
+	var cool: float = p["cool"]
 	var noise: PackedFloat32Array = st["noise"]
 	var prof: PackedFloat32Array = st["profile"]
 	var nn := noise.size()
@@ -118,6 +121,8 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 		var thin := 1.0 - 0.6 * smoothstep(sweep * 0.9, 1.0, ug)
 		var tg := thick * thin * (1.0 if g == 0 else 0.8)
 		var vmul := 1.0 if g == 0 else 0.75
+		if cool > 0.0:
+			vmul *= 1.0 - cool * 0.7 * smoothstep(sweep * 0.5, 1.0, ug)
 		var amul := 1.0 if g == 0 else 0.55 - 0.12 * float(g)
 		var r_in := maxf(radius - tg * (1.0 + rough * 0.6) - 1.0, 0.0)
 		var r_in2 := r_in * r_in
@@ -161,4 +166,30 @@ func render(buf: FxBuffer, p: Dictionary, st: Dictionary, u: float, ctx: FxConte
 	buf.restore(bv, ba)
 	if drew:
 		buf.touch(xa, ya, xb, yb)
+	var glow: float = p["glow"]
+	if glow > 0.0:
+		var head0 := span * M.apply_ease(ease_id, u / sweep)
+		var tk0 := clampf((u - tail_start) / tail_len, 0.0, 1.0)
+		var tail0 := span * 0.8 * tk0 * tk0
+		# 刀锋带着一团光；刀光沿途也有一层弱光
+		var hk := 1.0 - clampf(u / (sweep * 2.2), 0.0, 1.0)
+		if hk > 0.0:
+			var hp := _on_arc(ctx, radius - thick * 0.5, squash, half, cw, minf(head0, span))
+			buf.glow(hp.x, hp.y, thick + 8.0, glow * 0.6 * hk * hk, 0.7)
+		var ak := 1.0 - smoothstep(sweep * 0.5, 1.0, u)
+		var vis0 := minf(head0, span) - tail0
+		if ak > 0.0 and vis0 > 0.0:
+			var steps := maxi(2, ceili(vis0 * radius / 7.0))
+			for q in steps + 1:
+				var sq := tail0 + vis0 * float(q) / float(steps)
+				var ap := _on_arc(ctx, radius - thick * 0.4, squash, half, cw, sq)
+				buf.glow(ap.x, ap.y, thick + 5.0, glow * 0.22 * ak * (sq - tail0) / vis0, 0.65)
 	return 1.0 - 0.85 * smoothstep(0.55, 1.0, u)
+
+
+## 弧线上「已扫过角度」为 s 的点（屏幕坐标），r 为离中心的距离
+func _on_arc(ctx: FxContext, r: float, squash: float, half: float, cw: bool, s: float) -> Vector2:
+	var th := s - half if cw else half - s
+	var lx := cos(th) * r
+	var ly := sin(th) * r * squash
+	return Vector2(ctx.ox + lx * ctx.cos_a - ly * ctx.sin_a, ctx.oy + lx * ctx.sin_a + ly * ctx.cos_a)

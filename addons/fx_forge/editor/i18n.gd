@@ -7,6 +7,7 @@ extends RefCounted
 ## 单元测试会检查界面脚本里没有漏掉 I18n.T() 的中文文字。
 
 const LangEn := preload("lang_en.gd")
+const CatalogEn := preload("catalog_i18n.gd")
 
 ## 当前界面语言："zh" = 中文。英文表补全后可以改成 "en"，或者跟随编辑器语言
 static var language := "zh"
@@ -17,7 +18,7 @@ static func T(text: String) -> String:
 	if language == "zh" or text.is_empty():
 		return text
 	if language == "en":
-		return LangEn.TABLE.get(text, text)
+		return LangEn.TABLE.get(text, CatalogEn.TABLE.get(text, text))
 	return text
 
 

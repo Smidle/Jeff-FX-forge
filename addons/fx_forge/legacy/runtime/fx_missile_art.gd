@@ -3,7 +3,13 @@ extends RefCounted
 ## Original four-color pixel drawing. No sprite atlas or image input.
 var image: Image
 var palette: Array[Color]=[]
+## 剑用的固定颜色（只略带主色），和气色的拖尾区分开：
+## 0 描边 1 钢暗面 2 钢亮面 3 刃光 4 暗金 5 亮金 6 缠绳
+var steel: Array[Color]=[]
 var size: int=64
+## 不随时间变化的部分（剑身、冰箭和描边）只画一次，之后每帧复制再叠加动态细节
+var _base: Image
+var _base_style: int=-1
 
 func _init(resolution: int=64) -> void:
 	size=resolution
@@ -14,6 +20,44 @@ func colors(primary: Color, secondary: Color, saturation: float) -> void:
 	for i in 4:
 		var c: Color=palette[i]
 		palette[i]=Color.from_hsv(c.h,clampf(c.s*saturation,0,1),c.v,1)
+	var tint: Color=palette[2]
+	steel=[Color(.06,.08,.12).lerp(tint,.05),Color(.40,.46,.53).lerp(tint,.12),Color(.73,.79,.84).lerp(tint,.1),Color(.97,.99,1),
+		Color(.50,.31,.11),Color(.95,.74,.30),Color(.22,.14,.10)]
+
+func put(x: int, y: int, color: Color) -> void:
+	if x>=0 and y>=0 and x<size and y<size: image.set_pixel(x,y,color)
+
+func _empty(x: int, y: int) -> bool:
+	return x<0 or y<0 or x>=size or y>=size or image.get_pixel(x,y).a<.5
+
+## 1 像素描边：紧挨着图形的透明像素涂成描边色
+func outline(color: Color) -> void:
+	var edge: Array[Vector2i]=[]
+	for y in size:
+		for x in size:
+			if _empty(x,y) and (not _empty(x-1,y) or not _empty(x+1,y) or not _empty(x,y-1) or not _empty(x,y+1)):
+				edge.append(Vector2i(x,y))
+	for p in edge: image.set_pixelv(p,color)
+
+## 边缘闪动：每帧在图形外缘随机点亮几个像素。抽样而不是逐像素扫描，64 像素下也很便宜。
+func edge_flicker(color: Color, count: int, frame: int, area: Rect2) -> void:
+	for i in count:
+		var x: int=int(lerpf(area.position.x,area.end.x,fposmod(sin(float(frame*131+i*17))*43758.5453,1))*size)
+		var y: int=int(lerpf(area.position.y,area.end.y,fposmod(sin(float(frame*71+i*29+7))*24634.6345,1))*size)
+		if _empty(x,y) and (not _empty(x-1,y) or not _empty(x+1,y) or not _empty(x,y-1) or not _empty(x,y+1)):
+			image.set_pixel(x,y,color)
+
+## 静态部分画一次后缓存；返回 true 表示这次是新画的
+func _static(style: int) -> bool:
+	if _base!=null and _base_style==style:
+		image.copy_from(_base)
+		return false
+	image.fill(Color.TRANSPARENT)
+	return true
+
+func _keep(style: int) -> void:
+	_base=image.duplicate() as Image
+	_base_style=style
 
 func polygon(points: Array, ink: int) -> void:
 	# Small crystal fragments often occupy only two rows; skip the empty scanlines.
@@ -97,24 +141,36 @@ func fireball(t: float, deformation: float, halo: float) -> void:
 			line(at,at+Vector2(.025*(1-phase),-.01),.018,2 if phase<.5 else 1)
 
 func ice_arrow(t: float, deformation: float, halo: float) -> void:
-	image.fill(Color.TRANSPARENT)
-	# Long needle crystal: offset facets, chipped shoulders and a bright internal ridge.
-	polygon([Vector2(.94,.5),Vector2(.63,.397),Vector2(.43,.431),Vector2(.29,.456),Vector2(.18,.49),Vector2(.30,.542),Vector2(.51,.578),Vector2(.70,.555)],0)
-	polygon([Vector2(.94,.5),Vector2(.63,.413),Vector2(.43,.447),Vector2(.25,.49),Vector2(.64,.485)],2)
-	polygon([Vector2(.94,.5),Vector2(.25,.49),Vector2(.44,.536),Vector2(.69,.543)],1)
-	polygon([Vector2(.94,.5),Vector2(.65,.478),Vector2(.38,.485),Vector2(.27,.498),Vector2(.63,.509)],3)
-	polygon([Vector2(.63,.414),Vector2(.60,.473),Vector2(.43,.448)],1)
-	polygon([Vector2(.65,.518),Vector2(.69,.541),Vector2(.82,.519)],2)
-	polygon([Vector2(.47,.456),Vector2(.33,.407),Vector2(.19,.433),Vector2(.30,.488)],1)
-	polygon([Vector2(.43,.455),Vector2(.33,.423),Vector2(.23,.437),Vector2(.32,.467)],2)
-	polygon([Vector2(.44,.53),Vector2(.29,.566),Vector2(.21,.553),Vector2(.32,.513)],1)
-	line(Vector2(.65,.416),Vector2(.90,.491),.018,3)
-	line(Vector2(.46,.532),Vector2(.60,.549),.018,2)
-	var glint: float=.35+fposmod(t*.44,1)*.43
-	line(Vector2(glint,.474),Vector2(glint+.035,.487),.018,3)
+	# 按像素画：菱形冰晶箭头、亮色中脊、细箭杆和后方两片冰翎，深色描边。
+	var n: int=size
+	var cy: int=n/2
+	var tip: int=int(n*.94)
+	var head_length: int=maxi(4,roundi(n*.27))
+	var start: int=tip-head_length
+	if _static(2):
+		var half: int=maxi(2,roundi(n*.075))
+		var peak: int=tip-roundi(head_length*.55)
+		for x in range(start,tip+1):
+			var h: int=roundi(half*float(tip-x)/maxf(1,tip-peak)) if x>=peak else roundi(half*(1.0-.5*float(peak-x)/maxf(1,peak-start)))
+			for dy in range(-h,h+1): put(x,cy+dy,palette[3] if dy==0 else (palette[2] if dy<0 else palette[1]))
+		var back: int=roundi(n*.14)
+		var shaft: int=roundi(n*.012)
+		for x in range(back,start):
+			for dy in range(-shaft,shaft+1): put(x,cy+dy,palette[2] if dy<=0 else palette[1])
+		var fin_height: int=maxi(2,roundi(n*.085))
+		var fin_length: int=maxi(3,roundi(n*.12))
+		for i in range(1,fin_length+1):
+			var y: int=roundi(fin_height*float(i)/fin_length)
+			for x in [back+fin_length-i,back+fin_length-i+1]:
+				put(x,cy-y,palette[2]); put(x,cy+y,palette[1])
+		outline(palette[0])
+		_keep(2)
+	# 一道高光沿箭杆扫到箭尖；箭头附近冰屑闪烁
+	var at: int=roundi(n*.14)+int(fposmod(t*1.3,1.0)*(tip-roundi(n*.14)+6))-3
+	for x in range(at,at+maxi(2,n/16)):
+		if x<tip and not _empty(x,cy): put(x,cy,Color.WHITE if x>=start else palette[3])
 	if halo>.01:
-		var pulse: float=sin(t*3)*.015*deformation
-		line(Vector2(.33,.58+pulse),Vector2(.44,.563),.018,1)
+		edge_flicker(palette[3],maxi(2,n/10),int(t*24),Rect2(float(start)/n,.38,.98-float(start)/n,.24))
 
 func shadow_arrow(t: float, deformation: float, halo: float) -> void:
 	image.fill(Color.TRANSPARENT)
@@ -134,6 +190,8 @@ func shadow_arrow(t: float, deformation: float, halo: float) -> void:
 	if halo>.01:
 		line(Vector2(.27,.436+wave),Vector2(.38,.455),.018,1)
 		line(Vector2(.25,.569),Vector2(.39,.54+wave),.018,1)
+		# 边缘暗焰：每帧在外缘随机亮起几个像素
+		edge_flicker(palette[1],maxi(3,size/6),int(t*24),Rect2(.14,.34,.82,.32))
 
 func fire_impact(p: float, fragments: int, seed: int) -> void:
 	var growth: float=sin(minf(1,p*2.5)*PI*.5)
@@ -169,32 +227,51 @@ func shadow_impact(p: float, fragments: int, seed: int) -> void:
 	if p<.18: line(Vector2(.44,.5),Vector2(.56,.5),.018,3)
 
 func sword(t: float, deformation: float, halo: float) -> void:
-	image.fill(Color.TRANSPARENT)
-	# A restrained sheath of qi. The steel silhouette stays rigid while its wisps move.
+	# 按像素画，24 像素和 64 像素下都看得出剑：钢色剑身（亮面、刃光、暗面）收成剑尖，
+	# 比剑身宽得多的金色剑格，缠绳剑柄和剑首，深色描边。钢色固定，不跟拖尾的气色混在一起。
+	var n: int=size
+	var cy: int=n/2
+	var tip: int=int(n*.94)
+	var blade: int=roundi(n*.33)
+	var guard: int=roundi(n*.26)
+	var pommel: int=roundi(n*.09)
+	var half: int=maxi(1,roundi(n*.032))
+	if _static(0):
+		var taper: int=maxi(2,roundi(n*.1))
+		for x in range(blade,tip+1):
+			var reach: int=mini(half,int(float(tip-x)*half/taper))
+			for dy in range(-reach,reach+1): put(x,cy+dy,steel[3] if dy==0 else (steel[2] if dy<0 else steel[1]))
+		var guard_half: int=maxi(3,roundi(n*.12))
+		for dy in range(-guard_half,guard_half+1):
+			# 剑格两端略向剑柄方向弯
+			var swept: int=1 if absi(dy)==guard_half else 0
+			for x in range(guard-swept,blade-swept): put(x,cy+dy,steel[5] if dy<0 else steel[4])
+		var grip: int=roundi(n*.135)
+		var grip_half: int=roundi(n*.012)
+		for x in range(grip,guard):
+			for dy in range(-grip_half,grip_half+1): put(x,cy+dy,steel[4] if (x+dy)%2==0 else steel[6])
+		var pommel_half: int=maxi(1,roundi(n*.03))
+		for x in range(pommel,grip):
+			for dy in range(-pommel_half,pommel_half+1): put(x,cy+dy,steel[5] if dy<=0 else steel[4])
+		outline(steel[0])
+		_keep(0)
+	# 一道高光沿剑身从剑格扫到剑尖
+	var at: int=blade+int(fposmod(t*1.5,1.0)*(tip-blade+6))-3
+	for x in range(at,at+maxi(2,n/16)):
+		if x>=blade and x<tip:
+			for dy in range(-half,0): put(x,cy+dy,steel[3])
+	# 剑气：剑身两侧描边外随机闪出气色像素
 	if halo>.01:
-		for side in [-1,1]:
-			var wave: float=sin(t*5+side)*.022*deformation
-			var edge: float=.065+clampf(halo,0,1)*.075
-			polygon([Vector2(.13,.5+side*edge),Vector2(.42,.5+side*(edge+wave)),Vector2(.82,.5+side*.022),Vector2(.39,.5+side*.05)],1 if halo>.45 else 0)
-	# Long double-edged jian: tapered tip, bevels and a narrow illuminated ridge.
-	polygon([Vector2(.94,.5),Vector2(.79,.462),Vector2(.37,.432),Vector2(.29,.474),Vector2(.29,.526),Vector2(.37,.568),Vector2(.79,.538)],0)
-	polygon([Vector2(.94,.5),Vector2(.78,.477),Vector2(.38,.450),Vector2(.32,.482),Vector2(.32,.5)],2)
-	polygon([Vector2(.94,.5),Vector2(.32,.5),Vector2(.33,.524),Vector2(.38,.548),Vector2(.78,.521)],1)
-	line(Vector2(.36,.49),Vector2(.88,.49),.018,3)
-	line(Vector2(.40,.52),Vector2(.74,.52),.018,2)
-	# Small swept guard leaves the blade, grip and pommel readable at game scale.
-	polygon([Vector2(.33,.477),Vector2(.29,.405),Vector2(.23,.392),Vector2(.25,.447),Vector2(.29,.5),Vector2(.25,.553),Vector2(.23,.608),Vector2(.29,.595),Vector2(.33,.523)],0)
-	polygon([Vector2(.32,.48),Vector2(.28,.421),Vector2(.25,.416),Vector2(.28,.474),Vector2(.28,.526),Vector2(.25,.584),Vector2(.28,.579),Vector2(.32,.52)],2)
-	line(Vector2(.27,.43),Vector2(.29,.47),.018,3)
-	line(Vector2(.27,.57),Vector2(.29,.53),.018,1)
-	line(Vector2(.11,.5),Vector2(.28,.5),.062,0)
-	line(Vector2(.12,.49),Vector2(.27,.49),.024,1)
-	for x in [.15,.20,.25]: line(Vector2(x,.48),Vector2(x,.52),.018,2)
-	polygon([Vector2(.065,.5),Vector2(.10,.47),Vector2(.14,.5),Vector2(.10,.53)],1)
-	line(Vector2(.09,.49),Vector2(.11,.49),.018,3)
-	# A travelling one-pixel glint, not a whole-blade flash.
-	var glint: float=.39+fposmod(t*.35,1)*.35
-	line(Vector2(glint,.47),Vector2(glint+.022,.49),.018,3)
+		var frame: int=int(t*24)
+		for x in range(blade,tip-1):
+			for side in [-1,1]:
+				if fposmod(sin(float(x*37+frame*11+side*5))*43758.5453,1)<halo*.55 and _empty(x,cy+side*(half+2)):
+					put(x,cy+side*(half+2),palette[2] if (x+frame)%3 else palette[3])
+	# 剑穗：从剑首往后飘，随时间摆动
+	var sway: float=(sin(t*9.0)*.5+sin(t*5.3+1.0)*.5)*maxf(1,n*.04)*(.5+deformation)
+	var tassel: int=maxi(2,pommel)
+	for i in range(1,tassel+1):
+		put(pommel-i,cy+roundi(sway*float(i)/tassel),palette[2] if i<tassel else palette[3])
 
 func impact(p: float, style: int, fragments: int, seed: int) -> void:
 	image.fill(Color.TRANSPARENT)

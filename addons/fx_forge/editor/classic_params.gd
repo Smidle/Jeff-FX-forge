@@ -3,6 +3,7 @@ extends RefCounted
 const P := preload("../core/fx_params.gd")
 const Visibility := preload("classic_visibility.gd")
 const Layer := preload("../legacy/runtime/fx_layer.gd")
+const MissileParams := preload("missile_params.gd")
 const LABELS := {
 	"primary_color": "主色", "secondary_color": "辅色", "effect_scale": "整体大小", "playback_speed": "播放速度", "density": "密度", "brightness": "亮度", "seed": "随机种子", "duration": "持续时间", "looping": "持续发射",
 	"enabled": "启用图层", "decorative": "装饰层", "delay": "延迟", "color": "图层颜色", "secondary": "使用辅色", "use_palette_tint": "跟随配色", "palette_hue_shift": "保留色阶", "sort_priority": "排序优先级",
@@ -12,6 +13,7 @@ const LABELS := {
 	"path_start": "起点", "path_end": "终点", "strike_time": "闪击时间", "impact_enabled": "命中效果", "impact_radius": "命中半径", "impact_duration": "命中时长", "impact_sparks": "命中碎光", "pixel_resolution": "像素精度", "stroke_width": "线条宽度", "path_segments": "路径分段", "strand_count": "流光数量", "trail_length": "尾迹长度", "curvature": "弯曲", "path_jitter": "路径随机", "arc_branches": "电弧分叉", "redraw_fps": "绘制帧率",
 	"flame_height": "火焰高度", "flame_width": "火焰宽度", "flame_lean": "火焰倾斜", "flame_turbulence": "火焰扰动", "flame_speed": "火焰速度", "flame_core": "火核比例", "flame_tongues": "火舌数量", "flame_embers": "余烬数量", "skill_count": "图案数量", "skill_spread": "图案散布", "skill_turns": "旋转圈数", "skill_detail": "细节强度"
 }
+const LIBRARY_LABELS := {"material_mode": "边缘采样", "pattern_count": "造型数量", "pattern_detail": "纹理细节", "pattern_motion": "内部运动速度", "pattern_width": "造型宽度", "pattern_variation": "形态变化", "pattern_phase": "起始相位"}
 const BASIC := ["primary_color", "secondary_color", "effect_scale", "playback_speed", "density", "brightness", "seed", "duration", "looping"]
 const SIMPLE := ["enabled", "delay", "duration", "color", "size", "end_size", "opacity", "offset", "rotation_degrees", "fade_in", "fade_out"]
 const PARTICLE := ["count", "lifetime", "continuous", "explosiveness", "direction", "spread", "velocity_min", "velocity_max", "gravity", "emission_box", "local_space"]
@@ -30,6 +32,11 @@ static func allowed(r: Resource, global: bool, recipe: Resource = null) -> Array
 		var ids: Array = ["effect_scale", "playback_speed", "brightness"]
 		for l: Resource in r.layers:
 			if not l.enabled: continue
+			if l.pattern > 0 or l.kind == Layer.Kind.MISSILE:
+				if l.kind == Layer.Kind.MISSILE or l.uses_pattern_seed(): ids.append("seed")
+				if l.kind == Layer.Kind.MISSILE or l.use_palette_tint: ids.append_array(["primary_color", "secondary_color"])
+			if l.pattern > 0 and not l.library_ignored_parameters().has("pattern_count"):
+				ids.append("density")
 			if l.use_palette_tint:
 				ids.append("secondary_color" if l.secondary else "primary_color")
 				if l.kind == Layer.Kind.PROCEDURAL:
@@ -42,6 +49,14 @@ static func allowed(r: Resource, global: bool, recipe: Resource = null) -> Array
 				if not r.looping: ids.append("duration")
 		return ids
 	var ids: Array = ["enabled", "color", "opacity", "offset", "size", "aspect", "additive", "hard_edge", "sort_priority", "use_palette_tint", "facing"]
+	if r.material_mode != Layer.MaterialMode.LEGACY:
+		ids.append("material_mode")
+		if r.material_mode == Layer.MaterialMode.SMOOTH: ids.erase("hard_edge")
+	if r.kind == Layer.Kind.MISSILE:
+		return ["enabled", "delay", "opacity"]
+	if r.pattern > 0:
+		ids.append_array(["pattern_count", "pattern_detail", "pattern_motion", "pattern_width", "pattern_variation", "pattern_phase"])
+		if r.material_mode == Layer.MaterialMode.PIXEL: ids.append("pixel_resolution")
 	if r.use_palette_tint and r.kind != Layer.Kind.PROCEDURAL:
 		ids.append("secondary")
 		# Hue shifting is meaningful for authored coloured art only.
@@ -93,6 +108,8 @@ static func allowed(r: Resource, global: bool, recipe: Resource = null) -> Array
 		if r.kind != Layer.Kind.FIELD or r.field_motion not in [Layer.FieldMotion.RAIN, Layer.FieldMotion.RIPPLE]: ids.append("animation_fps")
 		if r.kind != Layer.Kind.FIELD and ((r.lifetime if r.kind == Layer.Kind.PARTICLES else r.duration) * r.animation_fps > r.atlas_frames + .01 or (r.kind == Layer.Kind.SHAPE and recipe != null and recipe.looping)):
 			ids.append("animation_loop")
+	for ignored: String in r.library_ignored_parameters():
+		ids.erase(ignored)
 	return ids
 
 const TIPS := {
@@ -109,7 +126,10 @@ const TIPS := {
 }
 
 static func group(id: String) -> String:
+	if id.begins_with("missile."): return MissileParams.group(id)
 	var base := id.get_slice(".", 0)
+	if base in ["pattern_count", "pattern_width"]: return "main"
+	if base in ["pattern_motion", "pattern_variation"]: return "motion"
 	return "main" if IMPORTANT.has(base) else "motion" if MOTION.has(base) else "space" if SPATIAL.has(base) else "advanced"
 
 static func defs(resource: Resource, advanced: bool, global: bool, recipe: Resource = null, defaults: Resource = null) -> Array:
@@ -117,11 +137,11 @@ static func defs(resource: Resource, advanced: bool, global: bool, recipe: Resou
 	var supported := allowed(resource, global, recipe)
 	for prop: Dictionary in resource.get_property_list():
 		var id: String = prop.name
-		if not LABELS.has(id) or not supported.has(id): continue
+		if not (LABELS.has(id) or LIBRARY_LABELS.has(id)) or not supported.has(id): continue
 		if not advanced and group(id) == "advanced": continue
 		var value: Variant = resource.get(id)
 		var initial: Variant = defaults.get(id) if defaults != null else value
-		var label: String = LABELS[id]
+		var label: String = LABELS.get(id, LIBRARY_LABELS.get(id, id))
 		if value is bool:
 			out.append(P.boolean(id, label, id, initial))
 		elif value is Color:
@@ -135,6 +155,11 @@ static func defs(resource: Resource, advanced: bool, global: bool, recipe: Resou
 				var minimum := 0.05 if id == "aspect" else 0.0 if id == "emission_box" else -limit
 				out.append(P.num(id + "." + axis, label + " " + axis.to_upper(), id, minimum, limit, initial[axis]))
 		elif value is int or value is float:
+			if id == "material_mode":
+				var material_def := P.choice(id, label, id, [[1, "像素 / 最近邻"], [2, "平滑 / 线性"]], "")
+				material_def.default = initial
+				out.append(material_def)
+				continue
 			if id == "facing":
 				var def := P.choice(id, label, id, [[0, "朝向镜头"], [1, "固定地面"], [2, "固定空间"]], "")
 				def.default = initial
@@ -156,11 +181,17 @@ static func defs(resource: Resource, advanced: bool, global: bool, recipe: Resou
 	for d: Dictionary in out:
 		var base: String = str(d.id).get_slice(".", 0)
 		d.tip = TIPS.get(base, "")
+		if not global and resource.pattern > 0:
+			var spec: Dictionary = Layer.pattern_parameter_specs(resource.pattern).get(base, {})
+			for key: String in spec:
+				d[key] = spec[key]
 		if base == "rotation_degrees": d.unit = "°"
 		if base == "spin": d.unit = "°/s"
 		if base == "end_size" and not global and resource.kind == Layer.Kind.PARTICLES:
 			d.label = "末端尺寸比例"
 			d.tip = "相对粒子初始尺寸的倍率，例如 0.5 表示缩小到一半。"
+	if not global and resource.kind == Layer.Kind.MISSILE:
+		out.append_array(MissileParams.defs(resource, defaults))
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var ra := _order(a.id)
 		var rb := _order(b.id)
@@ -168,6 +199,12 @@ static func defs(resource: Resource, advanced: bool, global: bool, recipe: Resou
 	return out
 
 static func _order(id: String) -> int:
+	if id.begins_with("missile."):
+		var field: String = id.trim_prefix("missile.").get_slice(".", 0)
+		if MissileParams.MAIN.has(field): return MissileParams.MAIN.find(field)
+		if MissileParams.MOTION.has(field): return 100 + MissileParams.MOTION.find(field)
+		if MissileParams.SPACE.has(field): return 300 + MissileParams.SPACE.find(field)
+		return 500 + MissileParams.ADVANCED.find(field)
 	var base := id.get_slice(".", 0)
 	if IMPORTANT.has(base): return IMPORTANT.find(base)
 	if MOTION.has(base): return 100 + MOTION.find(base)

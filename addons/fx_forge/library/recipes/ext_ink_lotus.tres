@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "程序造型与自然消散"
+size = 2.8
+end_size = 2.8
+duration = 2.0
+fade_in = 0.035
+fade_out = 0.25
+offset = Vector3(0, 0.82, 0)
+material_mode = 2
+pattern = 5
+hard_edge = false
+pattern_count = 5
+pattern_width = 0.5
+pattern_detail = 0.72
+
+[resource]
+script = ExtResource("1")
+id = "ext_ink_lotus"
+title = "墨荷清涟"
+title_en = "ink_lotus"
+category = "magic"
+description = "淡墨荷形与水纹缓慢开合，外缘涟漪逐层变细。"
+primary_color = Color(0.270588, 0.337255, 0.427451, 1)
+secondary_color = Color(0.721569, 0.776471, 0.752941, 1)
+duration = 2.0
+preview_time = 0.55
+looping = false
+seed = 42
+tags = PackedStringArray("environment", "ink", "procedural", "water")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

@@ -1,12 +1,12 @@
 @tool
 extends RefCounted
 ## 后期合成（每帧一个实例，在工作线程里使用）：
-##   各图层强度图 → 着色（色板 + 抖动 + 消散）→ 按顺序合成 → 清理孤立像素 → 描边 → 柔光 → 翻转 → 打包 RGBA8
+##   各图层强度图 → 着色（色板 + 抖动 + 消散）→ 按顺序合成 → 清理孤立像素 → 描边 → 柔光 → 叠加光 → 翻转 → 打包 RGBA8
 ## 合成结果放在成员数组里，各步骤都是成员方法：Packed 数组是值类型，传参后修改只会改到副本。
 
 const FxBuffer := preload("fx_buffer.gd")
 
-enum Dissolve { DITHER, SHRINK, DARKEN, FADE }
+enum Dissolve { DITHER, SHRINK, DARKEN, FADE, TRANSLUCENT }
 enum Outline { NONE, OUTER, INNER, SELECTIVE }
 
 var w: int
@@ -78,6 +78,7 @@ func run(parts: Array, s: Dictionary) -> Dictionary:
 			var rad := 1 + roundi(soft * 3.0)
 			_grow(rad * 2)
 			_glow(rad, soft, s["alpha_levels"], s["glow_rgb"])
+	_light(parts, float(s.get("light", 1.0)))
 	return _pack(s["flip_h"], s["flip_v"])
 
 
@@ -138,6 +139,11 @@ func _shade(part: Dictionary, s: Dictionary) -> void:
 				elif dmode == Dissolve.DARKEN:
 					vv -= 1.0 - ea
 					if vv < 0.0:
+						continue
+				elif dmode == Dissolve.TRANSLUCENT:
+					# 半透明：8 档透明度，档与档之间按 4×4 点阵过渡（烟雾边缘柔和地淡出，不会断成一圈硬边）
+					alpha = floorf(ea * 8.0 + bayer[yb | (x & 3)]) / 8.0
+					if alpha <= 0.0:
 						continue
 				else:
 					alpha = ceilf(ea * flevels) / flevels
@@ -387,6 +393,93 @@ func _glow(rad: int, soft: float, levels: int, gc: Color) -> void:
 			cr[i] = (cr[i] * oa + gr * keep) / na
 			cg[i] = (cg[i] * oa + gg * keep) / na
 			cb[i] = (cb[i] * oa + gb * keep) / na
+			ca[i] = na
+
+
+## 叠加光：各图层的光按自己色板上的光色位置取色、乘图层可见度和全局「光照强度」后相加，再加到画面上。
+## 不透明像素直接提亮；透明、半透明处按预乘相加，光比原有颜色亮的地方可见度随之提高。
+## 光的亮度分 16 档，档与档之间用 4×4 点阵过渡：不会出现一圈圈的色带，最暗处的过渡点也几乎看不出来。
+func _light(parts: Array, k: float) -> void:
+	if k <= 0.0:
+		return
+	var lit: Array = []
+	var lx0 := w
+	var ly0 := h
+	var lx1 := -1
+	var ly1 := -1
+	for part: Dictionary in parts:
+		var buf: FxBuffer = part["buf"]
+		if not buf.has_light() or float(part["fade"]) <= 0.0:
+			continue
+		lit.append(part)
+		lx0 = mini(lx0, buf.lx0)
+		ly0 = mini(ly0, buf.ly0)
+		lx1 = maxi(lx1, buf.lx1)
+		ly1 = maxi(ly1, buf.ly1)
+	if lit.is_empty():
+		return
+	var n := w * h
+	var sr := PackedFloat32Array()
+	sr.resize(n)
+	sr.fill(0.0)
+	var sg := sr.duplicate()
+	var sb := sr.duplicate()
+	for part: Dictionary in lit:
+		var buf: FxBuffer = part["buf"]
+		var ll := buf.l
+		var lt := buf.lt
+		var pr: PackedFloat32Array = part["r"]
+		var pg: PackedFloat32Array = part["g"]
+		var pb: PackedFloat32Array = part["b"]
+		var top := pr.size() - 1
+		var kk := k * float(part["fade"])
+		for y in range(buf.ly0, buf.ly1 + 1):
+			var row := y * w
+			for x in range(buf.lx0, buf.lx1 + 1):
+				var i := row + x
+				var li := ll[i]
+				if li <= 0.0:
+					continue
+				var pos := clampf(lt[i] / li, 0.0, 1.0) * float(top)
+				var j := int(pos)
+				var j2 := mini(j + 1, top)
+				var f := pos - float(j)
+				var e := li * kk
+				sr[i] += (pr[j] + (pr[j2] - pr[j]) * f) * e
+				sg[i] += (pg[j] + (pg[j2] - pg[j]) * f) * e
+				sb[i] += (pb[j] + (pb[j2] - pb[j]) * f) * e
+	bx0 = mini(bx0, lx0)
+	by0 = mini(by0, ly0)
+	bx1 = maxi(bx1, lx1)
+	by1 = maxi(by1, ly1)
+	for y in range(ly0, ly1 + 1):
+		var row := y * w
+		var yb := (y & 3) << 2
+		for x in range(lx0, lx1 + 1):
+			var i := row + x
+			var lr := sr[i]
+			var lg := sg[i]
+			var lb := sb[i]
+			var m := maxf(lr, maxf(lg, lb))
+			if m <= 0.0:
+				continue
+			var q := floorf(m * 16.0 + bayer[yb | (x & 3)]) / 16.0
+			if q <= 0.0:
+				continue
+			var sc := q / m
+			lr *= sc
+			lg *= sc
+			lb *= sc
+			var oa := ca[i]
+			if oa >= 1.0:
+				cr[i] = minf(cr[i] + lr, 1.0)
+				cg[i] = minf(cg[i] + lg, 1.0)
+				cb[i] = minf(cb[i] + lb, 1.0)
+				continue
+			var na := minf(1.0, maxf(oa, q))
+			cr[i] = minf((cr[i] * oa + lr) / na, 1.0)
+			cg[i] = minf((cg[i] * oa + lg) / na, 1.0)
+			cb[i] = minf((cb[i] * oa + lb) / na, 1.0)
 			ca[i] = na
 
 

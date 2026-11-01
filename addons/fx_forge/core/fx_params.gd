@@ -4,9 +4,10 @@ extends RefCounted
 ##   id / kind / label（中文）/ label_en / default / group / tip / advanced
 ##   数值类另有 min / max / step / unit / scale（true = 跟随整体缩放）
 ##   枚举类另有 options = [[id, 中文名], ...]，值存字符串 id
+##   文字类的值是一行字符串，最长 max_length 个字
 ## 界面、默认值、校验、预设迁移都从这张表派生。
 
-enum Kind { NUM, INT, BOOL, ENUM, COLOR, ANGLE, PALETTE, SLOT }
+enum Kind { NUM, INT, BOOL, ENUM, COLOR, ANGLE, PALETTE, SLOT, TEXT }
 
 const SLOT_OPTIONS := [["main", "主色板"], ["accent", "辅色板"], ["smoke", "烟尘色板"]]
 
@@ -34,6 +35,11 @@ static func color(id: String, label: String, label_en: String, default_v: Color,
 ## 角度（度），0 = 朝右，顺时针为正
 static func angle(id: String, label: String, label_en: String, default_v: float, opts: Dictionary = {}) -> Dictionary:
 	return _make(id, Kind.ANGLE, label, label_en, default_v, {"min": 0.0, "max": 360.0, "step": 1.0, "unit": "°"}, opts)
+
+
+## 一行文字（例如文字烟花要排的字）
+static func text(id: String, label: String, label_en: String, default_v: String, opts: Dictionary = {}) -> Dictionary:
+	return _make(id, Kind.TEXT, label, label_en, default_v, {"max_length": 24}, opts)
 
 
 ## 色板：值是内置色板 id（String）或自定义颜色（PackedColorArray，从暗到亮）
@@ -97,6 +103,10 @@ static func normalize_value(d: Dictionary, v: Variant) -> Variant:
 				return v
 			if t == TYPE_STRING and Color.html_is_valid(v):
 				return Color.html(v)
+			return d["default"]
+		Kind.TEXT:
+			if t == TYPE_STRING or t == TYPE_STRING_NAME:
+				return str(v).left(int(d["max_length"]))
 			return d["default"]
 		Kind.PALETTE:
 			if t == TYPE_PACKED_COLOR_ARRAY and (v as PackedColorArray).size() >= 2:

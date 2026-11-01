@@ -4,6 +4,8 @@ extends RefCounted
 ## 每个预设：{id, name, category, description, globals, layers: [{module, name, params, ……图层设置}]}
 
 const FxPresetUtil := preload("../core/fx_preset_util.gd")
+const Fireworks := preload("firework_presets.gd")
+const MissileHits := preload("missile_hit_presets.gd")
 
 
 ## 返回全新的预设实例数组（每次调用都是新对象，可以随便改）
@@ -22,6 +24,10 @@ static func find(preset_id: String) -> Resource:
 
 
 static func _defs() -> Array:
+	return _base_defs() + Fireworks.defs() + MissileHits.defs()
+
+
+static func _base_defs() -> Array:
 	return [
 		{
 			"id": "slash_basic", "name": "基础刀光", "category": "combat",
@@ -31,6 +37,36 @@ static func _defs() -> Array:
 			"layers": [{"module": "arc", "name": "刀光", "params": {
 				"radius": 26.0, "thickness": 10.0, "span": 200.0, "taper": 0.7, "crescent": 0.5,
 				"trail": 0.6, "sweep": 0.5, "easing": "out_cubic", "rim": 0.7, "edge_noise": 0.12}}],
+		},
+		{
+			"id": "slash_basic_v2", "name": "基础刀光·升级版", "category": "combat",
+			"description": "按 pixelfx 的做法升级的试验版：刀锋两帧扫完、命中停顿，刀光从白热亮边冷却变暗并留下点状轨迹；刀锋带光，刀尖闪一下，迸出火星和碎屑。",
+			"globals": {"canvas_w": 96, "canvas_h": 80, "frames": 16, "fps": 30, "origin_x": 0.42, "origin_y": 0.5,
+				"hold_frame": 3, "hold_mult": 2.0, "outline": "none",
+				"theme": "steel", "palette_main": "steel", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "arc", "name": "回声刀光", "t_start": 0.039, "t_end": 0.656, "params": {
+					"radius": 24.0, "thickness": 4.0, "span": 190.0, "taper": 0.8, "crescent": 0.6, "squash": 0.85,
+					"trail": 0.5, "sweep": 0.25, "easing": "out_expo", "rim": 0.5, "edge_noise": 0.05, "cool": 0.9}},
+				{"module": "arc", "name": "主刀光", "t_end": 0.787, "params": {
+					"radius": 31.0, "thickness": 11.0, "span": 205.0, "taper": 0.7, "crescent": 0.6, "squash": 0.85,
+					"trail": 0.6, "sweep": 0.2, "easing": "out_expo", "rim": 0.9, "edge_noise": 0.08,
+					"cool": 0.8, "glow": 0.6}},
+				{"module": "particles", "name": "削屑", "palette_slot": "main", "t_start": 0.105, "t_end": 1.0, "params": {
+					"count": 14, "shape": "square", "size": 1.0, "size_end": 1.0, "emit_shape": "ring", "emit_radius": 29.0,
+					"spread": 180.0, "speed": 40.0, "speed_random": 0.6, "gravity": -10.0, "drag": 3.0, "emit_time": 0.15,
+					"life": 0.6, "life_random": 0.4, "cool": 0.5, "flicker": 0.2}},
+				{"module": "particles", "name": "火星", "offset_x": 5.0, "offset_y": 22.0, "angle_offset": 175.0,
+						"t_start": 0.079, "t_end": 0.656, "params": {
+					"count": 10, "shape": "streak", "size": 1.5, "size_end": 0.8, "spread": 60.0, "speed": 110.0,
+					"speed_random": 0.6, "gravity": 90.0, "drag": 3.0, "emit_time": 0.05, "life": 0.9, "life_random": 0.45,
+					"cool": 0.6, "streak_len": 0.8, "glow": 0.35, "glow_size": 4.0}},
+				{"module": "burst", "name": "刀尖闪光", "palette_slot": "main", "outline": false, "offset_x": 5.0, "offset_y": 22.0,
+						"t_start": 0.066, "t_end": 0.459, "params": {
+					"rays": 4, "length": 9.0, "width": 1.5, "length_random": 0.0, "angle_random": 0.0, "alternate": 0.5,
+					"inner": 0.0, "flash": "star", "flash_size": 6.0, "flash_time": 0.5, "ray_time": 0.6, "detach": 0.0,
+					"light": 0.6, "light_size": 20.0}},
+			],
 		},
 		{
 			"id": "slash_fire", "name": "火焰斩", "category": "combat",
@@ -213,6 +249,66 @@ static func _defs() -> Array:
 			],
 		},
 		{
+			"id": "explosion_small_v2", "name": "小型爆炸·升级版", "category": "element",
+			"description": "按 pixelfx 的做法升级的试验版：白闪和冲击环之后，火团边升边冷却，火星落地弹跳，碎石翻滚着落定；半透明的烟柱和贴地尘浪慢慢散去，地上留下焦痕。原点在地面。",
+			"globals": {"canvas_w": 128, "canvas_h": 112, "frames": 40, "fps": 20, "origin_x": 0.5, "origin_y": 0.84,
+				"alpha_levels": 4, "theme": "fire", "palette_main": "fire", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "blob", "name": "焦痕", "palette_slot": "smoke", "outline": false, "t_start": 0.04, "t_end": 0.8, "params": {
+					"puffs": 3, "radius": 13.0, "spread": 6.0, "start": 0.3, "squash": 0.22, "noise": 0.5, "rise": 0.0,
+					"boil": 0.0, "heat": 0.3, "cool": 0.3, "core": 0.2, "burn": 0.6, "expand_time": 0.08, "stagger": 0.0}},
+				{"module": "particles", "name": "地面尘浪", "palette_slot": "smoke", "follow_dir": false, "angle_offset": 352.0,
+						"offset_y": -3.0, "dissolve": "translucent", "t_start": 0.02, "params": {
+					"count": 12, "shape": "smoke", "size": 7.0, "size_end": 2.0, "size_random": 0.4, "mirror": true,
+					"spread": 16.0, "speed": 210.0, "speed_random": 0.5, "gravity": -12.0, "drag": 5.0, "emit_time": 0.05,
+					"life": 0.55, "life_random": 0.3, "bright": 1.0, "cool": 0.3, "opacity": 0.55, "thin": 0.7, "soft_edge": 0.8}},
+				{"module": "particles", "name": "烟柱", "palette_slot": "smoke", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -12.0, "dissolve": "translucent", "t_start": 0.06, "params": {
+					"count": 22, "shape": "smoke", "size": 9.0, "size_end": 2.2, "size_random": 0.4, "emit_shape": "circle",
+					"emit_radius": 7.0, "spread": 50.0, "speed": 70.0, "speed_random": 0.5, "gravity": -200.0, "drag": 1.2,
+					"sway": 3.0, "emit_mode": "stream", "emit_time": 0.35, "life": 0.7, "life_random": 0.25,
+					"bright": 1.0, "cool": 0.45, "opacity": 0.75, "thin": 0.8, "soft_edge": 0.7}},
+				{"module": "ring", "name": "地面冲击环", "palette_slot": "main", "outline": false, "follow_dir": false,
+						"t_end": 0.16, "params": {
+					"radius": 56.0, "width": 2.0, "thin": 0.8, "start": 0.15, "squash": 0.25, "easing": "out_expo"}},
+				{"module": "ring", "name": "空中冲击环", "palette_slot": "accent", "outline": false, "follow_dir": false,
+						"offset_y": -12.0, "t_end": 0.1, "params": {
+					"radius": 30.0, "width": 2.0, "thin": 0.9, "start": 0.3, "easing": "out_expo"}},
+				{"module": "blob", "name": "火球", "offset_y": -12.0, "t_end": 0.2, "params": {
+					"puffs": 4, "radius": 12.0, "spread": 6.0, "start": 0.3, "noise": 0.3, "expand_time": 0.2, "rise": 6.0,
+					"heat": 1.0, "cool": 0.7, "core": 0.6, "burn": 0.85}},
+				{"module": "particles", "name": "火团", "palette_slot": "main", "outline": true, "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -12.0, "t_end": 0.6, "params": {
+					"count": 26, "shape": "puff", "size": 12.0, "size_end": 0.5, "size_random": 0.5, "emit_shape": "circle",
+					"emit_radius": 6.0, "spread": 360.0, "speed": 120.0, "speed_random": 0.6, "gravity": -90.0, "drag": 5.0,
+					"emit_time": 0.04, "life": 0.5, "life_random": 0.45, "cool": 0.7, "glow": 0.25, "glow_size": 10.0}},
+				{"module": "particles", "name": "碎石", "palette_slot": "smoke", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "offset_y": -3.0, "t_end": 0.75, "params": {
+					"count": 12, "shape": "shard", "size": 3.5, "size_end": 0.9, "size_random": 0.5, "spread": 120.0,
+					"speed": 260.0, "speed_random": 0.5, "gravity": 1500.0, "drag": 0.6, "use_floor": true, "floor_y": 3.0,
+					"bounce": 0.3, "emit_time": 0.03, "life": 0.85, "life_random": 0.2, "bright": 0.95, "cool": 0.2, "spin": 3.0}},
+				{"module": "particles", "name": "火星", "follow_dir": false, "angle_offset": 270.0, "offset_y": -12.0,
+						"t_end": 0.5, "params": {
+					"count": 36, "shape": "streak", "size": 2.0, "size_end": 0.7, "spread": 360.0, "speed": 260.0,
+					"speed_random": 0.6, "gravity": 700.0, "drag": 3.0, "use_floor": true, "floor_y": 12.0, "bounce": 0.35,
+					"emit_time": 0.03, "life": 0.6, "life_random": 0.5, "cool": 0.7, "streak_len": 0.5,
+					"glow": 0.5, "glow_size": 5.0}},
+				{"module": "particles", "name": "余烬", "follow_dir": false, "angle_offset": 270.0, "offset_y": -12.0,
+						"t_start": 0.05, "params": {
+					"count": 18, "shape": "square", "size": 1.2, "size_end": 1.0, "spread": 160.0, "speed": 70.0,
+					"speed_random": 0.6, "gravity": -50.0, "drag": 2.0, "sway": 3.0, "emit_mode": "stream", "emit_time": 0.3,
+					"life": 0.6, "life_random": 0.4, "cool": 0.7, "flicker": 0.3, "glow": 0.35, "glow_size": 4.0}},
+				{"module": "burst", "name": "白闪", "palette_slot": "accent", "outline": false, "follow_dir": false,
+						"offset_y": -12.0, "t_end": 0.12, "params": {
+					"rays": 8, "length": 18.0, "width": 2.0, "length_random": 0.5, "inner": 0.3, "ray_time": 0.35,
+					"detach": 0.8, "flash": "disc", "flash_size": 14.0, "flash_time": 0.45, "light": 0.8, "light_size": 36.0}},
+				{"module": "light", "name": "火光", "offset_y": -12.0, "t_end": 0.45, "params": {
+					"radius": 44.0, "strength": 0.45, "tone": 0.55}},
+				{"module": "light", "name": "地面光斑", "t_start": 0.02, "t_end": 0.7, "params": {
+					"radius": 40.0, "squash": 0.3, "strength": 0.4, "tone": 0.55, "flicker": 0.3}},
+			],
+		},
+		{
 			"id": "explosion_big", "name": "大型爆炸", "category": "element",
 			"description": "火药桶、大招的大爆炸：冲击波 + 翻滚的火球 + 飞溅的碎片 + 延迟升起的浓烟。",
 			"globals": {"canvas_w": 120, "canvas_h": 120, "frames": 14, "fps": 15, "origin_x": 0.5, "origin_y": 0.5,
@@ -230,6 +326,85 @@ static func _defs() -> Array:
 						"follow_dir": false, "angle_offset": 270.0, "params": {
 					"count": 16, "shape": "shard", "size": 3.0, "size_end": 0.8, "spread": 260.0, "speed": 150.0,
 					"speed_random": 0.6, "gravity": 120.0, "drag": 1.6, "life": 0.75, "cool": 0.2, "spin": 1.5}},
+			],
+		},
+		{
+			"id": "explosion_big_v2", "name": "大型爆炸·升级版", "category": "element",
+			"description": "按 pixelfx 的做法升级的试验版，三拍：白色穹顶般的闪光和地面冲击环；翻滚的火团一路往上爬，顶成一朵蘑菇云；重石块翻滚落地，地上留下零星残火和焦痕，烟柱慢慢散去。原点在地面。",
+			"globals": {"canvas_w": 160, "canvas_h": 168, "frames": 60, "fps": 20, "origin_x": 0.5, "origin_y": 0.86,
+				"alpha_levels": 4, "theme": "fire", "palette_main": "fire", "palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "blob", "name": "焦痕", "palette_slot": "smoke", "outline": false, "t_start": 0.03, "t_end": 0.75, "params": {
+					"puffs": 4, "radius": 19.0, "spread": 10.0, "start": 0.3, "squash": 0.2, "noise": 0.5, "rise": 0.0,
+					"boil": 0.0, "heat": 0.3, "cool": 0.3, "core": 0.2, "burn": 0.6, "expand_time": 0.06, "stagger": 0.0}},
+				{"module": "particles", "name": "地面尘浪", "palette_slot": "smoke", "follow_dir": false, "angle_offset": 352.0,
+						"offset_y": -4.0, "dissolve": "translucent", "t_start": 0.02, "params": {
+					"count": 16, "shape": "smoke", "size": 11.0, "size_end": 2.2, "size_random": 0.4, "mirror": true,
+					"spread": 14.0, "speed": 320.0, "speed_random": 0.5, "gravity": -12.0, "drag": 5.0, "emit_time": 0.05,
+					"life": 0.5, "life_random": 0.3, "bright": 1.0, "cool": 0.3, "opacity": 0.6, "thin": 0.7, "soft_edge": 0.8}},
+				{"module": "particles", "name": "烟柱", "palette_slot": "smoke", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -8.0, "dissolve": "translucent", "t_start": 0.06, "params": {
+					"count": 34, "shape": "smoke", "size": 12.0, "size_end": 2.0, "size_random": 0.4, "emit_shape": "circle",
+					"emit_radius": 6.0, "spread": 14.0, "speed": 300.0, "speed_random": 0.7, "gravity": -60.0, "drag": 3.0,
+					"sway": 3.0, "emit_mode": "stream", "emit_time": 0.45, "life": 0.6, "life_random": 0.3,
+					"bright": 1.0, "cool": 0.45, "opacity": 0.75, "thin": 0.7, "soft_edge": 0.7}},
+				{"module": "particles", "name": "蘑菇云顶", "palette_slot": "smoke", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -86.0, "dissolve": "translucent", "t_start": 0.2, "params": {
+					"count": 20, "shape": "smoke", "size": 15.0, "size_end": 1.9, "size_random": 0.4, "squash": 0.55,
+					"emit_shape": "circle", "emit_radius": 12.0, "spread": 360.0, "speed": 45.0, "speed_random": 0.5,
+					"gravity": -25.0, "drag": 2.0, "sway": 2.0, "emit_mode": "stream", "emit_time": 0.3, "life": 0.75,
+					"life_random": 0.2, "bright": 1.0, "cool": 0.4, "opacity": 0.85, "thin": 0.7, "soft_edge": 0.6}},
+				{"module": "ring", "name": "地面冲击环", "palette_slot": "main", "outline": false, "follow_dir": false,
+						"t_end": 0.2, "params": {
+					"radius": 78.0, "width": 3.0, "thin": 0.8, "start": 0.1, "squash": 0.24, "rings": 2, "ring_delay": 0.3,
+					"easing": "out_expo"}},
+				{"module": "ring", "name": "穹顶冲击", "palette_slot": "accent", "outline": false, "follow_dir": false,
+						"offset_y": -26.0, "t_end": 0.08, "params": {
+					"radius": 46.0, "width": 2.0, "thin": 0.9, "start": 0.3, "easing": "out_expo"}},
+				{"module": "blob", "name": "火球", "offset_y": -18.0, "t_end": 0.13, "params": {
+					"puffs": 5, "radius": 20.0, "spread": 9.0, "start": 0.3, "noise": 0.3, "expand_time": 0.2, "rise": 12.0,
+					"heat": 1.0, "cool": 0.45, "core": 0.6, "burn": 0.95}},
+				{"module": "particles", "name": "火团", "palette_slot": "main", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "offset_y": -18.0, "dissolve": "shrink", "t_end": 0.35, "params": {
+					"count": 30, "shape": "puff", "size": 15.0, "size_end": 0.5, "size_random": 0.5, "emit_shape": "circle",
+					"emit_radius": 8.0, "spread": 360.0, "speed": 160.0, "speed_random": 0.6, "gravity": -120.0, "drag": 5.0,
+					"emit_time": 0.04, "life": 0.5, "life_random": 0.45, "cool": 0.7, "glow": 0.25, "glow_size": 12.0}},
+				{"module": "particles", "name": "升腾火柱", "palette_slot": "main", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "offset_y": -10.0, "dissolve": "shrink", "t_start": 0.03, "t_end": 0.55, "params": {
+					"count": 28, "shape": "puff", "size": 14.0, "size_end": 0.6, "size_random": 0.4, "emit_shape": "circle",
+					"emit_radius": 6.0, "spread": 22.0, "speed": 270.0, "speed_random": 0.35, "gravity": -60.0, "drag": 3.0,
+					"emit_mode": "stream", "emit_time": 0.3, "life": 0.5, "life_random": 0.3, "cool": 0.75,
+					"glow": 0.25, "glow_size": 12.0}},
+				{"module": "particles", "name": "重石块", "palette_slot": "smoke", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "offset_y": -4.0, "t_end": 0.6, "params": {
+					"count": 14, "shape": "shard", "size": 5.0, "size_end": 0.9, "size_random": 0.5, "spread": 120.0,
+					"speed": 380.0, "speed_random": 0.5, "gravity": 1500.0, "drag": 0.6, "use_floor": true, "floor_y": 4.0,
+					"bounce": 0.3, "emit_time": 0.03, "life": 0.85, "life_random": 0.2, "bright": 0.95, "cool": 0.2, "spin": 3.0}},
+				{"module": "particles", "name": "火星", "follow_dir": false, "angle_offset": 270.0, "offset_y": -18.0,
+						"t_end": 0.4, "params": {
+					"count": 50, "shape": "streak", "size": 2.0, "size_end": 0.7, "spread": 360.0, "speed": 330.0,
+					"speed_random": 0.6, "gravity": 700.0, "drag": 2.6, "use_floor": true, "floor_y": 18.0, "bounce": 0.35,
+					"emit_time": 0.03, "life": 0.6, "life_random": 0.5, "cool": 0.7, "streak_len": 0.5,
+					"glow": 0.5, "glow_size": 5.0}},
+				{"module": "particles", "name": "残火", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -1.0, "t_start": 0.18, "t_end": 0.9, "params": {
+					"count": 46, "shape": "puff", "size": 4.0, "size_end": 0.5, "size_random": 0.5, "emit_shape": "line",
+					"emit_radius": 52.0, "spread": 20.0, "speed": 25.0, "speed_random": 0.5, "gravity": -40.0, "drag": 1.0,
+					"emit_mode": "stream", "emit_time": 0.85, "life": 0.12, "life_random": 0.4, "cool": 0.8, "flicker": 0.2,
+					"glow": 0.3, "glow_size": 5.0}},
+				{"module": "particles", "name": "余烬", "follow_dir": false, "angle_offset": 270.0, "offset_y": -30.0,
+						"t_start": 0.05, "params": {
+					"count": 30, "shape": "square", "size": 1.2, "size_end": 1.0, "spread": 160.0, "speed": 90.0,
+					"speed_random": 0.6, "gravity": -60.0, "drag": 2.0, "sway": 4.0, "emit_mode": "stream", "emit_time": 0.5,
+					"life": 0.45, "life_random": 0.4, "cool": 0.7, "flicker": 0.3, "glow": 0.35, "glow_size": 4.0}},
+				{"module": "burst", "name": "白闪", "palette_slot": "accent", "outline": false, "follow_dir": false,
+						"offset_y": -14.0, "t_end": 0.07, "params": {
+					"rays": 10, "length": 26.0, "width": 2.5, "length_random": 0.5, "inner": 0.3, "ray_time": 0.4,
+					"detach": 0.8, "flash": "disc", "flash_size": 24.0, "flash_time": 0.5, "light": 1.0, "light_size": 60.0}},
+				{"module": "light", "name": "火光", "offset_y": -40.0, "t_end": 0.45, "params": {
+					"radius": 64.0, "strength": 0.5, "tone": 0.55, "flicker": 0.2}},
+				{"module": "light", "name": "地面光斑", "t_start": 0.02, "t_end": 0.85, "params": {
+					"radius": 64.0, "squash": 0.3, "strength": 0.45, "tone": 0.55, "flicker": 0.35}},
 			],
 		},
 		{
@@ -326,6 +501,59 @@ static func _defs() -> Array:
 				{"module": "particles", "name": "冰晶", "palette_slot": "main", "outline": true, "params": {
 					"count": 12, "shape": "shard", "size": 5.0, "size_end": 0.6, "speed": 110.0, "speed_random": 0.5,
 					"gravity": 50.0, "drag": 1.8, "life": 0.9, "cool": 0.25, "spin": 1.5}},
+			],
+		},
+		{
+			"id": "ice_burst_v2", "name": "冰晶爆裂·升级版", "category": "element",
+			"description": "按 pixelfx 的做法升级的试验版：白闪和八道冰芒之后，冰晶碎片翻滚着落地弹跳、停住，冰碴四溅；地面荡开碎裂的霜环，半透明的寒气贴地滚开，雪屑飘落，碎冰上闪着光点。",
+			"globals": {"canvas_w": 120, "canvas_h": 100, "frames": 32, "fps": 20, "origin_x": 0.5, "origin_y": 0.48,
+				"alpha_levels": 4, "outline": "selective",
+				"theme": "ice", "palette_main": "ice", "palette_accent": "water", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "light", "name": "地面冷光", "offset_y": 21.0, "t_end": 0.8, "params": {
+					"radius": 40.0, "squash": 0.3, "strength": 0.4, "tone": 0.6}},
+				{"module": "ring", "name": "霜环", "palette_slot": "accent", "outline": false, "follow_dir": false, "offset_y": 21.0,
+						"t_start": 0.02, "t_end": 0.3, "params": {
+					"radius": 42.0, "width": 2.0, "thin": 0.6, "start": 0.1, "squash": 0.28, "segments": 18, "gap": 0.45,
+					"wobble": 0.4, "easing": "out_expo", "rim": 0.3}},
+				{"module": "particles", "name": "贴地寒气", "palette_slot": "main", "follow_dir": false, "angle_offset": 352.0,
+						"offset_y": 18.0, "dissolve": "translucent", "t_start": 0.04, "params": {
+					"count": 14, "shape": "puff", "size": 7.0, "size_end": 2.0, "size_random": 0.4, "mirror": true,
+					"spread": 20.0, "speed": 170.0, "speed_random": 0.5, "gravity": -15.0, "drag": 5.0, "emit_time": 0.06,
+					"life": 0.6, "life_random": 0.3, "bright": 1.0, "cool": 0.0, "opacity": 0.4, "thin": 0.6, "soft_edge": 0.9,
+					"glow": 0.2, "glow_size": 7.0, "glow_tone": 0.85}},
+				{"module": "particles", "name": "悬浮寒气", "palette_slot": "main", "follow_dir": false, "dissolve": "translucent",
+						"t_start": 0.06, "params": {
+					"count": 4, "shape": "puff", "size": 9.0, "size_end": 1.8, "size_random": 0.4, "emit_shape": "circle",
+					"emit_radius": 10.0, "spread": 360.0, "speed": 45.0, "gravity": -20.0, "drag": 3.0, "emit_time": 0.08,
+					"life": 0.5, "life_random": 0.3, "bright": 1.0, "cool": 0.0, "opacity": 0.35, "thin": 0.6, "soft_edge": 0.9,
+					"glow": 0.2, "glow_size": 8.0, "glow_tone": 0.85}},
+				{"module": "particles", "name": "冰晶碎片", "palette_slot": "main", "outline": true, "follow_dir": false,
+						"angle_offset": 270.0, "t_end": 0.75, "params": {
+					"count": 22, "shape": "shard", "size": 3.5, "size_end": 0.7, "size_random": 0.6, "spread": 300.0,
+					"speed": 180.0, "speed_random": 0.6, "gravity": 1300.0, "drag": 0.8, "use_floor": true, "floor_y": 21.0,
+					"bounce": 0.35, "emit_time": 0.02, "life": 0.75, "life_random": 0.3, "cool": 0.35, "spin": 4.0}},
+				{"module": "particles", "name": "冰碴", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0,
+						"t_end": 0.7, "params": {
+					"count": 16, "shape": "square", "size": 1.5, "size_end": 1.0, "spread": 360.0, "speed": 220.0,
+					"speed_random": 0.6, "gravity": 1300.0, "drag": 0.8, "use_floor": true, "floor_y": 21.0, "bounce": 0.4,
+					"emit_time": 0.02, "life": 0.6, "life_random": 0.4, "cool": 0.3}},
+				{"module": "particles", "name": "雪屑", "palette_slot": "main", "follow_dir": false, "t_start": 0.05, "params": {
+					"count": 14, "shape": "pixel", "size": 1.0, "size_end": 1.0, "spread": 360.0, "speed": 70.0,
+					"speed_random": 0.6, "gravity": 60.0, "drag": 3.0, "sway": 4.0, "emit_time": 0.05, "life": 0.8,
+					"life_random": 0.3, "cool": 0.1, "flicker": 0.15}},
+				{"module": "particles", "name": "闪点", "palette_slot": "main", "follow_dir": false, "offset_y": 15.0,
+						"t_start": 0.3, "params": {
+					"count": 7, "shape": "star", "size": 3.0, "size_end": 0.5, "emit_shape": "box", "emit_radius": 30.0,
+					"emit_height": 10.0, "spread": 360.0, "speed": 5.0, "emit_mode": "stream", "emit_time": 0.5,
+					"life": 0.25, "cool": 0.0, "glow": 0.4, "glow_size": 6.0}},
+				{"module": "burst", "name": "白闪冰芒", "palette_slot": "main", "outline": false, "follow_dir": false,
+						"t_end": 0.25, "params": {
+					"rays": 8, "length": 30.0, "width": 1.5, "length_random": 0.3, "angle_random": 0.1, "alternate": 0.6,
+					"inner": 0.15, "ray_time": 0.55, "detach": 0.6, "flash": "diamond", "flash_size": 12.0,
+					"flash_time": 0.35, "light": 0.8, "light_size": 46.0}},
+				{"module": "light", "name": "冷光", "t_end": 0.5, "params": {
+					"radius": 44.0, "strength": 0.4, "tone": 0.65}},
 			],
 		},
 		# ---------------------------------------------------------------- 魔法与状态
@@ -520,6 +748,42 @@ static func _defs() -> Array:
 				{"module": "burst", "name": "爆闪", "palette_slot": "accent", "follow_dir": false, "outline": false, "t_end": 0.3, "params": {
 					"rays": 8, "length": 16.0, "width": 3.0, "ray_time": 0.8, "flash": "star", "flash_size": 12.0,
 					"flash_time": 0.6}},
+			],
+		},
+		{
+			"id": "smoke_bomb_v2", "name": "烟雾弹·升级版", "category": "env",
+			"description": "按 pixelfx 的做法升级的试验版：啪地一闪，浓烟贴着地面向两侧喷涌，翻滚着鼓成一团把人整个遮住，再慢慢变稀、散成缕缕轻烟。烟是真正的半透明，带紫灰色调。原点在地面。",
+			"globals": {"canvas_w": 128, "canvas_h": 112, "frames": 56, "fps": 20, "origin_x": 0.5, "origin_y": 0.82,
+				"alpha_levels": 4, "outline": "none", "theme": "custom",
+				"palette_main": PackedColorArray([Color("1c1828"), Color("2f2a42"), Color("4a4463"), Color("6c6688"), Color("958fb0"), Color("c6c1da")]),
+				"palette_accent": "spark", "palette_smoke": "smoke"},
+			"layers": [
+				{"module": "particles", "name": "贴地喷涌", "palette_slot": "main", "follow_dir": false, "angle_offset": 352.0,
+						"offset_y": -4.0, "dissolve": "translucent", "params": {
+					"count": 18, "shape": "smoke", "size": 11.0, "size_end": 2.3, "size_random": 0.4, "mirror": true,
+					"spread": 24.0, "speed": 230.0, "speed_random": 0.5, "gravity": -10.0, "drag": 4.0, "emit_time": 0.12,
+					"life": 0.7, "life_random": 0.3, "bright": 1.0, "cool": 0.35, "opacity": 1.0, "thin": 0.5, "soft_edge": 0.4}},
+				{"module": "particles", "name": "翻滚浓烟", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -16.0, "dissolve": "translucent", "t_start": 0.02, "params": {
+					"count": 22, "shape": "smoke", "size": 16.0, "size_end": 2.1, "size_random": 0.4, "squash": 0.75,
+					"emit_shape": "circle", "emit_radius": 10.0, "spread": 360.0, "speed": 95.0, "speed_random": 0.5,
+					"gravity": -35.0, "drag": 3.0, "sway": 2.0, "emit_time": 0.15, "life": 0.8, "life_random": 0.2,
+					"bright": 1.0, "cool": 0.35, "opacity": 1.0, "thin": 0.5, "soft_edge": 0.3}},
+				{"module": "particles", "name": "缕缕轻烟", "palette_slot": "main", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -28.0, "dissolve": "translucent", "t_start": 0.3, "params": {
+					"count": 20, "shape": "puff", "size": 10.0, "size_end": 2.0, "size_random": 0.5, "emit_shape": "box",
+					"emit_radius": 26.0, "emit_height": 20.0, "spread": 40.0, "speed": 40.0, "speed_random": 0.5,
+					"gravity": -40.0, "drag": 1.5, "sway": 4.0, "emit_mode": "stream", "emit_time": 0.45, "life": 0.5,
+					"life_random": 0.3, "bright": 1.0, "cool": 0.2, "opacity": 0.7, "thin": 0.9, "soft_edge": 0.8}},
+				{"module": "particles", "name": "引信火星", "palette_slot": "accent", "follow_dir": false, "angle_offset": 270.0,
+						"offset_y": -3.0, "t_end": 0.25, "params": {
+					"count": 14, "shape": "streak", "size": 1.5, "size_end": 0.7, "spread": 160.0, "speed": 260.0,
+					"speed_random": 0.6, "gravity": 1200.0, "drag": 2.0, "use_floor": true, "floor_y": 3.0, "bounce": 0.35,
+					"emit_time": 0.03, "life": 0.5, "life_random": 0.4, "cool": 0.7, "streak_len": 0.6, "glow": 0.4, "glow_size": 4.0}},
+				{"module": "burst", "name": "爆闪", "palette_slot": "accent", "outline": false, "follow_dir": false,
+						"offset_y": -6.0, "t_end": 0.08, "params": {
+					"rays": 8, "length": 16.0, "width": 2.0, "length_random": 0.4, "inner": 0.2, "ray_time": 0.5, "detach": 0.7,
+					"flash": "star", "flash_size": 12.0, "flash_time": 0.5, "light": 0.8, "light_size": 36.0}},
 			],
 		},
 		{

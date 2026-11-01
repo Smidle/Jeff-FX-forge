@@ -4,6 +4,9 @@ extends RefCounted
 ##   v：亮度 0~1（决定用色板里哪一阶颜色）
 ##   a：可见度 0~1（0 = 空；小于 1 时按「消散方式」处理）
 ## 写像素一律取较大值（max 混合）。
+## 另有一层可选的叠加光（l / lt，第一次调用 glow() 时才分配）：
+##   l：光的强度，多次叠加直接相加；lt：强度加权的光色位置（0 = 色板最暗，1 = 最亮），后期用 lt / l 取色。
+##   光不参与描边和清理，在后期最后一步加到颜色上（见 FxPost._light）。
 ##
 ## 性能约定：模块自己写大循环时
 ##   var bv := buf.v
@@ -23,6 +26,13 @@ var x0: int
 var y0: int
 var x1: int
 var y1: int
+var l: PackedFloat32Array
+var lt: PackedFloat32Array
+## 光的包围盒；lx1 < lx0 表示没有光
+var lx0: int
+var ly0: int
+var lx1: int
+var ly1: int
 
 
 func _init(width: int, height: int) -> void:
@@ -36,10 +46,56 @@ func _init(width: int, height: int) -> void:
 	y0 = h
 	x1 = -1
 	y1 = -1
+	lx0 = w
+	ly0 = h
+	lx1 = -1
+	ly1 = -1
 
 
 func is_empty() -> bool:
 	return x1 < x0
+
+
+func has_light() -> bool:
+	return lx1 >= lx0
+
+
+## 圆形光晕：中心强度 k，到半径 r 处衰减为 0（(1 - d)² 衰减）；tone 是光色在色板上的位置；
+## squash < 1 时上下压扁成椭圆（地面上的一摊光）
+func glow(cx: float, cy: float, r: float, k: float, tone: float = 0.6, squash: float = 1.0) -> void:
+	if r < 1.0 or k <= 0.004:
+		return
+	var ry := r * squash
+	var xa := maxi(floori(cx - r), 0)
+	var xb := mini(ceili(cx + r), w - 1)
+	var ya := maxi(floori(cy - ry), 0)
+	var yb := mini(ceili(cy + ry), h - 1)
+	if xa > xb or ya > yb:
+		return
+	if l.is_empty():
+		l.resize(w * h)
+		l.fill(0.0)
+		lt.resize(w * h)
+		lt.fill(0.0)
+	var inv_r := 1.0 / r
+	var inv_ry := 1.0 / maxf(ry, 0.5)
+	for y in range(ya, yb + 1):
+		var dy := (float(y) + 0.5 - cy) * inv_ry
+		var dy2 := dy * dy
+		var row := y * w
+		for x in range(xa, xb + 1):
+			var dx := (float(x) + 0.5 - cx) * inv_r
+			var d2 := dx * dx + dy2
+			if d2 >= 1.0:
+				continue
+			var f := 1.0 - sqrt(d2)
+			var add := f * f * k
+			l[row + x] += add
+			lt[row + x] += add * tone
+	lx0 = mini(lx0, xa)
+	ly0 = mini(ly0, ya)
+	lx1 = maxi(lx1, xb)
+	ly1 = maxi(ly1, yb)
 
 
 func release() -> void:
@@ -105,8 +161,9 @@ func disc(cx: float, cy: float, r: float, v_center: float, v_edge: float, alpha:
 		touch(xa, ya, xb, yb)
 
 
-## 烟团：光从左上方照来的实心圆（尘土、烟雾粒子）。越靠上越亮，底部暗一半，几个叠在一起就是一团云
-func puff(cx: float, cy: float, r: float, val: float, alpha: float) -> void:
+## 烟团：光从左上方照来的实心圆（尘土、烟雾粒子）。越靠上越亮，底部暗一半，几个叠在一起就是一团云。
+## soft > 0 时可见度从中心往边缘降低（配合图层「淡出」消散，边缘是更透明的一层）
+func puff(cx: float, cy: float, r: float, val: float, alpha: float, soft: float = 0.0) -> void:
 	if r <= 0.0:
 		return
 	var xa := maxi(floori(cx - r), 0)
@@ -124,15 +181,17 @@ func puff(cx: float, cy: float, r: float, val: float, alpha: float) -> void:
 		var row := y * w
 		for x in range(xa, xb + 1):
 			var dx := float(x) + 0.5 - cx
-			if dx * dx + dy2 > r2:
+			var d2 := dx * dx + dy2
+			if d2 > r2:
 				continue
 			var lit := clampf(0.5 - (dx * 0.3 + dy * 0.7) * k, 0.0, 1.0)
 			var val2 := val * (0.5 + 0.5 * lit)
+			var al := alpha if soft <= 0.0 else alpha * (1.0 - soft * d2 / r2)
 			var i := row + x
 			if val2 > v[i]:
 				v[i] = val2
-			if alpha > a[i]:
-				a[i] = alpha
+			if al > a[i]:
+				a[i] = al
 			drew = true
 	if drew:
 		touch(xa, ya, xb, yb)

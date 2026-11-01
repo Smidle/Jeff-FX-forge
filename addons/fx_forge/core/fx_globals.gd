@@ -18,7 +18,7 @@ const GROUP_NAMES := {
 	"detail": "细节",
 }
 
-const DISSOLVE_OPTIONS := [["dither", "抖动溶解"], ["shrink", "收缩"], ["darken", "变暗"], ["fade", "淡出"]]
+const DISSOLVE_OPTIONS := [["dither", "抖动溶解"], ["shrink", "收缩"], ["darken", "变暗"], ["fade", "淡出"], ["translucent", "半透明"]]
 const OUTLINE_OPTIONS := [["none", "无"], ["outer", "外描边"], ["inner", "内描边"], ["selective", "选择性描边"]]
 
 
@@ -27,7 +27,7 @@ static func global_defs() -> Array:
 		P.integer("canvas_w", "画布宽", "Canvas Width", 8, 512, 64, {group = "canvas", unit = "px", tip = "单帧图片的宽度（像素）"}),
 		P.integer("canvas_h", "画布高", "Canvas Height", 8, 512, 64, {group = "canvas", unit = "px", tip = "单帧图片的高度（像素）"}),
 		P.num("size_scale", "整体缩放", "Overall Scale", 0.25, 4.0, 1.0, {group = "canvas", step = 0.05, unit = "×", tip = "画布和所有尺寸参数一起放大缩小，描边宽度保持不变"}),
-		P.integer("frames", "帧数", "Frames", 2, 64, 12, {group = "canvas", tip = "动画一共多少帧"}),
+		P.integer("frames", "帧数", "Frames", 2, 128, 12, {group = "canvas", tip = "动画一共多少帧"}),
 		P.integer("fps", "帧率", "FPS", 1, 60, 15, {group = "canvas", unit = "帧/秒", tip = "每秒播放多少帧；帧数 ÷ 帧率 = 动画时长"}),
 		P.boolean("loop", "循环", "Loop", false, {group = "canvas", tip = "循环特效（火焰、光环）最后一帧无缝接回第一帧；一次性特效（斩击、爆炸）播完消失"}),
 		P.integer("hold_frame", "打击停顿帧", "Hit-Stop Frame", 0, 64, 0, {group = "canvas", tip = "让第几帧多停一会儿（从 1 数起；0 = 不停顿）。命中的瞬间停一下，打击感更强"}),
@@ -43,6 +43,7 @@ static func global_defs() -> Array:
 		P.palette("palette_accent", "辅色板", "Accent Palette", "spark", {group = "look", tip = "火星、闪光等点缀用色"}),
 		P.palette("palette_smoke", "烟尘色板", "Smoke Palette", "smoke", {group = "look", tip = "烟雾、尘土用色"}),
 		P.num("soft", "柔光强度", "Soft Glow", 0.0, 1.0, 0.0, {group = "look", step = 0.05, tip = "0 = 纯硬边像素；调高后外圈出现分级半透明的发光"}),
+		P.num("light", "光照强度", "Light", 0.0, 2.0, 1.0, {group = "look", step = 0.05, tip = "图层发出的叠加光（火星光晕、闪光照明、地面光斑）整体乘以这个倍数；0 = 关掉所有光。没有发光图层的特效不受影响"}),
 		P.integer("alpha_levels", "透明度层级", "Alpha Levels", 1, 4, 3, {group = "look", advanced = true, tip = "半透明像素允许几种透明度（柔光与淡出时生效）"}),
 		P.choice("dither", "色阶抖动", "Dither", [["none", "无"], ["bayer2", "2×2 点阵"], ["bayer4", "4×4 点阵"]], "none", {group = "look", tip = "相邻两种颜色之间用点阵过渡"}),
 		P.num("dither_strength", "抖动强度", "Dither Strength", 0.0, 1.0, 0.6, {group = "look", advanced = true, hide_if = ["dither", "none"]}),
@@ -68,5 +69,5 @@ static func layer_defs() -> Array:
 		P.num("offset_x", "位置偏移 X", "Offset X", -256.0, 256.0, 0.0, {group = "layer", unit = "px", scale = true, step = 0.5}),
 		P.num("offset_y", "位置偏移 Y", "Offset Y", -256.0, 256.0, 0.0, {group = "layer", unit = "px", scale = true, step = 0.5}),
 		P.boolean("outline", "参与描边", "Outlined", true, {group = "layer"}),
-		P.choice("dissolve", "消散方式", "Dissolve", [["global", "跟随全局"]] + DISSOLVE_OPTIONS, "global", {group = "layer", tip = "这个图层变淡时的表现，可以和其他图层不同（例如烟雾用淡出）"}),
+		P.choice("dissolve", "消散方式", "Dissolve", [["global", "跟随全局"]] + DISSOLVE_OPTIONS, "global", {group = "layer", tip = "这个图层变淡时的表现，可以和其他图层不同（例如烟雾用淡出）。半透明：8 档透明度、档间点阵过渡，烟、蒸汽、雾的柔和边缘用它"}),
 	]

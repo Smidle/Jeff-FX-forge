@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "墨竹困阵 · 程序造型"
+size = 2.7
+end_size = 2.7
+duration = 2.1
+fade_in = 0.035
+fade_out = 0.300
+offset = Vector3(0, 0.77, 0)
+aspect = Vector2(1.0, 1.0)
+material_mode = 2
+pattern = 11
+hard_edge = false
+pixel_resolution = 96
+pattern_count = 5
+pattern_detail = 0.68
+pattern_width = 0.58
+pattern_variation = 0.72
+
+[resource]
+script = ExtResource("1")
+id = "ext_ink_brush_prison"
+title = "墨竹困阵"
+title_en = "ink_brush_prison"
+category = "wuxia"
+description = "竖直笔画围成疏朗牢笼，底部淡墨先聚后散。"
+primary_color = Color(0.670588, 0.776471, 0.741176, 1)
+secondary_color = Color(0.192157, 0.270588, 0.294118, 1)
+duration = 2.1
+preview_time = 0.81
+looping = false
+seed = 42
+tags = PackedStringArray("area", "restraint", "ink", "procedural", "wood")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

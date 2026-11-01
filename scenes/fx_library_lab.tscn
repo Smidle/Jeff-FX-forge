@@ -1,0 +1,153 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/fx_library_lab.gd" id="1_script"]
+
+[sub_resource type="Environment" id="Environment_lab"]
+background_mode = 1
+background_color = Color(0.0392, 0.0745, 0.1255, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.64, 0.77, 0.88, 1)
+ambient_light_energy = 0.65
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.073, 0.12, 0.16, 1)
+roughness = 0.95
+
+[sub_resource type="PlaneMesh" id="Mesh_floor"]
+material = SubResource("Material_floor")
+size = Vector2(16, 12)
+
+[sub_resource type="BoxShape3D" id="Shape_floor"]
+size = Vector3(16, 0.2, 12)
+
+[sub_resource type="StandardMaterial3D" id="Material_actor"]
+albedo_color = Color(0.25, 0.79, 0.73, 1)
+roughness = 0.8
+
+[sub_resource type="CapsuleMesh" id="Mesh_actor"]
+material = SubResource("Material_actor")
+radius = 0.24
+height = 1.7
+
+[sub_resource type="CapsuleShape3D" id="Shape_actor"]
+radius = 0.24
+height = 1.7
+
+[sub_resource type="StandardMaterial3D" id="Material_target"]
+albedo_color = Color(0.92, 0.63, 0.27, 1)
+roughness = 0.85
+
+[sub_resource type="CapsuleMesh" id="Mesh_target"]
+material = SubResource("Material_target")
+radius = 0.24
+height = 1.7
+
+[sub_resource type="StandardMaterial3D" id="Material_wall"]
+albedo_color = Color(0.21, 0.29, 0.36, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="Mesh_wall"]
+material = SubResource("Material_wall")
+size = Vector3(2.8, 1.8, 0.25)
+
+[sub_resource type="BoxShape3D" id="Shape_trigger"]
+size = Vector3(2.2, 2.5, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="Material_trigger"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.2, 0.68, 0.79, 0.22)
+
+[sub_resource type="CylinderMesh" id="Mesh_trigger"]
+material = SubResource("Material_trigger")
+top_radius = 1.1
+bottom_radius = 1.1
+height = 0.015
+radial_segments = 48
+
+[sub_resource type="StandardMaterial3D" id="Material_origin"]
+shading_mode = 0
+albedo_color = Color(0.7, 0.84, 0.9, 1)
+
+[sub_resource type="TorusMesh" id="Mesh_origin"]
+material = SubResource("Material_origin")
+inner_radius = 0.17
+outer_radius = 0.2
+
+[node name="JeffFXLibraryLab" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lab")
+
+[node name="Moonlight" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-55, -25, 0)
+light_color = Color(0.72, 0.84, 1, 1)
+light_energy = 1.0
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("Mesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+position = Vector3(0, -0.1, 0)
+shape = SubResource("Shape_floor")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(3.8, 6.7, 8.8)
+rotation_degrees = Vector3(-35, 22, 0)
+projection = 1
+current = true
+size = 7.7
+fov = 45.0
+
+[node name="Actor" type="CharacterBody3D" parent="."]
+position = Vector3(-2.2, 0, 0.8)
+collision_layer = 2
+collision_mask = 1
+
+[node name="Body" type="MeshInstance3D" parent="Actor"]
+position = Vector3(0, 0.85, 0)
+mesh = SubResource("Mesh_actor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Actor"]
+position = Vector3(0, 0.85, 0)
+shape = SubResource("Shape_actor")
+
+[node name="FootAnchor" type="Marker3D" parent="Actor"]
+
+[node name="HandAnchor" type="Marker3D" parent="Actor"]
+position = Vector3(0.3, 1.15, 0)
+
+[node name="Target" type="Node3D" parent="."]
+position = Vector3(2.2, 0, -0.4)
+
+[node name="Body" type="MeshInstance3D" parent="Target"]
+position = Vector3(0, 0.85, 0)
+mesh = SubResource("Mesh_target")
+
+[node name="Occluder" type="MeshInstance3D" parent="."]
+visible = false
+position = Vector3(0.2, 0.9, 0.8)
+mesh = SubResource("Mesh_wall")
+
+[node name="Effects" type="Node3D" parent="."]
+
+[node name="OriginRing" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, 0)
+mesh = SubResource("Mesh_origin")
+
+[node name="TriggerZone" type="Area3D" parent="."]
+position = Vector3(0, 0, -2.4)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerZone"]
+position = Vector3(0, 1.25, 0)
+shape = SubResource("Shape_trigger")
+
+[node name="Zone" type="MeshInstance3D" parent="TriggerZone"]
+position = Vector3(0, 0.01, 0)
+mesh = SubResource("Mesh_trigger")

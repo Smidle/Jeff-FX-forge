@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_missile_config.gd" id="3"]
+
+[sub_resource type="Resource" id="Missile"]
+script = ExtResource("3")
+head_glow = 1.0
+halo = 0.35
+trail_style = 7
+trail_width = 0.08
+motes = 0
+trail_particles = 10
+particle_life = 0.4
+afterimages = 3
+impact_style = 9
+impact_duration = 0.6
+
+[sub_resource type="Resource" id="Layer"]
+script = ExtResource("2")
+label = "御剑流光 · 程序飞弹"
+kind = 4
+missile = SubResource("Missile")
+texture_name = ""
+
+[resource]
+script = ExtResource("1")
+id = "missile_spirit_sword"
+title = "御剑流光"
+title_en = "Spirit Sword Missile"
+category = "xianxia"
+description = "钢色像素剑身配金色剑格，剑穗随飞行摆动、高光沿剑身扫过，剑身带一圈冷光；流光尾迹带三道剑形残影，沿途闪出十字剑光。命中「剑光星爆」：一道长光和十字星芒，光弧飞出，火花朝前喷。支持定时到达、移动目标与自定义三维路径。"
+tags = PackedStringArray("飞弹", "远程", "程序化")
+duration = 0.0
+preview_time = 0.45
+primary_color = Color(0.69, 0.91, 0.85, 1)
+secondary_color = Color(0.18, 0.48, 0.53, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer")])

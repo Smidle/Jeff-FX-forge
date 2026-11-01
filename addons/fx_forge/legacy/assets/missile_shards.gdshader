@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_never;
+#include "res://addons/fx_forge/legacy/assets/missile_view.gdshaderinc"
 uniform vec4 light_color : source_color;
 uniform vec4 hot_color : source_color;
 uniform vec3 direction=vec3(1.,0.,0.);
@@ -18,11 +19,13 @@ void vertex() {
  float birth=dissolve_duration*mix(.14,.82,u);
  phase=clamp((age-birth)/max(.001,tail_duration-birth),0.,1.);
  alive=step(birth,age)*(1.-step(tail_duration,age));
- vec3 forward=normalize(direction);
+ // 碎光沿弹头分布：用与弹头相同的镜头补偿轴，保证和画出来的弹身对齐
+ vec3 axis=missile_view_axis(direction,MODEL_MATRIX[3].xyz,INV_VIEW_MATRIX,PROJECTION_MATRIX,CAMERA_POSITION_WORLD);
+ vec3 forward=normalize(axis);
  vec3 side=cross(INV_VIEW_MATRIX[2].xyz,forward);
  if (length(side)<.001) { side=INV_VIEW_MATRIX[1].xyz; }
  side=normalize(side)*(INSTANCE_CUSTOM.z>.5 ? 1. : -1.);
- vec3 origin=MODEL_MATRIX[3].xyz-forward*(.84*(1.-u))*size;
+ vec3 origin=MODEL_MATRIX[3].xyz-axis*(.84*(1.-u))*size;
  origin+=forward*(.04+.16*noise)*size*phase;
  origin+=side*(.06+.16*noise)*size*phase;
  origin+=vec3(0.,1.,0.)*.045*size*phase*phase;

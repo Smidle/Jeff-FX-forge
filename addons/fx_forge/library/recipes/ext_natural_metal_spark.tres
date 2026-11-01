@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "金属擦火 · 程序造型"
+size = 2.4
+end_size = 2.4
+duration = 0.85
+fade_in = 0.035
+fade_out = 0.170
+offset = Vector3(0, 0.9, 0)
+aspect = Vector2(1.3, 1.0)
+material_mode = 2
+pattern = 12
+hard_edge = false
+pixel_resolution = 96
+pattern_count = 13
+pattern_detail = 0.68
+pattern_width = 0.58
+pattern_variation = 0.55
+
+[resource]
+script = ExtResource("1")
+id = "ext_natural_metal_spark"
+title = "金属擦火"
+title_en = "natural_metal_spark"
+category = "magic"
+description = "少量高亮火星在窄角度飞出，冷却时转暗红并缩短。"
+primary_color = Color(1.000000, 0.901961, 0.674510, 1)
+secondary_color = Color(0.698039, 0.356863, 0.180392, 1)
+duration = 0.85
+preview_time = 0.29
+looping = false
+seed = 42
+tags = PackedStringArray("impact", "material_hit", "natural_realistic", "procedural", "fire")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

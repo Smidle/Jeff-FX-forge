@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "程序造型与自然消散"
+size = 3.0
+end_size = 3.0
+duration = 1.8
+fade_in = 0.035
+fade_out = 0.25
+offset = Vector3(0, 0.04, 0)
+material_mode = 2
+pattern = 3
+hard_edge = false
+pattern_count = 5
+pattern_width = 0.52
+facing = 1
+
+[resource]
+script = ExtResource("1")
+id = "ext_painted_flame_sigil"
+title = "炎纹绽放"
+title_en = "painted_flame_sigil"
+category = "magic"
+description = "地面火符先聚亮，再以弧形焰瓣向周围打开。"
+primary_color = Color(1.0, 0.607843, 0.34902, 1)
+secondary_color = Color(0.66, 0.16, 0.09, 1)
+duration = 1.8
+preview_time = 0.55
+looping = false
+seed = 42
+tags = PackedStringArray("area", "painted_smooth", "procedural", "fire")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

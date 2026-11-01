@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "灵光护壳 · 程序造型"
+size = 2.7
+end_size = 2.7
+duration = 2.4
+fade_in = 0.035
+fade_out = 0.300
+offset = Vector3(0, 0.8, 0)
+aspect = Vector2(1.0, 1.0)
+material_mode = 2
+pattern = 9
+hard_edge = false
+pixel_resolution = 96
+pattern_count = 3
+pattern_detail = 0.68
+pattern_width = 0.35
+pattern_variation = 0.55
+
+[resource]
+script = ExtResource("1")
+id = "ext_painted_aegis_shell"
+title = "灵光护壳"
+title_en = "painted_aegis_shell"
+category = "magic"
+description = "薄亮弧面环抱主体，稀疏流线让护罩内部仍然可见。"
+primary_color = Color(0.937255, 0.850980, 0.545098, 1)
+secondary_color = Color(0.392157, 0.541176, 0.658824, 1)
+duration = 2.4
+preview_time = 0.75
+looping = true
+seed = 42
+tags = PackedStringArray("status", "shield", "painted_smooth", "procedural", "light")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

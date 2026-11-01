@@ -24,10 +24,13 @@ const FxJob := preload("../core/fx_job.gd")
 const FxRegistry := preload("../core/fx_registry.gd")
 const FxModule := preload("../modules/fx_module.gd")
 const Builtin := preload("../presets/builtin_presets.gd")
+const Catalog := preload("../presets/library_catalog.gd")
 const ExportDialog := preload("export_dialog.gd")
 const PaletteEditor := preload("palette_editor.gd")
 const FxExport := preload("../export/fx_export.gd")
 const FxExporter := preload("../export/fx_exporter.gd")
+const MissilePath := preload("../legacy/runtime/fx_missile_path.gd")
+const MissileConfig := preload("../legacy/runtime/fx_missile_config.gd")
 
 ## 一次性特效循环预览时，播完后停顿多久再重播（秒）
 const LOOP_GAP := 0.35
@@ -88,6 +91,15 @@ var _gap := 0.0
 var _last_full_ms := 0.0
 var _dragging := false
 var _last_job: FxJob = null
+## 像素特效的预览方式：false = 2D 画布，true = 3D 场景（HD-2D：像素贴图放进三维世界）
+var _view_3d := false
+var _view_option: OptionButton
+## 只对 2D 画布有用的预览工具（缩放、背景、网格、锚点、参考图），3D 场景时隐藏
+var _canvas_tools: HBoxContainer
+var _canvas_size := Vector2i(64, 64)
+var _canvas_origin := Vector2(32, 32)
+## 3D 场景只在换了预设后第一次渲染完时自动取景，调参数时镜头不乱跳
+var _needs_fit := true
 
 
 func _init() -> void:
@@ -123,6 +135,9 @@ func _ready() -> void:
 	_classic_stage = ClassicStage.new()
 	_classic_stage.visible = false
 	center.add_child(_classic_stage)
+	_classic_stage.path_committed.connect(_on_missile_path_committed)
+	_classic_stage.convert_requested.connect(_convert_missile_curve)
+	_classic_stage.place_changed.connect(func() -> void: _show_frame())
 	_timeline = Timeline.new()
 	center.add_child(_timeline)
 	center.add_child(_make_status_bar())
@@ -257,9 +272,22 @@ func _make_toolbar() -> Control:
 
 func _make_preview_bar() -> Control:
 	var bar := HBoxContainer.new()
+	_view_option = OptionButton.new()
+	_view_option.add_item(I18n.T("2D 画布"))
+	_view_option.add_item(I18n.T("3D 场景"))
+	_view_option.tooltip_text = I18n.T("3D 场景：把像素特效当作面向镜头的贴图放进三维世界，和参考角色同一比例，HD-2D 游戏里就是这样显示的。pixelfx 升级版和烟花默认用 3D 场景")
+	_view_option.item_selected.connect(func(i: int) -> void:
+		_view_3d = i == 1
+		if not _prefers_3d():
+			_meta_set("pixel_view_3d", _view_3d)
+		_apply_view())
+	bar.add_child(_view_option)
+	var tools := HBoxContainer.new()
+	bar.add_child(tools)
+	_canvas_tools = tools
 	var zl := Label.new()
 	zl.text = I18n.T("缩放")
-	bar.add_child(zl)
+	tools.add_child(zl)
 	_zoom_option = OptionButton.new()
 	for z: int in ZOOMS:
 		_zoom_option.add_item(I18n.T("自适应") if z == 0 else "%d×" % z)
@@ -270,20 +298,20 @@ func _make_preview_bar() -> Control:
 			_stage.reset_view()
 		else:
 			_stage.set_zoom(ZOOMS[i]))
-	bar.add_child(_zoom_option)
+	tools.add_child(_zoom_option)
 
 	var bl := Label.new()
 	bl.text = I18n.T("背景")
-	bar.add_child(bl)
+	tools.add_child(bl)
 	var bg := OptionButton.new()
 	for t: String in [I18n.T("棋盘格"), I18n.T("深色"), I18n.T("浅色"), I18n.T("自定义")]:
 		bg.add_item(t)
-	bar.add_child(bg)
+	tools.add_child(bg)
 	_bg_color = ColorPickerButton.new()
 	_bg_color.custom_minimum_size.x = 36 * EditorInterface.get_editor_scale()
 	_bg_color.color = _meta_get("bg_color", Color(0.32, 0.42, 0.36))
 	_bg_color.edit_alpha = false
-	bar.add_child(_bg_color)
+	tools.add_child(_bg_color)
 	var bg_mode: int = _meta_get("bg_mode", 0)
 	bg.select(bg_mode)
 	_bg_color.visible = bg_mode == PreviewStage.Bg.CUSTOM
@@ -305,7 +333,7 @@ func _make_preview_bar() -> Control:
 		_stage.show_grid = on
 		_meta_set("show_grid", on)
 		_stage.queue_redraw())
-	bar.add_child(grid)
+	tools.add_child(grid)
 	var pivot := CheckBox.new()
 	pivot.text = I18n.T("锚点")
 	pivot.tooltip_text = I18n.T("红色十字 = 特效原点（导出后就是场景的定位点）")
@@ -314,14 +342,14 @@ func _make_preview_bar() -> Control:
 		_stage.show_pivot = on
 		_meta_set("show_pivot", on)
 		_stage.queue_redraw())
-	bar.add_child(pivot)
+	tools.add_child(pivot)
 
 	var ref := Button.new()
 	ref.text = I18n.T("参考图…")
 	ref.icon = _icon(&"Image")
 	ref.tooltip_text = I18n.T("放一张角色图片在特效后面对比大小（右键拖动可以移动）")
 	ref.pressed.connect(func() -> void: _ref_dialog.popup_centered_ratio(0.6))
-	bar.add_child(ref)
+	tools.add_child(ref)
 	_ref_clear = Button.new()
 	_ref_clear.text = I18n.T("移除参考图")
 	_ref_clear.visible = false
@@ -329,7 +357,7 @@ func _make_preview_bar() -> Control:
 		_stage.reference = null
 		_ref_clear.visible = false
 		_stage.queue_redraw())
-	bar.add_child(_ref_clear)
+	tools.add_child(_ref_clear)
 
 	# 预览设置在舞台创建后再套用
 	_apply_stage_prefs.call_deferred(bg_mode, grid.button_pressed, pivot.button_pressed)
@@ -609,9 +637,11 @@ func _on_loaded() -> void:
 	_classic_stage.clear_effect()
 	_classic_refresh_pending = false
 	_dragging = false
-	_stage.visible = not _is_classic()
-	_preview_bar.visible = not _is_classic()
-	_classic_stage.visible = _is_classic()
+	# pixelfx 升级版和烟花默认在 3D 场景里看；其他像素特效沿用上次的选择
+	_view_3d = _prefers_3d() or bool(_meta_get("pixel_view_3d", false))
+	_view_option.select(1 if _view_3d else 0)
+	_needs_fit = true
+	_apply_view()
 	_refresh_seed_action()
 	_warning.hide()
 	_fit_button.hide()
@@ -659,6 +689,10 @@ func _on_changed(scope: String) -> void:
 func _on_value_edited(scope: String, layer: int, id: String, value: Variant, phase: int) -> void:
 	if _is_classic():
 		if phase != 3:
+			if scope == "classic_layer" and id == "missile.path_mode" and int(value) == MissileConfig.PathMode.CUSTOM and session.get_value(scope, layer, "missile.custom_curve") == null:
+				# 第一次选自定义曲线：从当前路径生成可编辑曲线，和切换模式合成一步撤销
+				_convert_missile_curve()
+				return
 			session.set_value(scope, layer, id, value, phase == 2)
 		return
 	if phase == 3:
@@ -744,6 +778,11 @@ func _on_rendered(job: RefCounted, full: bool, ms: float) -> void:
 		_textures.clear()
 		for img: Image in _images:
 			_textures.append(ImageTexture.create_from_image(img))
+		_canvas_size = Vector2i(j.w, j.h)
+		_canvas_origin = j.origin
+		if _view_3d and _needs_fit:
+			_needs_fit = false
+			_classic_stage.fit_pixel(_canvas_size, _canvas_origin, _origin_on_ground())
 		_stage.set_canvas(Vector2i(j.w, j.h), j.origin)
 		_timeline.set_frames(_textures)
 		if _frame >= _textures.size():
@@ -836,10 +875,45 @@ func _show_frame(blank: bool = false) -> void:
 		return
 	if _textures.is_empty():
 		_stage.set_frame(null)
+		if _view_3d:
+			_classic_stage.set_pixel_frame(null, _canvas_size, _canvas_origin, true)
 		return
 	_frame = clampi(_frame, 0, _textures.size() - 1)
 	_stage.set_frame(_textures[_frame], blank)
+	if _view_3d:
+		_classic_stage.set_pixel_frame(null if blank else _textures[_frame], _canvas_size, _canvas_origin, _origin_on_ground())
 	_timeline.set_current(-1 if blank else _frame, _textures.size(), _playing)
+
+
+## 默认用 3D 场景预览的像素特效：pixelfx 升级版和烟花系（HD-2D 游戏里它们都放在三维场景中）
+func _prefers_3d() -> bool:
+	if session.preset == null:
+		return false
+	var metadata: Dictionary = session.preset.library_metadata
+	return Catalog.maker_of(metadata) == "pixelfx" or Catalog.school_for(metadata) == "fireworks"
+
+
+## 2D 画布 / 3D 场景切换：三维舞台平时给 Codex 三维配方用，像素特效选 3D 场景时它进入像素模式
+func _apply_view() -> void:
+	var classic := _is_classic()
+	var three_d := _view_3d and not classic
+	_preview_bar.visible = not classic
+	_canvas_tools.visible = not three_d
+	_stage.visible = not classic and not three_d
+	_classic_stage.visible = classic or three_d
+	if three_d:
+		_classic_stage.enter_pixel_mode()
+		if not _textures.is_empty():
+			_classic_stage.fit_pixel(_canvas_size, _canvas_origin, _origin_on_ground())
+	else:
+		_classic_stage.exit_pixel_mode()
+	if not classic:
+		_show_frame()
+
+
+## 自动放置：原点画在画布下部（爆炸、尘土、烟雾弹、篝火）当作贴地，其余（刀光、命中、冰晶爆裂）在身体高度
+func _origin_on_ground() -> bool:
+	return float(session.get_value("global", -1, "origin_y")) >= 0.7
 
 
 func _toggle_play() -> void:
@@ -1197,3 +1271,27 @@ func _refresh_seed_action() -> void:
 	if _is_classic():
 		for d: Dictionary in preload("classic_params.gd").defs(session.preset.legacy_recipe, true, true, session.preset.legacy_recipe):
 			if d.id == "seed": _reseed_button.visible = true
+
+
+
+# ---------------------------------------------------------------- 飞弹路径编辑
+
+## 预览里拖动起点、终点或曲线节点：一次完整拖动记一步撤销
+func _on_missile_path_committed(property: String, value: Variant) -> void:
+	if not _is_classic():
+		return
+	var index := ClassicStage.missile_layer(session.preset.legacy_recipe)
+	if index >= 0:
+		session.set_value("classic_layer", index, "missile." + property, value)
+
+
+## 把当前路径（直线、抛物线、螺旋……）转成可拖动的自定义曲线
+func _convert_missile_curve() -> void:
+	if not _is_classic():
+		return
+	var recipe: Resource = session.preset.legacy_recipe
+	var index := ClassicStage.missile_layer(recipe)
+	if index < 0:
+		return
+	var c: Resource = recipe.layers[index].missile
+	session.set_values("classic_layer", index, {"missile.custom_curve": MissilePath.editable(c, int(recipe.seed)), "missile.path_mode": MissileConfig.PathMode.CUSTOM})

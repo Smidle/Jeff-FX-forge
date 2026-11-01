@@ -1,0 +1,3485 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "classic_ext_pixel_frost_edge",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_frost_edge.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_frost_edge.png",
+      "display_name": "霜刃掠影",
+      "description": "细窄霜刃切出前缘亮线，短尾与冰屑在收招后分离消散。",
+      "usage": "combat",
+      "subtype": "slash",
+      "style": "fine_pixel",
+      "theme": "wuxia",
+      "elements": [
+        "ice"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.632462+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/binary-parameters-017.json",
+              "sha256": "4ba8b076a079a27e6b2c54ddbea8574320309fd23f83ed05cc1df4e0aa08e9fe"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "9e6d784193aab91075455132651d9c6a4b6415722d3be7680255f3baf7e911e8",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_pixel_frost_edge/animation.json",
+            "sha256": "8bac131cfb5e89b7746ab58c8077590b041c3c94fd5b3a67b880f668d230c125"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_pixel_frost_edge/0006.png",
+        "thumbnail_sha256": "9aa9b11fbe6b9ab85c84e260677e6d19653c9259b59d6da5a869b117fdc83999",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_pixel_spirit_spring",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_spirit_spring.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_spirit_spring.png",
+      "display_name": "灵泉回生",
+      "description": "细小灵光从脚下泉环升起，中心空间为角色保留。",
+      "usage": "status",
+      "subtype": "healing",
+      "style": "fine_pixel",
+      "theme": "xianxia",
+      "elements": [
+        "water"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "0bf53cf1acde5c7888e1aed062afe62147cc7983a4cd61c0debb1f3dbfe4868b",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_pixel_spirit_spring/animation.json",
+            "sha256": "fa3da686ffd2ab6ac4ae8f1d722efc52d84ac8f8b5a689689d9a5f8a9ff2820f"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_pixel_spirit_spring/0018.png",
+        "thumbnail_sha256": "5f392f769c3a55481c987655665c7bb1e222c74f42fb1e345369b53028e32162",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_retro_charge_laser",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_charge_laser.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_charge_laser.png",
+      "display_name": "复古蓄能光束",
+      "description": "分段亮格汇聚后发射清楚的直线光束，末段逐格回收。",
+      "usage": "combat",
+      "subtype": "beam",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "arcane"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "625c353556decb04871d9562d04f9d14cc9b1713e09ab9501b860698522bc1f7",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_retro_charge_laser/animation.json",
+            "sha256": "df24f9e785ce9aa3b30dc188950a0b93975b35c9459ef38c382704f7a1dd3d8b"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_retro_charge_laser/0019.png",
+        "thumbnail_sha256": "e8eb87a8d14a6d8998e4152df9f9096bc69db02f11c75899b383fa871f58294b",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_retro_shield_crack",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_shield_crack.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_shield_crack.png",
+      "display_name": "复古碎盾",
+      "description": "盾面先出现几何裂纹，再拆成独立方块向外脱落。",
+      "usage": "impact",
+      "subtype": "shield_break",
+      "style": "retro_pixel",
+      "theme": "fantasy",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.632462+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/binary-parameters-017.json",
+              "sha256": "4ba8b076a079a27e6b2c54ddbea8574320309fd23f83ed05cc1df4e0aa08e9fe"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "e7986c394fdbd531127be8454a01f4503fa39d6135cc70efec752e27f0ea6709",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_retro_shield_crack/animation.json",
+            "sha256": "25701d198e0ffd2b438c418a5ca6629c9123ee70253e78489a74ede096aff4ca"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_retro_shield_crack/0007.png",
+        "thumbnail_sha256": "70ab6ec354e4cc4b257a389b3d08f3de13ea4090fae1230e12c57c5d0a1aa4b1",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_painted_moon_blade",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_moon_blade.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_moon_blade.png",
+      "display_name": "月华刃",
+      "description": "弯月般薄刃以宽窄变化划出柔和流光，收尾沿切向拉开。",
+      "usage": "combat",
+      "subtype": "slash",
+      "style": "painted_smooth",
+      "theme": "xianxia",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "aca23ed90fa2ac34ff09adf7c16fb7c5884c86ba6168f5ba9da94b72596ee13d",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_painted_moon_blade/animation.json",
+            "sha256": "760ed1dbc1a7c2f87d4d822f5c41fe0ec893b1cade131c1e20b6274ded312e08"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_painted_moon_blade/0006.png",
+        "thumbnail_sha256": "ff5a48e95edf51297fd6560a7a9f7616c34b6be9bd612d22ef136e3d51fb20f0",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_painted_flame_sigil",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_flame_sigil.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_flame_sigil.png",
+      "display_name": "炎纹绽放",
+      "description": "地面火符先聚亮，再以弧形焰瓣向周围打开。",
+      "usage": "area",
+      "subtype": "explosion",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "fire"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "08ee1430e6a792e8c5e92332162b440d113acbed9da8b298333218e7da1f1754",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_painted_flame_sigil/animation.json",
+            "sha256": "15babe6f4105ef13b211a5e4079d7c4426c76081b35a89d98b9611946be470ca"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_painted_flame_sigil/0024.png",
+        "thumbnail_sha256": "13550379193faeee9cd83cb84246c2655a74340472306168df6bb007cc1d50de",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_toon_cloud_burst",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_cloud_burst.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_cloud_burst.png",
+      "display_name": "云团爆开",
+      "description": "圆润云瓣错时向外弹出，中心亮花迅速让位给残烟。",
+      "usage": "area",
+      "subtype": "explosion",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "wind"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "aa43ed93714c12fe4446e4138ec709e05c9e464486b0931c7cf74bb5901ae8b5",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_toon_cloud_burst/animation.json",
+            "sha256": "c9d9f45f7706d1b7a2e41e2cfb6aab59fafd5f5805d4e4fac21940fa607f64d8"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_toon_cloud_burst/0006.png",
+        "thumbnail_sha256": "8c87b4f757ffbbf0b1c955c19d09f0f4ecf3af12e0cb9b2847db102c50a2dd4d",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_toon_star_bounce",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_star_bounce.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_star_bounce.png",
+      "display_name": "弹跳星礼",
+      "description": "一颗主星轻轻跃起再落定，周围小星延后弹开。",
+      "usage": "interaction",
+      "subtype": "pickup",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "883c93dcfa403438c2285c69f8b8ac4482428ae2ec50d2bb8b05f67a6b53e95e",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_toon_star_bounce/animation.json",
+            "sha256": "24c4b63ffdc70b2a2bacdb858f0ef361ab92d5983d2f55d9fe4317200cf4725e"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_toon_star_bounce/0014.png",
+        "thumbnail_sha256": "a3fdc4f4cce4a3af030cb083060c691063b58f49bb5939723fb1a90edb7918d4",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_ink_lotus",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_lotus.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_lotus.png",
+      "display_name": "墨荷清涟",
+      "description": "淡墨荷形与水纹缓慢开合，外缘涟漪逐层变细。",
+      "usage": "environment",
+      "subtype": "water",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "water"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "33d5a382ef77a9d827141db7042946fa20158b3fd1ba1f62e100de4b35b484a4",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_ink_lotus/animation.json",
+            "sha256": "eb3f3e92db30a31dd62fec981011878c6706f0540de511195d54d387909dc4d4"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_ink_lotus/0032.png",
+        "thumbnail_sha256": "e6eb35cc7c86e932f93b9a346afe89a229772cd55bd1b00905e2c3aa2d6456ab",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_ink_sword_stroke",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_sword_stroke.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_sword_stroke.png",
+      "display_name": "墨痕剑势",
+      "description": "书写笔触沿出剑方向展开，飞白与墨点保留起承收势。",
+      "usage": "combat",
+      "subtype": "slash",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "680d13a639a477d7e5de78b0b75d5756c62ca03950960df55ae28929446e80a7",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_ink_sword_stroke/animation.json",
+            "sha256": "79c9e43fc4dc458d340b042f599f79b4c3b22db0a9a6b50036529c6ac8f392e4"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_ink_sword_stroke/0006.png",
+        "thumbnail_sha256": "1435968e45a36d1082d4cc21dc5bda6881a9a4a3ab7142a9ae2f33d954f48fd1",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_natural_water_splash",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_water_splash.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_water_splash.png",
+      "display_name": "清泉水花",
+      "description": "水冠从接触面撑起，大小水珠分离落回水面。",
+      "usage": "environment",
+      "subtype": "water",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "water"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "d920414a413c7f5d33ec3343897cb69abb26071755d8a8747a9e4dcb54260e28",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_natural_water_splash/animation.json",
+            "sha256": "cf2abc3f263b3e2810b9966a96c3952d83cead795c4ffdc84075176b4100578f"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_natural_water_splash/0007.png",
+        "thumbnail_sha256": "ad0dba4aee0efee350f85861538139881c5f3e5d4ec4cb2a3eb56d64821061d7",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_natural_stone_dust",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_stone_dust.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_stone_dust.png",
+      "display_name": "石地扬尘",
+      "description": "贴地细尘沿受力方向散开，少量粗颗粒很快落下。",
+      "usage": "environment",
+      "subtype": "dust",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "earth"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:29:36.219160+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/matrix.json",
+              "sha256": "d10c76862984d4bad9745cfaac0250e6e9c6d8ab7c6a74d342b2f59081b6f5c2"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/deep.json",
+              "sha256": "c231a5361ddc6de6ca888d8ac8894affad3ed03bf3280e10291526efc4245687"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/parameters.json",
+              "sha256": "7bbab834d63d0ac219acc8d6c1ed084f2d1efdc9f2704dc0d157f2fa8de5da96"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/performance-024.json",
+              "sha256": "0bef7f1e1719d0559f8ab7d9410a4d7fce931d25524bb88e0ce1945d5c41fd04"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture.json",
+              "sha256": "52dc2ef7a7aa76a832e061b4c4d2a09fc95950a3ef763c11278704ba4d519fc6"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-016.json",
+              "sha256": "340bae4686a01d85d4e634f9b1fc36016dff34ab667f6291a9d85e67314e4ec7"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-015.json",
+              "sha256": "dc4f15a4089065c0d3b8f66cc4f6352cedc82a290474826710dbce8b16f8b0a7"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-015.json",
+              "sha256": "0d3bad33480931b58b64d2c343cecb26dce0b53d9c1aa81ccb7c225f339c000d"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-015/soak.json",
+              "sha256": "3913d4561336a21eb2a0ed162d704c2764b3e486519a025535dde24ab5763a83"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-015.json",
+              "sha256": "49e663c25f53cba6e7b5e42c23331e507366e35bb7c005554192279bae9cc969"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-016.json",
+              "sha256": "bc1e12dcb330304a9f4436431487b93cd515fee3538bd46aa9b0b0842a18b81a"
+            }
+          ]
+        },
+        "recipe_sha256": "218ab6f4282a9d493f456da385fb40b4e48e43a69884a84f4004042fd56b217f",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_natural_stone_dust/animation.json",
+            "sha256": "8437586dab6f0717b495785ce107e4159462b9a9435b589b93d9018a65620676"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-016/capture/classic_ext_natural_stone_dust/0020.png",
+        "thumbnail_sha256": "48688439e7d776f67b8b2422546a15dcdda7733eda75c7d051a5be17299c54a7",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_pixel_thunder_thrust",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_thunder_thrust.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_thunder_thrust.png",
+      "display_name": "惊雷突锋",
+      "description": "枪尖压缩电光后直线刺出，侧枝电丝追随推进方向。",
+      "usage": "combat",
+      "subtype": "thrust",
+      "style": "fine_pixel",
+      "theme": "xianxia",
+      "elements": [
+        "lightning"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_boomerang_slice",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_boomerang_slice.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_boomerang_slice.png",
+      "display_name": "回旋晶刃",
+      "description": "硬边晶刃旋转切开短弧，回转时形成离散方形尾迹。",
+      "usage": "combat",
+      "subtype": "slash",
+      "style": "retro_pixel",
+      "theme": "fantasy",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_ember_spear",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_ember_spear.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_ember_spear.png",
+      "display_name": "赤焰灵矛",
+      "description": "尖矛形焰核包裹错相火丝，发射后火线向尾端卷曲。",
+      "usage": "combat",
+      "subtype": "projectile",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "fire"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_rubber_punch",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_rubber_punch.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_rubber_punch.png",
+      "display_name": "弹力重拳",
+      "description": "拳形气团先压扁再弹出，碎星强调短促有弹性的拳击。",
+      "usage": "combat",
+      "subtype": "melee",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_bubble_shot",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_bubble_shot.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_bubble_shot.png",
+      "display_name": "泡泡连弹",
+      "description": "不同大小的泡泡沿方向前进，尾部小泡错开破裂。",
+      "usage": "combat",
+      "subtype": "projectile",
+      "style": "toon",
+      "theme": "fantasy",
+      "elements": [
+        "water"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_brush_wind",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_brush_wind.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_brush_wind.png",
+      "display_name": "拂墨掌风",
+      "description": "数条疏密变化的墨线扇开，末梢分解为轻墨尘。",
+      "usage": "combat",
+      "subtype": "melee",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "wind"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_arrow_streak",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_arrow_streak.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_arrow_streak.png",
+      "display_name": "羽箭破风",
+      "description": "细小风痕沿发射方向延伸，避免遮住真实武器与角色。",
+      "usage": "combat",
+      "subtype": "projectile",
+      "style": "natural_realistic",
+      "theme": "universal",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_spark_projectile",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_spark_projectile.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_spark_projectile.png",
+      "display_name": "熔星飞矢",
+      "description": "熔融颗粒聚成尖头，尾部余烬按速度逐渐拉开。",
+      "usage": "combat",
+      "subtype": "projectile",
+      "style": "natural_realistic",
+      "theme": "fantasy",
+      "elements": [
+        "fire"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "direction",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_shard_crush",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_shard_crush.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_shard_crush.png",
+      "display_name": "碎甲重击",
+      "description": "中心强闪之后分离金属薄片，细颗粒保留清楚的击中位置。",
+      "usage": "impact",
+      "subtype": "heavy_hit",
+      "style": "fine_pixel",
+      "theme": "wuxia",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_steel_impact",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_steel_impact.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_steel_impact.png",
+      "display_name": "钢刃轻击",
+      "description": "短寿命亮线沿入射方向弹开，尾段降低密度而不突然清空。",
+      "usage": "impact",
+      "subtype": "light_hit",
+      "style": "fine_pixel",
+      "theme": "wuxia",
+      "elements": [
+        "physical"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_critical_star",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_critical_star.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_critical_star.png",
+      "display_name": "复古暴击星",
+      "description": "八角亮星瞬时展开，两档长短像素刺错时收束。",
+      "usage": "impact",
+      "subtype": "critical",
+      "style": "retro_pixel",
+      "theme": "universal",
+      "elements": [
+        "physical"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_rune_break",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_rune_break.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_rune_break.png",
+      "display_name": "符盾破碎",
+      "description": "符纹片段在命中处断开，外层晕光延后回落。",
+      "usage": "impact",
+      "subtype": "shield_break",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "arcane"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_holy_impact",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_holy_impact.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_holy_impact.png",
+      "display_name": "圣辉命中",
+      "description": "细柔光核点亮接触面，金色碎光沿半球向外飘散。",
+      "usage": "impact",
+      "subtype": "light_hit",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_comic_hit",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_comic_hit.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_comic_hit.png",
+      "display_name": "漫画撞击",
+      "description": "不规则爆花压缩再撑开，少量粗短速度线表达冲击。",
+      "usage": "impact",
+      "subtype": "heavy_hit",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_spring_bang",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_spring_bang.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_spring_bang.png",
+      "display_name": "弹星暴击",
+      "description": "大星被挤扁后弹开，小星在外圈错拍跳动。",
+      "usage": "impact",
+      "subtype": "critical",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "physical"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_splash_impact",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_splash_impact.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_splash_impact.png",
+      "display_name": "泼墨重击",
+      "description": "墨团打在接触点后形成放射笔锋，外圈小墨滴延后坠落。",
+      "usage": "impact",
+      "subtype": "heavy_hit",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_pressure_burst",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_pressure_burst.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_pressure_burst.png",
+      "display_name": "气墨格挡",
+      "description": "半弧气墨拦住攻击方向，亮边只停留在接触的一侧。",
+      "usage": "impact",
+      "subtype": "block",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "wind"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_wood_splinter",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_wood_splinter.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_wood_splinter.png",
+      "display_name": "木面碎屑",
+      "description": "长短木刺朝受力方向溅射，较重碎片下落更快。",
+      "usage": "impact",
+      "subtype": "material_hit",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "wood"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_metal_spark",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_metal_spark.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_metal_spark.png",
+      "display_name": "金属擦火",
+      "description": "少量高亮火星在窄角度飞出，冷却时转暗红并缩短。",
+      "usage": "impact",
+      "subtype": "material_hit",
+      "style": "natural_realistic",
+      "theme": "universal",
+      "elements": [
+        "fire"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_frost_ring",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_frost_ring.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_frost_ring.png",
+      "display_name": "霜环扩散",
+      "description": "碎冰边缘沿地面扩展，中心先空出再结束。",
+      "usage": "area",
+      "subtype": "shockwave",
+      "style": "fine_pixel",
+      "theme": "fantasy",
+      "elements": [
+        "ice"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_crystal_spike",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_crystal_spike.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_crystal_spike.png",
+      "display_name": "晶脊突起",
+      "description": "一列晶脊依次从地面刺出，底部尘点强调接触位置。",
+      "usage": "area",
+      "subtype": "ground_spike",
+      "style": "fine_pixel",
+      "theme": "fantasy",
+      "elements": [
+        "earth"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:06:54.403026+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/matrix.json",
+              "sha256": "87db3770801b00c3e378bbee68065bad0dbd1b3475cd8ba68185d5389ba57750"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/deep.json",
+              "sha256": "b1fb9a012df1a2a0d31c9f4dbebc1ceeed8619a33f46e2678802a6b92bbdd13d"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/parameters.json",
+              "sha256": "4b255e18eb2c6417bdf21d9a7052ff9fca29d1eaa24293c04609ae7e91a7903d"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/performance.json",
+              "sha256": "d23fe9e6aaa49ca678a693aa54850ef76f8b4e9e7e6e74af97c153749509ffbe"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture.json",
+              "sha256": "88434372fb456d415d3c52fcc7b537097c22562d9c59f5347cca323009902b80"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-018.json",
+              "sha256": "c331f7f41fcdc60a0ee53e7e2136eb707a4e5b5a284253cb58de74a0352cc19f"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-018.json",
+              "sha256": "ce923b2cdc927772a2107a36c1b307c66faab78e02202185abfe6de93329bc3f"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-018.json",
+              "sha256": "eb7e0edf0a5ab8859b99f82b819d31708d0e56832f5e8bf6e2ed89071230d092"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/soak.json",
+              "sha256": "ef37b937ac354eeedfb5d299356f6e8aca2408d64e798cce7b9e97627c12ccdf"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-018.json",
+              "sha256": "1d8a53030135b42a98da6bd97d8c5b23706c3022982405c8b1c55bbc4214d4b2"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-018.json",
+              "sha256": "1ce3c44223ae5c6a8b71e0f5a67806c2eb69a0a424f195bb6ae0f30ab3f35c6f"
+            }
+          ]
+        },
+        "recipe_sha256": "5d1fce1ebcac023c7482d8ac56dac7598302c8d76f37b9f38f2ddce07759a378",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_pixel_crystal_spike/animation.json",
+            "sha256": "10bbb3371c8ad8db0e40849646e0f52c28d4f5df75698b1c609ce5df1c8df243"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_pixel_crystal_spike/0020.png",
+        "thumbnail_sha256": "28140be4a6423e59ef6f2af943ea5e3d2dc94b1451d0e963a4fd260fa0209d2a",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_retro_cube_blast",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_cube_blast.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_cube_blast.png",
+      "display_name": "方块爆裂",
+      "description": "分层方块从中心快速分开，暗层落在亮层后面。",
+      "usage": "area",
+      "subtype": "explosion",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "fire"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_static_field",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_static_field.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_static_field.png",
+      "display_name": "像素牵引电场",
+      "description": "断续电段沿网格向中心牵引汇拢，外框保持可辨认的吸引范围。",
+      "usage": "area",
+      "subtype": "attraction",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "lightning"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_tidal_ring",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_tidal_ring.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_tidal_ring.png",
+      "display_name": "潮汐灵环",
+      "description": "薄水幕形成向外传播的圆环，波峰碎成水珠。",
+      "usage": "area",
+      "subtype": "shockwave",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "water"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_jelly_cage",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_jelly_cage.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_jelly_cage.png",
+      "display_name": "软糖束缚",
+      "description": "弧状软壳从地面弹起围成空间，边缘有受力回弹。",
+      "usage": "area",
+      "subtype": "restraint",
+      "style": "toon",
+      "theme": "fantasy",
+      "elements": [
+        "arcane"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_fan_shockwave",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_fan_shockwave.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_fan_shockwave.png",
+      "display_name": "墨扇震波",
+      "description": "地面扇形墨浪由近到远铺开，末沿笔锋分叉。",
+      "usage": "area",
+      "subtype": "shockwave",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "wind"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_brush_prison",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_brush_prison.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_brush_prison.png",
+      "display_name": "墨竹困阵",
+      "description": "竖直笔画围成疏朗牢笼，底部淡墨先聚后散。",
+      "usage": "area",
+      "subtype": "restraint",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "wood"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_dust_blast",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_dust_blast.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_dust_blast.png",
+      "display_name": "碎石尘爆",
+      "description": "短促扬尘包裹抛出的石块，细尘比重颗粒更晚消散。",
+      "usage": "area",
+      "subtype": "explosion",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "earth"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_heat_ripple",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_heat_ripple.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_heat_ripple.png",
+      "display_name": "热浪扩圈",
+      "description": "低对比热流环贴地扩张，几颗灼亮余烬显示运动方向。",
+      "usage": "area",
+      "subtype": "shockwave",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "fire"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_leaf_blessing",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_leaf_blessing.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_leaf_blessing.png",
+      "display_name": "青叶护佑",
+      "description": "细叶绕身缓慢上升，脚下轻环标明跟随对象。",
+      "usage": "status",
+      "subtype": "buff",
+      "style": "fine_pixel",
+      "theme": "xianxia",
+      "elements": [
+        "wood"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_power_up",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_power_up.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_power_up.png",
+      "display_name": "复古强能",
+      "description": "小方格逐级向上跳动，亮度在节拍间恢复。",
+      "usage": "status",
+      "subtype": "buff",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_poison_status",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_poison_status.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_poison_status.png",
+      "display_name": "像素毒蚀",
+      "description": "绿色点簇在身体侧缘冒出，暗泡断续上浮。",
+      "usage": "status",
+      "subtype": "debuff",
+      "style": "retro_pixel",
+      "theme": "fantasy",
+      "elements": [
+        "poison"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_healing_petals",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_healing_petals.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_healing_petals.png",
+      "display_name": "花息疗愈",
+      "description": "轻薄花瓣以不同半径上升，柔和亮点集中在身体外侧。",
+      "usage": "status",
+      "subtype": "healing",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "wood"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_aegis_shell",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_aegis_shell.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_aegis_shell.png",
+      "display_name": "灵光护壳",
+      "description": "薄亮弧面环抱主体，稀疏流线让护罩内部仍然可见。",
+      "usage": "status",
+      "subtype": "shield",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:12:58.848577+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-019/matrix.json",
+              "sha256": "a52b5631446ed5b01f4180bca4168066336c8059f9d2a7c4800cf09b6885c9c7"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-019/deep.json",
+              "sha256": "d374efc5e4d3a913f405878f21a4d3b725959b0f0f0a384a04449ea0424f659d"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-019/parameters.json",
+              "sha256": "e4581dae44135de5f0755d46462589bafc8f9bf88cc863045fac965a29e21745"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-019/performance.json",
+              "sha256": "93d5ae6d876b3a5c0bcd073ef34c5e1127f5dcfa9efc46b2c1f641d27eb0cdd0"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-019/capture.json",
+              "sha256": "074824c1c27e80969fe5bc7b8bf5b7a6d600d161938770ecc37683f4d0b97305"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-019.json",
+              "sha256": "755de3f260940729500397c67b386126f9a7a51a9f05da4b60d1fcd89838c38d"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-018.json",
+              "sha256": "ce923b2cdc927772a2107a36c1b307c66faab78e02202185abfe6de93329bc3f"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-019.json",
+              "sha256": "146f233e0e2778ee6319e06311167ab07aeb62e2ba7ae4cbe4b4793fafebd4bb"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-019/soak.json",
+              "sha256": "ae984a8e70a46141a7d662cd599f394a65c0e715dd9da3cfcca9eff62fad6963"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-019.json",
+              "sha256": "759b1727696bdafa97eb68adbd6f6084461a826729284645818827286aec8950"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-019.json",
+              "sha256": "0c1d7887dd25bd02951dae9bc70a7e88cff5d7249895bf366970b658e684df54"
+            }
+          ]
+        },
+        "recipe_sha256": "909eaf9e0683390851a9bc984dc4288ca75a7869cdb12a962cf050031a72f3fc",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-019/capture/classic_ext_painted_aegis_shell/animation.json",
+            "sha256": "4caedc4f3ae08d66ee30b494f6bee8c58071ba2f58412ffbcb4fdc2f544364d0"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-019/capture/classic_ext_painted_aegis_shell/0037.png",
+        "thumbnail_sha256": "d70375a717e0627e9e27f1ce7b69d79386c3c8c87a749aa141b6e0070ccdc3ea",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_toon_cheer_stars",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_cheer_stars.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_cheer_stars.png",
+      "display_name": "幸运小星",
+      "description": "小星绕角色弹跳，起伏不同步以避免机械转圈。",
+      "usage": "status",
+      "subtype": "buff",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_dizzy_orbit",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_dizzy_orbit.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_dizzy_orbit.png",
+      "display_name": "眩晕绕星",
+      "description": "三颗星沿头顶低矮椭圆绕行，大小随远近变化。",
+      "usage": "status",
+      "subtype": "debuff",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "arcane"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_calm_breath",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_calm_breath.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_calm_breath.png",
+      "display_name": "静息养气",
+      "description": "两条淡墨弧在脚下聚拢，缓慢呼吸保持蓄力节奏。",
+      "usage": "status",
+      "subtype": "charge",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "wind"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_purifying_mark",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_purifying_mark.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_purifying_mark.png",
+      "display_name": "清心墨印",
+      "description": "破碎墨印由外向内收紧，再以亮点向上散开。",
+      "usage": "status",
+      "subtype": "cleanse",
+      "style": "ink",
+      "theme": "xianxia",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_ember_status",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_ember_status.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_ember_status.png",
+      "display_name": "灼烧余烬",
+      "description": "几处小焰团沿身体边缘闪动，火星向上逸出。",
+      "usage": "status",
+      "subtype": "debuff",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "fire"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_frost_status",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_frost_status.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_frost_status.png",
+      "display_name": "霜凝寒气",
+      "description": "细霜附着外缘，冷雾缓缓下沉并保留主体可读性。",
+      "usage": "status",
+      "subtype": "debuff",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "ice"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_reed_fireflies",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_reed_fireflies.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_reed_fireflies.png",
+      "display_name": "苇间流萤",
+      "description": "少量精细虫体在不同高度游动，旁侧陪伴细光点。",
+      "usage": "environment",
+      "subtype": "flora_fauna",
+      "style": "fine_pixel",
+      "theme": "nature",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_snow_drift",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_snow_drift.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_snow_drift.png",
+      "display_name": "细雪飘落",
+      "description": "大小雪片按分层风向下落，触地后迅速变淡。",
+      "usage": "environment",
+      "subtype": "weather",
+      "style": "fine_pixel",
+      "theme": "nature",
+      "elements": [
+        "ice"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_rain_sparks",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_rain_sparks.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_rain_sparks.png",
+      "display_name": "复古雨幕",
+      "description": "像素短雨线分批落下，地面小涟漪与落点一一对应。",
+      "usage": "environment",
+      "subtype": "weather",
+      "style": "retro_pixel",
+      "theme": "nature",
+      "elements": [
+        "water"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_dust_specks",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_dust_specks.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_dust_specks.png",
+      "display_name": "复古尘光",
+      "description": "稀疏亮格在小范围漂浮，以缓慢明灭避免整屏噪点。",
+      "usage": "environment",
+      "subtype": "dust",
+      "style": "retro_pixel",
+      "theme": "nature",
+      "elements": [
+        "earth"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_mist_ribbon",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_mist_ribbon.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_mist_ribbon.png",
+      "display_name": "山岚雾带",
+      "description": "低矮雾带缓慢舒展，前后薄层产生自然空间感。",
+      "usage": "environment",
+      "subtype": "fire_smoke",
+      "style": "painted_smooth",
+      "theme": "nature",
+      "elements": [
+        "water"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_lantern_motes",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_lantern_motes.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_lantern_motes.png",
+      "display_name": "灯下微尘",
+      "description": "暖色尘粒在局部光域内浮动，离开后逐渐熄灭。",
+      "usage": "environment",
+      "subtype": "dust",
+      "style": "painted_smooth",
+      "theme": "nature",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_leaf_whirl",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_leaf_whirl.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_leaf_whirl.png",
+      "display_name": "旋叶小风",
+      "description": "两三片夸张叶形随小风团翻转，节奏轻松但不均速。",
+      "usage": "environment",
+      "subtype": "flora_fauna",
+      "style": "toon",
+      "theme": "nature",
+      "elements": [
+        "wind"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_soft_rain",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_soft_rain.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_soft_rain.png",
+      "display_name": "软糖雨滴",
+      "description": "圆润雨滴略微拉伸，落地形成短促水圈。",
+      "usage": "environment",
+      "subtype": "weather",
+      "style": "toon",
+      "theme": "nature",
+      "elements": [
+        "water"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_bamboo_leaves",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_bamboo_leaves.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_bamboo_leaves.png",
+      "display_name": "墨竹飞叶",
+      "description": "疏落墨叶随横风转身，保留飞白边缘。",
+      "usage": "environment",
+      "subtype": "flora_fauna",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "wood"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_rune_switch",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_rune_switch.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_rune_switch.png",
+      "display_name": "符石启动",
+      "description": "石面符纹按顺序点亮，确认脉冲停留在物件周围。",
+      "usage": "interaction",
+      "subtype": "switch",
+      "style": "fine_pixel",
+      "theme": "xianxia",
+      "elements": [
+        "arcane"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_treasure_glint",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_treasure_glint.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_treasure_glint.png",
+      "display_name": "宝匣拾光",
+      "description": "短光带从物件升起，细星点向中心聚拢。",
+      "usage": "interaction",
+      "subtype": "pickup",
+      "style": "fine_pixel",
+      "theme": "fantasy",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_key_unlock",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_key_unlock.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_key_unlock.png",
+      "display_name": "像素解锁",
+      "description": "小格从两侧退开，中央亮线给出解锁完成节拍。",
+      "usage": "interaction",
+      "subtype": "switch",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "arcane"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_portal_tiles",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_portal_tiles.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_portal_tiles.png",
+      "display_name": "方格传送",
+      "description": "地面方片依序浮起，进入时聚拢成细光柱。",
+      "usage": "interaction",
+      "subtype": "teleport",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "arcane"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:06:54.403026+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/matrix.json",
+              "sha256": "87db3770801b00c3e378bbee68065bad0dbd1b3475cd8ba68185d5389ba57750"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/deep.json",
+              "sha256": "b1fb9a012df1a2a0d31c9f4dbebc1ceeed8619a33f46e2678802a6b92bbdd13d"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/parameters.json",
+              "sha256": "4b255e18eb2c6417bdf21d9a7052ff9fca29d1eaa24293c04609ae7e91a7903d"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/performance.json",
+              "sha256": "d23fe9e6aaa49ca678a693aa54850ef76f8b4e9e7e6e74af97c153749509ffbe"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture.json",
+              "sha256": "88434372fb456d415d3c52fcc7b537097c22562d9c59f5347cca323009902b80"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-018.json",
+              "sha256": "c331f7f41fcdc60a0ee53e7e2136eb707a4e5b5a284253cb58de74a0352cc19f"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-018.json",
+              "sha256": "ce923b2cdc927772a2107a36c1b307c66faab78e02202185abfe6de93329bc3f"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-018.json",
+              "sha256": "eb7e0edf0a5ab8859b99f82b819d31708d0e56832f5e8bf6e2ed89071230d092"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/soak.json",
+              "sha256": "ef37b937ac354eeedfb5d299356f6e8aca2408d64e798cce7b9e97627c12ccdf"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-018.json",
+              "sha256": "1d8a53030135b42a98da6bd97d8c5b23706c3022982405c8b1c55bbc4214d4b2"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-018.json",
+              "sha256": "1ce3c44223ae5c6a8b71e0f5a67806c2eb69a0a424f195bb6ae0f30ab3f35c6f"
+            }
+          ]
+        },
+        "recipe_sha256": "57b4bbb1df7dc1a4c7a480bb7bb259e33baaaf3fa02586eb23c81067ff2f1f11",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_retro_portal_tiles/animation.json",
+            "sha256": "be759780c1e3623d1f07d8588d44f2908316974c4cd550a8bba5e615e61d1c3a"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_retro_portal_tiles/0020.png",
+        "thumbnail_sha256": "9df2d0a9df97acec36a381075623d053d31c840e1cdf3d79cee068837290fc44",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_painted_summon_bloom",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_summon_bloom.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_summon_bloom.png",
+      "display_name": "召灵花阵",
+      "description": "紫金手绘花瓣在地面聚拢成空心花阵，随后分离并自然消散，为召唤主体留出中央位置。",
+      "usage": "interaction",
+      "subtype": "summon",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:06:54.403026+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/matrix.json",
+              "sha256": "87db3770801b00c3e378bbee68065bad0dbd1b3475cd8ba68185d5389ba57750"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/deep.json",
+              "sha256": "b1fb9a012df1a2a0d31c9f4dbebc1ceeed8619a33f46e2678802a6b92bbdd13d"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/parameters.json",
+              "sha256": "4b255e18eb2c6417bdf21d9a7052ff9fca29d1eaa24293c04609ae7e91a7903d"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/performance.json",
+              "sha256": "d23fe9e6aaa49ca678a693aa54850ef76f8b4e9e7e6e74af97c153749509ffbe"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture.json",
+              "sha256": "88434372fb456d415d3c52fcc7b537097c22562d9c59f5347cca323009902b80"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-018.json",
+              "sha256": "c331f7f41fcdc60a0ee53e7e2136eb707a4e5b5a284253cb58de74a0352cc19f"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-018.json",
+              "sha256": "ce923b2cdc927772a2107a36c1b307c66faab78e02202185abfe6de93329bc3f"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-018.json",
+              "sha256": "eb7e0edf0a5ab8859b99f82b819d31708d0e56832f5e8bf6e2ed89071230d092"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/soak.json",
+              "sha256": "ef37b937ac354eeedfb5d299356f6e8aca2408d64e798cce7b9e97627c12ccdf"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-018.json",
+              "sha256": "1d8a53030135b42a98da6bd97d8c5b23706c3022982405c8b1c55bbc4214d4b2"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-018.json",
+              "sha256": "1ce3c44223ae5c6a8b71e0f5a67806c2eb69a0a424f195bb6ae0f30ab3f35c6f"
+            }
+          ]
+        },
+        "recipe_sha256": "d197bfd7343561999de6cb9ba44880d2ad489dfbb635cf10b5b4c4cc4a7476d6",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_painted_summon_bloom/animation.json",
+            "sha256": "93a810411d5ca57447e6e1098e76d4e848441c57c9ec498e122ae5e315eaeb08"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_painted_summon_bloom/0011.png",
+        "thumbnail_sha256": "6384b178ce97f55838f4ba84dfa8a897a9296f2e6a9394337b772f1c0e3a799f",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_painted_seal_release",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_seal_release.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_seal_release.png",
+      "display_name": "封印解离",
+      "description": "封印环先紧缩再断裂，符纹薄片缓缓飘散。",
+      "usage": "interaction",
+      "subtype": "seal",
+      "style": "painted_smooth",
+      "theme": "xianxia",
+      "elements": [
+        "arcane"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_gift_pop",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_gift_pop.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_gift_pop.png",
+      "display_name": "礼物开箱",
+      "description": "小爆花托起彩纸和星点，尾部自然落回物件周围。",
+      "usage": "interaction",
+      "subtype": "pickup",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_door_stamp",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_door_stamp.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_door_stamp.png",
+      "display_name": "墨印启门",
+      "description": "一枚方印落下后淡开，边缘小墨点表示开关响应。",
+      "usage": "interaction",
+      "subtype": "switch",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_spirit_portal",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_spirit_portal.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_spirit_portal.png",
+      "display_name": "山水遁门",
+      "description": "淡墨椭圆从地面生起，细水纹沿入口内侧流动。",
+      "usage": "interaction",
+      "subtype": "teleport",
+      "style": "ink",
+      "theme": "xianxia",
+      "elements": [
+        "water"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_stone_break",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_stone_break.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_stone_break.png",
+      "display_name": "岩块破碎",
+      "description": "碎石按受力方向崩开，尘雾随后越过近地面。",
+      "usage": "interaction",
+      "subtype": "breakable",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "earth"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_branch_snap",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_branch_snap.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_branch_snap.png",
+      "display_name": "枝木断裂",
+      "description": "细木屑和叶片分离飞出，重碎片先落地。",
+      "usage": "interaction",
+      "subtype": "breakable",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "wood"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_target_petals",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_target_petals.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_target_petals.png",
+      "display_name": "花瓣锁定",
+      "description": "四段原创像素花瓣围住目标脚底；程序缓慢旋转并轻微呼吸，中央完全通透。",
+      "usage": "telegraph",
+      "subtype": "target",
+      "style": "fine_pixel",
+      "theme": "xianxia",
+      "elements": [
+        "light"
+      ],
+      "method": "hybrid",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "follow",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:07:02.714508+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/matrix.json",
+              "sha256": "87db3770801b00c3e378bbee68065bad0dbd1b3475cd8ba68185d5389ba57750"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/deep.json",
+              "sha256": "b1fb9a012df1a2a0d31c9f4dbebc1ceeed8619a33f46e2678802a6b92bbdd13d"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/target-parameters-018b.json",
+              "sha256": "e477d809c8bc00995d570cf053f0255b78f59c7d88e25600ae9a20ed6ac5592c"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/performance.json",
+              "sha256": "d23fe9e6aaa49ca678a693aa54850ef76f8b4e9e7e6e74af97c153749509ffbe"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture.json",
+              "sha256": "88434372fb456d415d3c52fcc7b537097c22562d9c59f5347cca323009902b80"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-018.json",
+              "sha256": "c331f7f41fcdc60a0ee53e7e2136eb707a4e5b5a284253cb58de74a0352cc19f"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-018.json",
+              "sha256": "ce923b2cdc927772a2107a36c1b307c66faab78e02202185abfe6de93329bc3f"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-018.json",
+              "sha256": "eb7e0edf0a5ab8859b99f82b819d31708d0e56832f5e8bf6e2ed89071230d092"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/soak.json",
+              "sha256": "ef37b937ac354eeedfb5d299356f6e8aca2408d64e798cce7b9e97627c12ccdf"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-018.json",
+              "sha256": "1d8a53030135b42a98da6bd97d8c5b23706c3022982405c8b1c55bbc4214d4b2"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-018.json",
+              "sha256": "1ce3c44223ae5c6a8b71e0f5a67806c2eb69a0a424f195bb6ae0f30ab3f35c6f"
+            }
+          ]
+        },
+        "recipe_sha256": "0a4f28b08e245dbf63a8b51d2498c71c47c4b7472a23c6a03f80895d8e6ffc64",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_pixel_target_petals/animation.json",
+            "sha256": "3fc00f499026bf4e8f13979e6acd704fc7ad012c30c22743ffcfb4fb2120a70c"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_pixel_target_petals/0030.png",
+        "thumbnail_sha256": "977392350f0fd25c7a7e6a7f8154ef5d399d77b6aa4b736bfa8f782f3ae295f1",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_pixel_ice_cone",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_ice_cone.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_ice_cone.png",
+      "display_name": "霜线扇形",
+      "description": "扇形边界先亮起，内部稀疏细线显示危险方向。",
+      "usage": "telegraph",
+      "subtype": "cone",
+      "style": "fine_pixel",
+      "theme": "fantasy",
+      "elements": [
+        "ice"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_target_brackets",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_target_brackets.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_target_brackets.png",
+      "display_name": "电子锁框",
+      "description": "四角像素括号轻微内收，完成锁定后稳定停留。",
+      "usage": "telegraph",
+      "subtype": "target",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "arcane"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_lane_warning",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_lane_warning.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_lane_warning.png",
+      "display_name": "像素射线预警",
+      "description": "两侧平行短线指示射击宽度，前端小箭头循环推进。",
+      "usage": "telegraph",
+      "subtype": "line",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "lightning"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_ritual_radius",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_ritual_radius.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_ritual_radius.png",
+      "display_name": "仪式范围",
+      "description": "柔和外圈与分段符文明确范围，中心仅留轻薄纹理。",
+      "usage": "telegraph",
+      "subtype": "radius",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "arcane"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_wind_path",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_wind_path.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_wind_path.png",
+      "display_name": "风引路径",
+      "description": "稀疏流线沿路径向前通过，边缘柔和而方向清楚。",
+      "usage": "telegraph",
+      "subtype": "path",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "wind"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_warning_wedges",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_warning_wedges.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_warning_wedges.png",
+      "display_name": "卡通扇形预警",
+      "description": "粗细变化的扇沿轻轻跳动，闪点集中在危险前缘。",
+      "usage": "telegraph",
+      "subtype": "cone",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "fire"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_route_dots",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_route_dots.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_route_dots.png",
+      "display_name": "弹点路线",
+      "description": "圆点依次抬起与回落，让路径指示保持节奏。",
+      "usage": "telegraph",
+      "subtype": "path",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_warning_circle",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_warning_circle.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_warning_circle.png",
+      "display_name": "墨线禁圈",
+      "description": "断续墨线勾出地面边界，内侧飞白保留场景细节。",
+      "usage": "telegraph",
+      "subtype": "radius",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "shadow"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_sword_lane",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_sword_lane.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_sword_lane.png",
+      "display_name": "剑路预示",
+      "description": "两道墨痕框出突刺路线，末端短锋强调推进方向。",
+      "usage": "telegraph",
+      "subtype": "line",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "physical"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_dust_radius",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_dust_radius.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_dust_radius.png",
+      "display_name": "砂砾警戒圈",
+      "description": "细砂沿圆周流动，低矮尘带明确地面范围。",
+      "usage": "telegraph",
+      "subtype": "radius",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "earth"
+      ],
+      "method": "drawn",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_frost_mark",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_frost_mark.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_frost_mark.png",
+      "display_name": "薄霜落点",
+      "description": "四小段薄霜标出预定地面落点，冷雾沿边缘消散，保持中心落脚区清楚。",
+      "usage": "telegraph",
+      "subtype": "landing",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "ice"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "ground",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_level_bloom",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_level_bloom.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_level_bloom.png",
+      "display_name": "灵阶升华",
+      "description": "向上的细柱与分层星环配合短停顿，结束时由上向下收束。",
+      "usage": "presentation",
+      "subtype": "level_up",
+      "style": "fine_pixel",
+      "theme": "xianxia",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_pixel_phantom_arrival",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_pixel_phantom_arrival.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_pixel_phantom_arrival.png",
+      "display_name": "幻影现身",
+      "description": "离散像素向主体轮廓靠拢，最后一圈微光让位给角色。",
+      "usage": "presentation",
+      "subtype": "arrival",
+      "style": "fine_pixel",
+      "theme": "dark",
+      "elements": [
+        "shadow"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_clear_fanfare",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_clear_fanfare.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_clear_fanfare.png",
+      "display_name": "像素通关礼花",
+      "description": "几束短像素礼花依次展开，不形成覆盖画面的大色块。",
+      "usage": "presentation",
+      "subtype": "completion",
+      "style": "retro_pixel",
+      "theme": "universal",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_retro_digital_vanish",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_retro_digital_vanish.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_retro_digital_vanish.png",
+      "display_name": "数码消解",
+      "description": "小方块自下而上脱离，尾段粒子密度逐级下降。",
+      "usage": "presentation",
+      "subtype": "vanish",
+      "style": "retro_pixel",
+      "theme": "scifi",
+      "elements": [
+        "arcane"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_spirit_arrival",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_spirit_arrival.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_spirit_arrival.png",
+      "display_name": "灵辉降临",
+      "description": "柔和光丝沿主体周围落下，脚下环纹承接空间位置。",
+      "usage": "presentation",
+      "subtype": "arrival",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_painted_victory_petals",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_painted_victory_petals.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_painted_victory_petals.png",
+      "display_name": "凯旋花雨",
+      "description": "轻薄花瓣以错开的抛物线落下，中央为展示主体留白。",
+      "usage": "presentation",
+      "subtype": "completion",
+      "style": "painted_smooth",
+      "theme": "fantasy",
+      "elements": [
+        "wood"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_confetti_cheer",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_confetti_cheer.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_confetti_cheer.png",
+      "display_name": "彩纸欢呼",
+      "description": "少量彩纸翻转抛出，大颗粒先落、小颗粒后落。",
+      "usage": "presentation",
+      "subtype": "completion",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "light"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_toon_puff_vanish",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_toon_puff_vanish.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_toon_puff_vanish.png",
+      "display_name": "噗云退场",
+      "description": "一团柔软云瓣弹出再分开，尾部只留几颗小泡。",
+      "usage": "presentation",
+      "subtype": "vanish",
+      "style": "toon",
+      "theme": "universal",
+      "elements": [
+        "wind"
+      ],
+      "method": "procedural",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_scroll_arrival",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_scroll_arrival.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_scroll_arrival.png",
+      "display_name": "卷墨登场",
+      "description": "两片卷墨在身体两侧打开，露出主体后顺势消散。",
+      "usage": "presentation",
+      "subtype": "arrival",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "physical"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_ink_blade_aura",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_ink_blade_aura.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_ink_blade_aura.png",
+      "display_name": "墨锋附刃",
+      "description": "细墨丝沿武器方向缓缓流动，近柄处留出辨识空间。",
+      "usage": "presentation",
+      "subtype": "attachment",
+      "style": "ink",
+      "theme": "wuxia",
+      "elements": [
+        "shadow"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    },
+    {
+      "id": "classic_ext_natural_ash_vanish",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_ash_vanish.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_ash_vanish.png",
+      "display_name": "灰烬退散",
+      "description": "细灰从主体附近向风向散开，亮点先冷却再消失。",
+      "usage": "presentation",
+      "subtype": "vanish",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "fire"
+      ],
+      "method": "drawn",
+      "playback": "one_shot",
+      "anchor": "camera",
+      "space": "world",
+      "status": "ready",
+      "approval": {
+        "approved_at": "2026-10-25T06:06:54.403026+00:00",
+        "gate": "tools/approve_library_candidates.py",
+        "evidence": {
+          "matrix": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/matrix.json",
+              "sha256": "87db3770801b00c3e378bbee68065bad0dbd1b3475cd8ba68185d5389ba57750"
+            }
+          ],
+          "deep": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/deep.json",
+              "sha256": "b1fb9a012df1a2a0d31c9f4dbebc1ceeed8619a33f46e2678802a6b92bbdd13d"
+            }
+          ],
+          "parameters": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/parameters.json",
+              "sha256": "4b255e18eb2c6417bdf21d9a7052ff9fca29d1eaa24293c04609ae7e91a7903d"
+            }
+          ],
+          "performance": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/performance.json",
+              "sha256": "d23fe9e6aaa49ca678a693aa54850ef76f8b4e9e7e6e74af97c153749509ffbe"
+            }
+          ],
+          "capture": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture.json",
+              "sha256": "88434372fb456d415d3c52fcc7b537097c22562d9c59f5347cca323009902b80"
+            }
+          ],
+          "context": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/context-018.json",
+              "sha256": "c331f7f41fcdc60a0ee53e7e2136eb707a4e5b5a284253cb58de74a0352cc19f"
+            }
+          ],
+          "atlas": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/atlas-018.json",
+              "sha256": "ce923b2cdc927772a2107a36c1b307c66faab78e02202185abfe6de93329bc3f"
+            }
+          ],
+          "workshop": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/workshop-018.json",
+              "sha256": "eb7e0edf0a5ab8859b99f82b819d31708d0e56832f5e8bf6e2ed89071230d092"
+            }
+          ],
+          "soak": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/soak.json",
+              "sha256": "ef37b937ac354eeedfb5d299356f6e8aca2408d64e798cce7b9e97627c12ccdf"
+            }
+          ],
+          "export": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/export-018.json",
+              "sha256": "1d8a53030135b42a98da6bd97d8c5b23706c3022982405c8b1c55bbc4214d4b2"
+            }
+          ],
+          "legacy": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/legacy-016.json",
+              "sha256": "e781ab961fb6cf7a52e3ce7baa4373e0d70c2a3fd70b0f1245e12fab53893a12"
+            },
+            {
+              "path": "Jeff-FX-Library-Dev/production/reviews/legacy-016/classic-3d-matrix.json",
+              "sha256": "867eaa52132a3ccdd25044047e8ce1aa269a03d953799f89447eecd5af033ee0"
+            }
+          ],
+          "art_review": [
+            {
+              "path": "Jeff-FX-Library-Dev/production/reports/art-review-018.json",
+              "sha256": "1ce3c44223ae5c6a8b71e0f5a67806c2eb69a0a424f195bb6ae0f30ab3f35c6f"
+            }
+          ]
+        },
+        "recipe_sha256": "485ac826c5c517936d596c5299dcaba22b0804a5b638906604e8899cf961db23",
+        "capture_manifests": [
+          {
+            "path": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_natural_ash_vanish/animation.json",
+            "sha256": "962dc879ee5f7e44e9538e880172de21be6e134ace316d5a0ab97ef275adb7b4"
+          }
+        ],
+        "thumbnail_source": "Jeff-FX-Library-Dev/production/reviews/suite-018/capture/classic_ext_natural_ash_vanish/0012.png",
+        "thumbnail_sha256": "901b3c2603fe6834c4f9346a0ad2b7cf240a59ad3df0d2d231a79341f32d2ef2",
+        "performance_scope": "Recorded CPU and draw/readback timings only; no FPS/device certification"
+      }
+    },
+    {
+      "id": "classic_ext_natural_firefly_aura",
+      "recipe": "res://addons/fx_forge/library/recipes/ext_natural_firefly_aura.tres",
+      "thumbnail": "res://addons/fx_forge/library/thumbnails/ext_natural_firefly_aura.png",
+      "display_name": "萤光随身",
+      "description": "几颗小光点在身体外围游走，亮灭错开避免整圈同步。",
+      "usage": "presentation",
+      "subtype": "attachment",
+      "style": "natural_realistic",
+      "theme": "nature",
+      "elements": [
+        "light"
+      ],
+      "method": "procedural",
+      "playback": "loop",
+      "anchor": "camera",
+      "space": "follow",
+      "status": "candidate"
+    }
+  ]
+}

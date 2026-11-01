@@ -7,6 +7,7 @@ const FxParams := preload("fx_params.gd")
 const FxGlobals := preload("fx_globals.gd")
 const FxRegistry := preload("fx_registry.gd")
 const FxModule := preload("../modules/fx_module.gd")
+const Catalog := preload("../presets/library_catalog.gd")
 
 
 ## 从简写字典创建预设：{id, name, category, description, globals, layers: [{module, name, params, ……图层设置}]}
@@ -16,6 +17,7 @@ static func from_dict(d: Dictionary) -> FxPreset:
 	p.display_name = str(d.get("name", p.preset_id))
 	p.category = str(d.get("category", "custom"))
 	p.description = str(d.get("description", ""))
+	p.library_metadata = (d.get("library_metadata", Catalog.pixel_metadata(d)) as Dictionary).duplicate(true)
 	p.globals = (d.get("globals", {}) as Dictionary).duplicate(true)
 	var layers: Array = []
 	for l: Dictionary in d.get("layers", []):

@@ -15,6 +15,8 @@ const PixelProcedural = preload("res://addons/fx_forge/legacy/runtime/fx_procedu
 # Shader code is shared; uniforms always remain on instance-local materials.
 static var _additive_shader: Shader
 static var _additive_source: String = ""
+static var _library_additive_shader: Shader
+static var _library_additive_source: String = ""
 
 enum Quality { AUTO, STANDARD, REDUCED }
 enum Backend { AUTO, CPU, GPU }
@@ -196,14 +198,26 @@ func _process(delta: float) -> void:
 	_check_finish()
 
 func _check_finish() -> void:
-	if _recipe!=null and _recipe.has_missile():
-		var actual_end: float=0
-		var all_missiles: bool=not _visuals.is_empty()
+	if _recipe != null and _recipe.has_missile():
+		var actual_end: float = 0.0
+		var all_missiles: bool = not _visuals.is_empty()
+		var all_missiles_ended: bool = true
+		var has_live_missile: bool = false
 		for i in _visuals.size():
-			if not _visuals[i] is Missile or _visuals[i].ended_at()<0:
-				all_missiles=false; break
-			actual_end=maxf(actual_end,_visuals[i].ended_at()+_recipe.layers[_indices[i]].delay)
-		if all_missiles: _end_time=minf(_end_time,actual_end)
+			if not _visuals[i] is Missile:
+				all_missiles = false
+				continue
+			has_live_missile = true
+			var ending: float = _visuals[i].ended_at()
+			if ending < 0.0:
+				all_missiles_ended = false
+				continue
+			actual_end = maxf(actual_end, ending + _recipe.layers[_indices[i]].delay)
+		# Fixed-step arrivals can be one tick later than nominal. Pure missile
+		# groups may finish early after cancellation; mixed layers must retain
+		# their own lifetime while also waiting for the real final missile tail.
+		if has_live_missile and all_missiles_ended:
+			_end_time = actual_end if all_missiles else maxf(_end_time, actual_end)
 	if _recipe == null or (_recipe.looping and not _stopping):
 		return
 	if time + .000001 >= _end_time and not _completed:
@@ -253,6 +267,8 @@ func _build() -> void:
 			elif layer.kind == JeffForge3DLayer.Kind.PROCEDURAL:
 				visual = PixelProcedural.new()
 				visual.configure(_recipe, index, is_reduced(), _material(layer, false), repeat)
+				if _uses_library_material(layer):
+					_bind_library_procedural_textures(visual)
 			else:
 				visual = _make_shape(layer)
 			visual.name = "FX_%02d_%02d" % [index, repeat]
@@ -291,8 +307,15 @@ func _color(layer: JeffForge3DLayer) -> Color:
 
 func _material(layer: JeffForge3DLayer, particle: bool) -> ShaderMaterial:
 	var mat := ShaderMaterial.new()
-	var shader: Shader = load("res://addons/fx_forge/legacy/assets/pixel_fx.gdshader")
-	if layer.additive:
+	var extended: bool = _uses_library_material(layer)
+	var shader: Shader = load("res://addons/fx_forge/legacy/assets/library_fx.gdshader" if extended else "res://addons/fx_forge/legacy/assets/pixel_fx.gdshader")
+	if layer.additive and extended:
+		if _library_additive_shader == null or _library_additive_source != shader.code:
+			_library_additive_source = shader.code
+			_library_additive_shader = Shader.new()
+			_library_additive_shader.code = shader.code.replace("depth_draw_never;", "depth_draw_never, blend_add;")
+		shader = _library_additive_shader
+	elif layer.additive:
 		if _additive_shader == null or _additive_source != shader.code:
 			_additive_source = shader.code
 			_additive_shader = Shader.new()
@@ -300,8 +323,17 @@ func _material(layer: JeffForge3DLayer, particle: bool) -> ShaderMaterial:
 		shader = _additive_shader
 	mat.shader = shader
 	mat.render_priority = layer.sort_priority
-	if layer.kind != JeffForge3DLayer.Kind.PROCEDURAL:
-		mat.set_shader_parameter("mask_texture", load("res://addons/fx_forge/legacy/assets/textures/%s.png" % layer.texture_name))
+	if layer.kind != JeffForge3DLayer.Kind.PROCEDURAL and layer.pattern == JeffForge3DLayer.Pattern.TEXTURE:
+		var texture_path: String = layer.texture_name if layer.texture_name.begins_with("res://") else "res://addons/fx_forge/legacy/assets/textures/%s.png" % layer.texture_name
+		var texture: Texture2D = load(texture_path) as Texture2D
+		# GLES can share filtering state when one texture RID is bound through
+		# two samplers. Bind only the branch actually sampled by this material.
+		if extended and layer.material_mode == JeffForge3DLayer.MaterialMode.SMOOTH:
+			mat.set_shader_parameter("smooth_texture", texture)
+			mat.set_shader_parameter("mask_texture", null)
+		else:
+			mat.set_shader_parameter("mask_texture", texture)
+			if extended: mat.set_shader_parameter("smooth_texture", null)
 	mat.set_shader_parameter("tint", _color(layer))
 	mat.set_shader_parameter("palette_hue_shift", layer.palette_hue_shift and layer.use_palette_tint)
 	mat.set_shader_parameter("palette_reference", layer.palette_reference)
@@ -319,7 +351,48 @@ func _material(layer: JeffForge3DLayer, particle: bool) -> ShaderMaterial:
 	mat.set_shader_parameter("arc_span", deg_to_rad(layer.arc_degrees))
 	mat.set_shader_parameter("branch_count", layer.branch_count)
 	mat.set_shader_parameter("motif_count", layer.motif_count)
+	if extended:
+		mat.set_shader_parameter("material_mode", layer.material_mode)
+		mat.set_shader_parameter("pattern", layer.pattern)
+		mat.set_shader_parameter("atlas_columns", maxi(1, layer.atlas_columns if layer.atlas_columns > 0 else ceili(float(layer.atlas_frames) / maxi(1, layer.atlas_rows))))
+		mat.set_shader_parameter("atlas_rows", maxi(1, layer.atlas_rows))
+		mat.set_shader_parameter("pixel_grid", clampi(layer.pixel_resolution, 32, 128))
+		mat.set_shader_parameter("pattern_aspect", Vector2(maxf(.01, layer.aspect.x), maxf(.01, layer.aspect.y)))
+		mat.set_shader_parameter("pattern_count", clampi(roundi(layer.pattern_count * clampf(_recipe.density, .05, 3.0) * (.65 if is_reduced() else 1.0)), 1, 16))
+		mat.set_shader_parameter("pattern_detail", clampf(layer.pattern_detail, 0, 1) * (.6 if is_reduced() else 1.0))
+		mat.set_shader_parameter("pattern_motion", clampf(layer.pattern_motion, .1, 3))
+		mat.set_shader_parameter("pattern_width", clampf(layer.pattern_width, .1, 1))
+		mat.set_shader_parameter("pattern_variation", clampf(layer.pattern_variation, 0, 1))
+		mat.set_shader_parameter("pattern_phase", clampf(layer.pattern_phase, 0, 1))
+		mat.set_shader_parameter("pattern_seed", float(posmod(_recipe.seed, 100003)))
+		mat.set_shader_parameter("effect_duration", maxf(.05, layer.duration))
+		mat.set_shader_parameter("looping", _recipe.looping)
+		var other: Color = (_recipe.primary_color if layer.secondary else _recipe.secondary_color) if layer.use_palette_tint else Color(.55, .55, .55, 1)
+		other *= layer.color
+		other.r *= _recipe.brightness
+		other.g *= _recipe.brightness
+		other.b *= _recipe.brightness
+		mat.set_shader_parameter("secondary_tint", other)
 	return mat
+
+func _uses_library_material(layer: JeffForge3DLayer) -> bool:
+	return layer.material_mode != JeffForge3DLayer.MaterialMode.LEGACY or layer.pattern != JeffForge3DLayer.Pattern.TEXTURE or layer.atlas_columns > 0 or layer.atlas_rows > 1
+
+func _bind_library_procedural_textures(visual: PixelProcedural) -> void:
+	# The legacy CPU rasterizer replaces its texture after material construction.
+	# A newly requested smooth sampler must reference that same retained image,
+	# including its independent ground/air impact buffers. Default recipes skip this.
+	var materials: Array = [[visual.mesh.material, visual.pixel_texture]]
+	if is_instance_valid(visual.impact_mesh):
+		materials.append([visual.impact_mesh.mesh.material, visual.impact_texture])
+	if is_instance_valid(visual.impact_air_mesh):
+		materials.append([visual.impact_air_mesh.mesh.material, visual.impact_air_texture])
+	for entry: Array in materials:
+		var material: ShaderMaterial = entry[0]
+		material.set_shader_parameter("smooth_texture", entry[1])
+		material.set_shader_parameter("atlas_columns", 1)
+		material.set_shader_parameter("atlas_rows", 1)
+		material.set_shader_parameter("pattern", JeffForge3DLayer.Pattern.TEXTURE)
 
 func _make_particles(layer: JeffForge3DLayer, index: int) -> Node3D:
 	var cpu := CPUParticles3D.new()
@@ -443,15 +516,18 @@ func _sync(_delta: float, seeking: bool) -> void:
 		else:
 			_started[i] = true
 			var mesh := node as MeshInstance3D
-			var ratio: float = clampf(age / maxf(layer.duration, 0.05), 0.0, 1.0)
+			# Opt-in material tails retain their final pose, including size, spin and
+			# atlas frame. Only opacity advances after stop. Legacy visuals stay exact.
+			var visual_age: float = maxf(0.0, age - maxf(0.0, time - _stop_time)) if _stopping and _uses_library_material(layer) else age
+			var ratio: float = clampf(visual_age / maxf(layer.duration, 0.05), 0.0, 1.0)
 			var alpha: float = 1.0
 			var size_now: float
 			if _recipe.looping:
-				size_now = layer.size * (1.0 + sin(age * layer.pulse_speed) * layer.pulse)
-				alpha = minf(age / maxf(.001, layer.fade_in), 1.0)
+				size_now = layer.size * (1.0 + sin(visual_age * layer.pulse_speed) * layer.pulse)
+				alpha = minf(visual_age / maxf(.001, layer.fade_in), 1.0)
 			else:
 				size_now = lerpf(layer.size, layer.end_size, 1.0 - pow(1.0 - ratio, 2.0))
-				alpha = minf(age / maxf(.001, layer.fade_in), 1.0) * clampf((layer.duration - age) / maxf(.001, layer.fade_out), 0, 1)
+				alpha = minf(visual_age / maxf(.001, layer.fade_in), 1.0) * clampf((layer.duration - visual_age) / maxf(.001, layer.fade_out), 0, 1)
 			if _stopping:
 				alpha *= clampf(1.0 - (time - _stop_time) / maxf(.001, layer.fade_out), 0.0, 1.0)
 			mesh.visible = alpha > 0.005 and size_now > 0.001
@@ -462,15 +538,19 @@ func _sync(_delta: float, seeking: bool) -> void:
 			mesh.rotation_degrees = layer.rotation_degrees
 			if layer.facing == JeffForge3DLayer.Facing.GROUND:
 				mesh.rotation_degrees.x -= 90.0
-			mesh.rotate_object_local(Vector3.FORWARD, deg_to_rad(age * layer.spin))
+			mesh.rotate_object_local(Vector3.FORWARD, deg_to_rad(visual_age * layer.spin))
 			var mat := mesh.mesh.material as ShaderMaterial
+			if _uses_library_material(layer):
+				# The instance clock owns every new animation; shader TIME would make
+				# pause, deterministic reverse seek and stopped tails drift apart.
+				mat.set_shader_parameter("effect_time", visual_age)
 			var tint: Color = _color(layer)
 			tint.a *= alpha
 			mat.set_shader_parameter("tint", tint)
 			if layer.kind == JeffForge3DLayer.Kind.PROCEDURAL:
 				node.apply_path_transform(_recipe.effect_scale, tint)
-			mat.set_shader_parameter("shape_frame", fposmod(floorf(age * layer.animation_fps), maxi(1, layer.atlas_frames)) if layer.animation_loop else minf(layer.atlas_frames - 1, floorf(age * layer.animation_fps)))
-			mat.set_shader_parameter("shape_angle", deg_to_rad(layer.rotation_degrees.z + age * layer.spin) + (motion_angle if layer.align_to_motion and layer.facing == JeffForge3DLayer.Facing.CAMERA else 0.0))
+			mat.set_shader_parameter("shape_frame", fposmod(floorf(visual_age * layer.animation_fps), maxi(1, layer.atlas_frames)) if layer.animation_loop else minf(layer.atlas_frames - 1, floorf(visual_age * layer.animation_fps)))
+			mat.set_shader_parameter("shape_angle", deg_to_rad(layer.rotation_degrees.z + visual_age * layer.spin) + (motion_angle if layer.align_to_motion and layer.facing == JeffForge3DLayer.Facing.CAMERA else 0.0))
 
 	if not _arrival_queue.is_empty():
 		_deliver_arrivals.call_deferred(_build_generation)

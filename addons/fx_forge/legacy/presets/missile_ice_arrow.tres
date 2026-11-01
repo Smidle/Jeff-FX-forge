@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_missile_config.gd" id="3"]
+
+[sub_resource type="Resource" id="Missile"]
+script = ExtResource("3")
+head_glow = 1.0
+magic_ornament = 0.7
+orbit_speed = 0.7
+head_style = 2
+trail_style = 8
+impact_style = 7
+head_size = 1.0
+head_aspect = 1.2
+deformation = 0.25
+halo = 0.12
+path_mode = 0
+arc_height = 0.0
+flight_time = 0.65
+trail_length = 1.55
+trail_width = 0.085
+trail_fade = 0.32
+turbulence = 0.012
+head_dissolve = 0.14
+motes = 0
+trail_particles = 26
+particle_life = 0.85
+impact_size = 1.1
+impact_duration = 1.0
+impact_fragments = 12
+
+[sub_resource type="Resource" id="Layer"]
+script = ExtResource("2")
+label = "寒冰箭 · 程序飞弹"
+kind = 4
+missile = SubResource("Missile")
+texture_name = ""
+
+[resource]
+script = ExtResource("1")
+id = "missile_ice_arrow"
+title = "寒冰箭"
+title_en = "Ice Arrow"
+category = "magic"
+description = "有棱面的冰晶箭，箭尖一团冷光，身后留下点阵寒气和断续霜线，冰晶、雪花悬在空中闪烁、缓缓飘落。命中「冰晶迸裂」：白闪和十字星芒，冰环迸开，冰晶碎片翻滚飞散，寒气下沉。不附加实际冰冻判定。"
+tags = PackedStringArray("飞弹", "远程", "程序化")
+duration = 0.0
+preview_time = 0.4
+primary_color = Color(0.66, 0.94, 1, 1)
+secondary_color = Color(0.14, 0.46, 0.7, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer")])

@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "原创逐帧主体"
+size = 3.0
+end_size = 3.0
+duration = 0.6071428571428571
+fade_in = 0.005
+fade_out = 0.055
+offset = Vector3(0, 1.2, 0)
+texture_name = "res://addons/fx_forge/library/textures/painted_moon_blade.png"
+material_mode = 2
+atlas_columns = 4
+atlas_rows = 5
+atlas_frames = 17
+animation_fps = 28
+hard_edge = false
+palette_hue_shift = true
+palette_reference = Color(0.815686, 0.933333, 0.878431, 1)
+
+[resource]
+script = ExtResource("1")
+id = "ext_painted_moon_blade"
+title = "月华刃"
+title_en = "painted_moon_blade"
+category = "magic"
+description = "弯月般薄刃以宽窄变化划出柔和流光，收尾沿切向拉开。"
+primary_color = Color(0.815686, 0.933333, 0.878431, 1)
+secondary_color = Color(0.933333, 0.858824, 0.705882, 1)
+duration = 0.667142857142857
+preview_time = 0.17857142857142858
+looping = false
+seed = 42
+tags = PackedStringArray("combat", "painted_smooth", "drawn", "light")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

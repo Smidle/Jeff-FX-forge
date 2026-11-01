@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "程序造型与自然消散"
+size = 2.8
+end_size = 2.8
+duration = 1.6
+fade_in = 0.035
+fade_out = 0.25
+offset = Vector3(0, 0.76, 0)
+material_mode = 2
+pattern = 6
+hard_edge = false
+pattern_count = 5
+pattern_width = 0.7
+pattern_variation = 0.7
+
+[resource]
+script = ExtResource("1")
+id = "ext_natural_stone_dust"
+title = "石地扬尘"
+title_en = "natural_stone_dust"
+category = "magic"
+description = "贴地细尘沿受力方向散开，少量粗颗粒很快落下。"
+primary_color = Color(0.752941, 0.682353, 0.588235, 1)
+secondary_color = Color(0.462745, 0.435294, 0.403922, 1)
+duration = 1.6
+preview_time = 0.55
+looping = false
+seed = 42
+tags = PackedStringArray("environment", "natural_realistic", "procedural", "earth")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

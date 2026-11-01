@@ -83,7 +83,7 @@ func close() -> void:
 
 static func render(preset: Resource, settings: Dictionary, source_camera: Camera3D = null) -> Dictionary:
 	if DisplayServer.get_name() == "headless":
-		return {"error": "经典效果需要带渲染器的 Godot 编辑器才能导出。"}
+		return {"error": "3D 效果需要带渲染器的 Godot 编辑器才能导出。"}
 	var seconds: float = settings.capture_seconds
 	var fps: int = settings.capture_fps
 	var resolution: int = settings.capture_size

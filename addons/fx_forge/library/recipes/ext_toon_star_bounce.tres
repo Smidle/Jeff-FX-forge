@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "程序造型与自然消散"
+size = 2.8
+end_size = 2.8
+duration = 1.6
+fade_in = 0.035
+fade_out = 0.25
+offset = Vector3(0, 1.05, 0)
+material_mode = 2
+pattern = 4
+hard_edge = false
+pattern_count = 5
+pattern_width = 0.55
+pattern_variation = 0.5
+
+[resource]
+script = ExtResource("1")
+id = "ext_toon_star_bounce"
+title = "弹跳星礼"
+title_en = "toon_star_bounce"
+category = "magic"
+description = "一颗主星轻轻跃起再落定，周围小星延后弹开。"
+primary_color = Color(1.0, 0.882353, 0.603922, 1)
+secondary_color = Color(1.0, 0.603922, 0.752941, 1)
+duration = 1.6
+preview_time = 0.55
+looping = false
+seed = 42
+tags = PackedStringArray("interaction", "toon", "procedural", "light")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

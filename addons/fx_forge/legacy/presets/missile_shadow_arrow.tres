@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_missile_config.gd" id="3"]
+
+[sub_resource type="Resource" id="Missile"]
+script = ExtResource("3")
+head_glow = 1.0
+magic_ornament = 0.0
+orbit_speed = 0.85
+head_style = 3
+trail_style = 5
+impact_style = 8
+head_size = 0.92
+head_aspect = 1.2
+deformation = 0.55
+halo = 0.22
+path_mode = 2
+arc_height = 0.1
+side_offset = 0.23
+random_spread = 0.2
+flight_time = 0.9
+trail_length = 1.35
+trail_width = 0.15
+trail_fade = 0.44
+turbulence = 0.035
+head_dissolve = 0.22
+motes = 4
+trail_particles = 22
+particle_life = 0.75
+impact_size = 1.0
+impact_duration = 0.9
+impact_fragments = 10
+
+[sub_resource type="Resource" id="Layer"]
+script = ExtResource("2")
+label = "暗影箭 · 程序飞弹"
+kind = 4
+missile = SubResource("Missile")
+texture_name = ""
+
+[resource]
+script = ExtResource("1")
+id = "missile_shadow_arrow"
+title = "暗影箭"
+title_en = "Shadow Arrow"
+category = "magic"
+description = "深色箭芯、紫色刃缘，带一团紫光；边缘暗焰闪动，身后飘散上缘透着紫光的半透明暗烟和紫色余烬。命中「暗影裂爆」：紫白闪光，边缘烧着紫焰的黑球胀开，碎晶飞散，最后暗絮被吸回中心。程序生成，可自由组合弹体、拖尾与命中。"
+tags = PackedStringArray("飞弹", "远程", "程序化")
+duration = 0.0
+preview_time = 0.4
+primary_color = Color(0.7, 0.43, 0.96, 1)
+secondary_color = Color(0.28, 0.13, 0.43, 1)
+layers = Array[ExtResource("2")]([SubResource("Layer")])

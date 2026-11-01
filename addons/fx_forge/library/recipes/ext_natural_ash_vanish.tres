@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "原创造型 · Aseprite 清理与锚点整理"
+size = 2.4
+end_size = 2.4
+duration = 1.4166666666666667
+fade_in = 0.04
+fade_out = 0.1
+offset = Vector3(0, 0.995, 0)
+facing = 0
+texture_name = "res://addons/fx_forge/library/textures/natural_ash_vanish.png"
+material_mode = 2
+atlas_columns = 4
+atlas_rows = 5
+atlas_frames = 17
+animation_fps = 12
+animation_loop = false
+hard_edge = false
+palette_hue_shift = true
+palette_reference = Color(0.529412, 0.494118, 0.470588, 1)
+
+[resource]
+script = ExtResource("1")
+id = "ext_natural_ash_vanish"
+title = "灰烬退散"
+title_en = "natural_ash_vanish"
+category = "magic"
+description = "细灰从主体附近向风向散开，亮点先冷却再消失。"
+primary_color = Color(0.529412, 0.494118, 0.470588, 1)
+secondary_color = Color(0.929412, 0.6, 0.301961, 1)
+duration = 1.4766666666666668
+preview_time = 0.5
+looping = false
+seed = 42
+tags = PackedStringArray("presentation", "natural_realistic", "drawn", "fire")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

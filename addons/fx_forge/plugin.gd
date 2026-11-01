@@ -106,7 +106,7 @@ func _begin_placement(preset: Resource) -> void:
 		EditorInterface.set_main_screen_editor("2D" if root is Node2D else "3D")
 		update_overlays()
 	else:
-		_panel._result_dialog.dialog_text = I18n.T("请先打开场景：经典效果需要 Node3D 根节点，像素效果支持 Node3D 或 Node2D。点击选择位置，Esc 或右键取消。")
+		_panel._result_dialog.dialog_text = I18n.T("请先打开场景：3D 效果需要 Node3D 根节点，像素效果支持 Node3D 或 Node2D。点击选择位置，Esc 或右键取消。")
 		_panel._result_dialog.popup_centered()
 
 func _forward_canvas_gui_input(event: InputEvent) -> bool:

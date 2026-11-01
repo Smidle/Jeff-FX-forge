@@ -26,6 +26,9 @@ const CATEGORY_NAMES := {
 ## 全局参数（画布、时间、方向、外观、描边……），键见 fx_globals.gd
 @export var legacy_recipe: Resource
 @export var preview_png: PackedByteArray = PackedByteArray()
+## Optional library facets; saved variations retain their own metadata.
+## Old presets need no migration and receive catalog defaults in the browser.
+@export var library_metadata: Dictionary = {}
 
 @export var globals: Dictionary = {}
 ## 图层列表，每项是一个 Dictionary：module / name / enabled / params ……，见 fx_preset_util.gd
@@ -46,6 +49,7 @@ func clone() -> Resource:
 	copy.layers = layers.duplicate(true)
 	copy.export_settings = export_settings.duplicate(true)
 	copy.preview_png = preview_png.duplicate()
+	copy.library_metadata = library_metadata.duplicate(true)
 	copy.legacy_recipe = legacy_recipe.copy() if legacy_recipe != null else null
 	return copy
 

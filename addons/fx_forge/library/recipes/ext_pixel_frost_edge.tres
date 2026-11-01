@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="JeffForge3DPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_preset.gd" id="1"]
+[ext_resource type="Script" path="res://addons/fx_forge/legacy/runtime/fx_layer.gd" id="2"]
+
+[sub_resource type="Resource" id="Layer_0"]
+script = ExtResource("2")
+kind = 1
+label = "原创逐帧主体"
+size = 2.9
+end_size = 2.9
+duration = 0.6071428571428571
+fade_in = 0.005
+fade_out = 0.055
+offset = Vector3(0, 1.15, 0)
+texture_name = "res://addons/fx_forge/library/textures/pixel_frost_edge.png"
+material_mode = 1
+atlas_columns = 4
+atlas_rows = 5
+atlas_frames = 17
+animation_fps = 28
+hard_edge = true
+palette_hue_shift = true
+palette_reference = Color(0.513725, 0.835294, 0.898039, 1)
+
+[resource]
+script = ExtResource("1")
+id = "ext_pixel_frost_edge"
+title = "霜刃掠影"
+title_en = "pixel_frost_edge"
+category = "magic"
+description = "细窄霜刃切出前缘亮线，短尾与冰屑在收招后分离消散。"
+primary_color = Color(0.513725, 0.835294, 0.898039, 1)
+secondary_color = Color(0.960784, 1.0, 1.0, 1)
+duration = 0.667142857142857
+preview_time = 0.17857142857142858
+looping = false
+seed = 42
+tags = PackedStringArray("combat", "fine_pixel", "drawn", "ice")
+layers = Array[ExtResource("2")]([SubResource("Layer_0")])

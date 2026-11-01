@@ -8,3 +8,10 @@ Thumbs.db
 /tools/
 *.log
 *.zip
+.backup/
+
+# 八方旅人场景素材：第三方版权素材，只在本机测试场使用，不要上传或随插件发布
+/assets/octopath/
+
+# 铃兰之剑素材：第三方版权素材，只在本机的花火大会测试场景使用，不要上传或随插件发布
+/assets/convallaria/

@@ -4,9 +4,28 @@
 
 免费、离线使用，藏青色界面。包含 **129 款内置效果：像素工坊 63 款 + 三维效果库 66 款**，以及四个可直接运行的测试场景：纯 2D 武侠庭院、3D 分类试验场、等距测试场、夏日花火大会。
 
-[下载插件 ZIP](https://github.com/Smidle/Jeff-FX-forge/releases/download/v1.1/Jeff-FX-1.1-plugin.zip) · [图文用户说明书](docs/manual.md) · [特效库说明](docs/multistyle-library.md) · [追踪飞弹](docs/missiles.md) · [庭院测试说明](docs/test-scene.md) · [版本记录](CHANGELOG.md) · [已知限制](docs/compatibility.md)
+[下载插件 ZIP](https://github.com/Smidle/Jeff-FX-forge/releases/download/v1.1/Jeff-FX-1.1-plugin.zip) · [图文用户说明书](docs/manual.md) · [特效库说明](docs/multistyle-library.md) · [追踪飞弹](docs/missiles.md) · [场景测试说明](docs/test-scene.md) · [版本记录](CHANGELOG.md) · [已知限制](docs/compatibility.md)
 
 ![Jeff FX 传送法阵预览](docs/images/07-classic.png)
+
+## 特效展示
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/images/showcase/lightning.gif" width="200" alt="落雷"><br>落雷</td>
+    <td align="center"><img src="docs/images/showcase/explosion.gif" width="200" alt="大型爆炸·升级版"><br>大型爆炸·升级版</td>
+    <td align="center"><img src="docs/images/showcase/shield.gif" width="200" alt="护盾"><br>护盾</td>
+    <td align="center"><img src="docs/images/showcase/magic-circle.gif" width="200" alt="魔法阵"><br>魔法阵</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/showcase/homing-missile.gif" width="200" alt="追踪飞弹·火球术"><br>追踪飞弹·火球术</td>
+    <td align="center"><img src="docs/images/showcase/firework-sphere.gif" width="200" alt="烟花·球形绽放"><br>烟花·球形绽放</td>
+    <td align="center"><img src="docs/images/showcase/firework-heart.gif" width="200" alt="烟花·心形绽放"><br>烟花·心形绽放</td>
+    <td align="center"><img src="docs/images/showcase/ice-fall.gif" width="200" alt="冰晶落击"><br>冰晶落击</td>
+  </tr>
+</table>
+
+以上动图直接取自插件的渲染结果：像素效果为插件生成的逐帧图，追踪飞弹为三维实时录制（命中稻草人）。
 
 ## 选择下载内容
 
@@ -51,9 +70,13 @@
 
 两类均支持个人预设和撤销重做。**配方不是技能**：保存参数不自动绑定按键或伤害。插件不修改宿主项目的相机、分辨率或输入设置；技能逻辑放在附带的游戏示例中。
 
-## 庭院实测
+## 场景实测
 
-![月下庭院实际运行画面](docs/images/10-courtyard.png)
+仓库附带四个测试场景，在任意场景按 **Esc** 可以切换。
+
+### 场景1 · 月下庭院
+
+![场景1：月下庭院实际运行画面](docs/images/10-courtyard.png)
 
 主角“姐夫”可以四向移动、两段普攻、轻功和蓄力。两个固定靶不移动、不攻击、不死亡；受击有动作与闪白。左靶在 J 命中时播放重击，右靶播放暴击，石头播放格挡火花。
 
@@ -68,15 +91,22 @@
 
 十个技能冷却均为 **0.5 秒**，仍需等待当前动作收招。技能图标可点击释放。轻功使用“疾步残风＋轻功踩踏”，原库特效保持不变。引雷符在落雷接触帧结算；其他技能不会额外叠加 J 的受击、重击或暴击效果。
 
-F9 可以手动查看庭院收录的 82 款（1.0 时的原库）；**手动浏览不代表 82 款均已接入游戏事件**。1.1 新增的效果在工坊和下面的其他测试场景里查看。测试工程使用插件导出的二维帧及独立的场景参数，详见 [场景说明与效果对应表](docs/test-scene.md)。
+F9 可以手动查看庭院收录的 82 款（1.0 时的原库）；**手动浏览不代表 82 款均已接入游戏事件**。1.1 新增的效果在工坊和下面的场景2–4 里查看。测试工程使用插件导出的二维帧及独立的场景参数，详见 [场景说明与效果对应表](docs/test-scene.md)。
 
-## 其他测试场景
+### 场景2–4
 
 | 场景 | 打开方式 | 用来做什么 |
 |---|---|---|
-| 3D 分类试验场 | 打开 `scenes/fx_library_lab.tscn`，按 **F6** | 三维效果按用途分组试放，检查尺寸、运动、跟随与遮挡。说明见 [3D 分类试验场](docs/library-lab.md) |
-| 等距测试场 | 打开 `scenes/iso_lab.tscn`，按 **F6** | 斜俯视的 HD-2D 镜头里移动角色、绑定技能，追踪飞弹打木桩。说明见 [等距测试场](docs/iso-lab.md) |
-| 夏日花火大会 | 打开 `scenes/festival.tscn`，按 **F6**；或在等距测试场走进「花火之门」 | 夜晚的海港，按「放烟花」看一场烟花大会，最后一发在天上排出「Jeff Studio」。说明见 [夏日花火大会](docs/festival.md) |
+| 场景2 · 3D 分类试验场 | 打开 `scenes/fx_library_lab.tscn`，按 **F6** | 三维效果按用途分组试放，检查尺寸、运动、跟随与遮挡。说明见 [3D 分类试验场](docs/library-lab.md) |
+| 场景3 · 等距测试场 | 打开 `scenes/iso_lab.tscn`，按 **F6** | 斜俯视的 HD-2D 镜头里移动角色、绑定技能，追踪飞弹打木桩。说明见 [等距测试场](docs/iso-lab.md) |
+| 场景4 · 夏日花火大会 | 打开 `scenes/festival.tscn`，按 **F6**；或在等距测试场走进「花火之门」 | 夜晚的海港，按「放烟花」看一场烟花大会，最后一发在天上排出「Jeff Studio」。说明见 [夏日花火大会](docs/festival.md) |
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/images/library-lab.png" width="400" alt="场景2：3D 分类试验场"><br>场景2 · 3D 分类试验场：三维效果按用途分组试放</td>
+    <td align="center"><img src="docs/images/18-festival.png" width="400" alt="场景4：夏日花火大会"><br>场景4 · 夏日花火大会：按「放烟花」后镜头升向夜空，垂柳和圆环同时绽放</td>
+  </tr>
+</table>
 
 在任意测试场景按 **Esc** 可以切换场景。等距测试场的废墟营地和夏日花火大会的人物、远景用的是第三方游戏素材，只在维护者本机测试，**仓库里不包含**（见 [NOTICE](NOTICE.md)）。没有这些素材时两个场景照常运行：等距测试场只有地面、角色和特效，花火大会只有夜空、灯笼和烟花。
 

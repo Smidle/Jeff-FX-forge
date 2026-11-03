@@ -11,4 +11,4 @@
 - 像素特效可以在工坊的「3D 场景」里放进三维世界预览，旁边有参考角色；飞弹预览的终点有会受击的稻草人（`runtime/fx_straw_target.gd`，游戏里也能当测试目标）。
 - 实测 Godot 4.7.2 / macOS / Compatibility；其他渲染器与设备尚未完成画面验收。
 
-[完整图文说明](https://github.com/Smidle/Jeff-FX-forge/blob/v1.1/docs/manual.md) · [追踪飞弹](https://github.com/Smidle/Jeff-FX-forge/blob/v1.1/docs/missiles.md) · [特效库说明](https://github.com/Smidle/Jeff-FX-forge/blob/v1.1/docs/multistyle-library.md) · [已知限制](https://github.com/Smidle/Jeff-FX-forge/blob/v1.1/docs/compatibility.md) · [MIT 许可](LICENSE) · [素材说明](https://github.com/Smidle/Jeff-FX-forge/blob/v1.1/NOTICE.md)
+[完整图文说明](https://github.com/jeffstudio-dev/Jeff-FX-forge/blob/v1.1/docs/manual.md) · [追踪飞弹](https://github.com/jeffstudio-dev/Jeff-FX-forge/blob/v1.1/docs/missiles.md) · [特效库说明](https://github.com/jeffstudio-dev/Jeff-FX-forge/blob/v1.1/docs/multistyle-library.md) · [已知限制](https://github.com/jeffstudio-dev/Jeff-FX-forge/blob/v1.1/docs/compatibility.md) · [MIT 许可](LICENSE) · [素材说明](https://github.com/jeffstudio-dev/Jeff-FX-forge/blob/v1.1/NOTICE.md)

@@ -4,7 +4,7 @@
 
 免费、离线使用，藏青色界面。包含 **129 款内置效果：像素工坊 63 款 + 三维效果库 66 款**，以及四个可直接运行的测试场景：纯 2D 武侠庭院、3D 分类试验场、等距测试场、夏日花火大会。
 
-[下载插件 ZIP](https://github.com/Smidle/Jeff-FX-forge/releases/download/v1.1/Jeff-FX-1.1-plugin.zip) · [图文用户说明书](docs/manual.md) · [特效库说明](docs/multistyle-library.md) · [追踪飞弹](docs/missiles.md) · [场景测试说明](docs/test-scene.md) · [版本记录](CHANGELOG.md) · [已知限制](docs/compatibility.md)
+[下载插件 ZIP](https://github.com/jeffstudio-dev/Jeff-FX-forge/releases/download/v1.1/Jeff-FX-1.1-plugin.zip) · [图文用户说明书](docs/manual.md) · [特效库说明](docs/multistyle-library.md) · [追踪飞弹](docs/missiles.md) · [场景测试说明](docs/test-scene.md) · [版本记录](CHANGELOG.md) · [已知限制](docs/compatibility.md)
 
 ![Jeff FX 传送法阵预览](docs/images/07-classic.png)
 
